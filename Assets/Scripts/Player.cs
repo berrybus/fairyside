@@ -6,7 +6,8 @@ using UnityEngine.InputSystem;
 public enum PlayerState {
     Move,
     Knockback,
-    Transition
+    Transition,
+    Dead
 }
 
 public class Player : MonoBehaviour {
@@ -57,7 +58,7 @@ public class Player : MonoBehaviour {
 
         currentFirePoint = firePointDown;
     }
-    public void Move(InputAction.CallbackContext ctx) {
+    public void OnMove(InputAction.CallbackContext ctx) {
         movement = ctx.ReadValue<Vector2>();
 
         if (movement != Vector2.zero && currentState != PlayerState.Knockback) {
@@ -82,7 +83,7 @@ public class Player : MonoBehaviour {
         transform.position += distance;
     }
 
-    public void Fire(InputAction.CallbackContext ctx) {
+    public void OnFire(InputAction.CallbackContext ctx) {
         fireDirection = ctx.ReadValue<Vector2>();
         if (fireDirection != Vector2.zero) {
             Firepoint oldFirepoint = currentFirePoint;
@@ -139,7 +140,12 @@ public class Player : MonoBehaviour {
                 animator.SetFloat("SpeedMultiplier", 0.0f);
                 AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
                 animator.Play(info.shortNameHash, 0, 0.0f);
+                // print("not mobing");
             }
+        }
+
+        if (currentState == PlayerState.Dead) {
+            animator.Play("ShirleyDead", 0, 0.0f);
         }
     }
     public void FixedUpdate() {
@@ -150,6 +156,15 @@ public class Player : MonoBehaviour {
         if (curDelay < 0) {
             curDelay = 0;
         }
+    }
+
+    public void DidDie() {
+        currentState = PlayerState.Dead;
+        rbd.constraints = RigidbodyConstraints2D.FreezeAll;
+        firePointDown.spriteRenderer.enabled = false;
+        firePointUp.spriteRenderer.enabled = false;
+        firePointLeft.spriteRenderer.enabled = false;
+        firePointRight.spriteRenderer.enabled = false;
     }
 
     private void Shoot() {
@@ -220,8 +235,15 @@ public class Player : MonoBehaviour {
 
 
     private void EnemyCollision(GameObject collision) {
-        if (!isInvincible && (collision.CompareTag("Enemy") || collision.CompareTag("EnemyBullet"))) {
-            PlayerManager.instance.PlayerHit();
+        if (isInvincible || currentState == PlayerState.Dead) {
+            return;
+        }
+
+        if (collision.CompareTag("Enemy") || collision.CompareTag("EnemyBullet")) {
+            if (PlayerManager.instance.PlayerHit()) {
+                DidDie();
+                return;
+            }
             currentState = PlayerState.Knockback;
             isInvincible = true;
             rbd.velocity = Vector2.zero;

@@ -15,6 +15,7 @@ public class BaseEnemy : MonoBehaviour {
     public SpriteRenderer spriteRenderer;
     public Room room;
     public GameObject enemyDeath;
+    public GameObject portal;
     protected int hp = 100;
     protected int maxGems = 2;
     protected int minGems = 0;
@@ -66,6 +67,10 @@ public class BaseEnemy : MonoBehaviour {
                 if (!isBoss) {
                     room.numEnemies -= 1;
                     room.OpenDoorsIfPossible();
+                } else {
+                    if (portal != null) {
+                        Instantiate(portal, transform.position, Quaternion.identity);
+                    }
                 }
                 Instantiate(enemyDeath, transform.position, Quaternion.identity);
                 for (var i = 0; i < Random.Range(minGems, maxGems); i++) {

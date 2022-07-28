@@ -22,13 +22,7 @@ public class ObjectPool : MonoBehaviour {
     public int enemyBulletParticlesToPool;
 
     private void Awake() {
-        if (instance == null) {
-            DontDestroyOnLoad(gameObject);
-            instance = this;
-        }
-        else {
-            Destroy(gameObject);
-        }
+        instance = this;
     }
 
     private void Start() {

@@ -143,9 +143,9 @@ public class BatBoss : BaseEnemy {
 
             currentState = currentState == EnemyState.Knockback ? EnemyState.Knockback : EnemyState.Unready;
             FireBullets(angles);
-            yield return new WaitForSeconds(Random.Range(0.5f, 1.0f));
+            yield return new WaitForSeconds(Random.Range(0.3f, 0.8f));
             FireBullets(angles_diag);
-            yield return new WaitForSeconds(Random.Range(0.5f, 1.0f));
+            yield return new WaitForSeconds(Random.Range(0.3f, 0.8f));
             FireBullets(angles_90);
         }
     }

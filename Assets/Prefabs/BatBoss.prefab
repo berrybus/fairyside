@@ -147,7 +147,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 50
+  m_Mass: 10
   m_LinearDrag: 50
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -173,12 +173,13 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   room: {fileID: 0}
   enemyDeath: {fileID: 718801361135743583, guid: 2eaa01786a9872444950f5a189f665f5, type: 3}
+  portal: {fileID: 251605308118642128, guid: c9e602629d8292042a4d49d1b668cbe7, type: 3}
   gem: {fileID: 418760705434424171, guid: 6cf28cc7dfb76b8478636aee6f3fc649, type: 3}
   knockbackForce: 0
   animator: {fileID: 0}
   angleMove: 0
   MaxHP: 75
-  moveForce: 8500
+  moveForce: 1750
   firepoint: {fileID: 7859022014356622125}
   bulletSpeed: 10
   maxGemCount: 0

@@ -21,6 +21,12 @@ public class PlayerManager: MonoBehaviour
 
     public DamageText damageText;
 
+    public void StartGame() {
+        hp = maxHp;
+        mp = maxMp;
+        gemCount = 0;
+    }
+
     private void Awake() {
         if (instance == null) {
             DontDestroyOnLoad(gameObject);
@@ -40,9 +46,15 @@ public class PlayerManager: MonoBehaviour
         }
     }
 
-    public void PlayerHit() {
+    public bool PlayerHit() {
+        int oldHP = hp;
         hp -= 1;
-        hp = Mathf.Max(hp, 0);
+        if (hp <= 0 && oldHP > 0) {
+            MenuScreenManager.instance.NotifyOfDeath();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void EnemyHit(int damage, int healthLeft, Vector3 pos) {

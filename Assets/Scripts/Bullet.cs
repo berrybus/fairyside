@@ -19,7 +19,7 @@ public class Bullet : MonoBehaviour {
     }
 
     IEnumerator RemoveSelfAfterTimePeriod() {
-        yield return new WaitForSeconds(10.0f);
+        yield return new WaitForSeconds(0.7f);
         RemoveSelf();
         // particle.Play();
     }
