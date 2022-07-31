@@ -53,12 +53,15 @@ public class BaseEnemy : MonoBehaviour {
 
     protected virtual void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.CompareTag("Bullet") && hp > 0) {
-            DamageSelf();
+            DamageSelf(collision.gameObject.GetComponent<Bullet>().displayOnTop);
             currentState = EnemyState.Knockback;
             rbd.velocity = Vector2.zero;
             knockback = transform.position - collision.transform.position;
             knockback = knockback.normalized;
-            collision.gameObject.GetComponent<Bullet>().RemoveSelf();
+            knockback *= PlayerManager.instance.GunKnockbackMultiplier();
+            if (collision.gameObject.GetComponent<Bullet>().destroyOnEnemyImpact) {
+                collision.gameObject.GetComponent<Bullet>().RemoveSelf();
+            }
             StartCoroutine(ResumeMovement());
             spriteRenderer.color = new Color(1.0f, 0.6f, 0.5f, 1.0f);
 
@@ -86,10 +89,10 @@ public class BaseEnemy : MonoBehaviour {
         }
     }
 
-    protected virtual void DamageSelf() {
+    protected virtual void DamageSelf(bool displayOnTop) {
         var dmg = PlayerManager.instance.PlayerAttackVal();
         hp -= dmg;
-        PlayerManager.instance.EnemyHit(dmg, hp, transform.position);
+        PlayerManager.instance.EnemyHit(dmg, hp, transform.position, displayOnTop);
     }
 
     protected virtual void StartActivity() { }

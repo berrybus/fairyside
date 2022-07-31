@@ -121,7 +121,7 @@ public class BatBoss : BaseEnemy {
     IEnumerator ShootRoutine() {
         while (true) {
             // Shoot 4 cardinals
-            yield return new WaitForSeconds(Random.Range(2.0f, 4.0f));
+            yield return new WaitForSeconds(Random.Range(2.0f, 3.0f));
             currentState = currentState == EnemyState.Knockback ? EnemyState.Knockback : EnemyState.Unready;
             float[] angles_90 = { 0, 90, 180, 270 };
             FireBullets(angles_90);

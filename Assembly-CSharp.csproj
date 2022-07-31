@@ -58,11 +58,14 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Bullet.cs" />
     <Compile Include="Assets\Scripts\RoomController.cs" />
+    <Compile Include="Assets\Scripts\FireBullet.cs" />
     <Compile Include="Assets\Scripts\DeathMenu.cs" />
     <Compile Include="Assets\Scripts\EnemyBullet.cs" />
     <Compile Include="Assets\Scripts\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\EnemyFirepoint.cs" />
+    <Compile Include="Assets\Scripts\BasicBullet.cs" />
     <Compile Include="Assets\Scripts\Gem.cs" />
+    <Compile Include="Assets\Scripts\GrassBullet.cs" />
     <Compile Include="Assets\Scripts\MenuScreenManager.cs" />
     <Compile Include="Assets\Scripts\PooledParticle.cs" />
     <Compile Include="Assets\Scripts\BatBoss.cs" />
@@ -76,6 +79,7 @@
     <Compile Include="Assets\Scripts\Wall.cs" />
     <Compile Include="Assets\Scripts\GemDeath.cs" />
     <Compile Include="Assets\Scripts\ResolutionManager.cs" />
+    <Compile Include="Assets\Scripts\WaterBullet.cs" />
     <Compile Include="Assets\Scripts\IngameMenu.cs" />
     <Compile Include="Assets\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\UIScreen.cs" />

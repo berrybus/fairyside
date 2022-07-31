@@ -74,7 +74,8 @@ public class SceneSwitcher : MonoBehaviour {
             return;
         }
         PlayerManager.instance.StartGame();
-        SceneManager.LoadScene("Memory1");
+        StartCoroutine(StartNextLevel());
+        // SceneManager.LoadScene("Memory1");
     }
 
     IEnumerator ToMenu() {

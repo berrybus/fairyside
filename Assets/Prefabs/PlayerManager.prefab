@@ -44,12 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13c4b5dfc41fdc244a840aa172358e9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 1
-  maxHp: 5
-  mp: 100
-  maxMp: 100
-  lvl: 1
-  atk: 3
-  gemCount: 0
-  curGun: 0
+  basicGunSprite: {fileID: 1319795323, guid: f9d9a8efd8e9cd8488570fd48c2a5d51, type: 3}
+  grassGunSprite: {fileID: 2016098113, guid: 4b1930c86c1ebb146a41de17ddd227e0, type: 3}
+  waterGunSprite: {fileID: -159791118, guid: 78bca2d97078c494b8f7629b8a6604a9, type: 3}
+  fireGunSprite: {fileID: -1394547135, guid: dfb241fe90463b44586f183b1f710369, type: 3}
   damageText: {fileID: 1706053246208317526, guid: dcfee1d4246abfc48870942cea8c7e45, type: 3}

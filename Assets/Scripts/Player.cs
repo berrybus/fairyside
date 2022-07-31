@@ -150,7 +150,7 @@ public class Player : MonoBehaviour {
     }
     public void FixedUpdate() {
         if (currentState == PlayerState.Move) {
-            rbd.MovePosition(rbd.position + moveSpeed * movement * Time.fixedDeltaTime);
+            rbd.MovePosition(rbd.position + PlayerManager.instance.spd * movement * Time.fixedDeltaTime);
         }
         curDelay -= 1;
         if (curDelay < 0) {
@@ -168,7 +168,76 @@ public class Player : MonoBehaviour {
     }
 
     private void Shoot() {
+        switch (PlayerManager.instance.curGun) {
+            case PlayerGun.Basic:
+                ShootBasic();
+                break;
+            case PlayerGun.Grass:
+                ShootGrass();
+                break;
+            case PlayerGun.Water:
+                ShootWater();
+                break;
+            case PlayerGun.Fire:
+                ShootFire();
+                break;
+        }
+    }
+
+    private void ShootBasic() {
         GameObject bullet = ObjectPool.instance.basicBullets.Get();
+        if (bullet != null) {
+            bullet.GetComponent<Bullet>().direction = GetJiggleDirection(fireDirection);
+            bullet.GetComponent<Bullet>().playerDirection = movement;
+            bullet.transform.position = GetJigglePosition(currentFirePoint.transform.position);
+            bullet.transform.rotation = Quaternion.identity;
+            bullet.transform.Rotate(currentFirePoint.transform.rotation.eulerAngles);
+            bullet.SetActive(true);
+            currentFirePoint.Animate();
+        }
+    }
+
+    private void ShootGrass() {
+        GameObject bullet1 = ObjectPool.instance.grassBullets.Get();
+        GameObject bullet2 = ObjectPool.instance.grassBullets.Get();
+        Vector2 direction = GetJiggleDirection(fireDirection);
+        float jiggle = Random.Range(-0.125f, 0.125f);
+        GameObject[] bullets = new GameObject[] { bullet1, bullet2 };
+        for (int i = 0; i < bullets.Length; i++) {
+            GameObject bullet = bullets[i];
+            if (bullet == null) {
+                continue;
+            }
+            bullet.GetComponent<Bullet>().direction = direction;
+            bullet.GetComponent<Bullet>().playerDirection = movement;
+            var position = GetShootTwicePosition(currentFirePoint.transform.position, jiggle, i);
+            bullet.transform.position = position;
+            bullet.transform.rotation = Quaternion.identity;
+            bullet.transform.Rotate(currentFirePoint.transform.rotation.eulerAngles);
+            bullet.SetActive(true);
+        }
+        if (bullet2) {
+            bullet2.GetComponent<Bullet>().displayOnTop = true;
+        }
+        currentFirePoint.Animate();
+    }
+
+    private void ShootWater() {
+        GameObject bullet = ObjectPool.instance.waterBullets.Get();
+        if (bullet != null) {
+            bullet.GetComponent<Bullet>().destroyOnEnemyImpact = false;
+            bullet.GetComponent<Bullet>().direction = GetJiggleDirection(fireDirection);
+            bullet.GetComponent<Bullet>().playerDirection = movement;
+            bullet.transform.position = GetJigglePosition(currentFirePoint.transform.position);
+            bullet.transform.rotation = Quaternion.identity;
+            bullet.transform.Rotate(currentFirePoint.transform.rotation.eulerAngles);
+            bullet.SetActive(true);
+            currentFirePoint.Animate();
+        }
+    }
+
+    private void ShootFire() {
+        GameObject bullet = ObjectPool.instance.fireBullets.Get();
         if (bullet != null) {
             bullet.GetComponent<Bullet>().direction = GetJiggleDirection(fireDirection);
             bullet.GetComponent<Bullet>().playerDirection = movement;
@@ -197,6 +266,32 @@ public class Player : MonoBehaviour {
         }
     }
 
+    private Vector3 GetShootTwicePosition(Vector3 position, float jiggle, int version) {
+        if (version % 2 == 0) {
+            if (currentFirePoint == firePointLeft || currentFirePoint == firePointRight) {
+                return new Vector3(position.x, position.y - 0.175f + jiggle, position.z);
+            } else {
+                return new Vector3(position.x - 0.175f + jiggle, position.y, position.z);
+            }
+        } else {
+            if (currentFirePoint == firePointLeft || currentFirePoint == firePointRight) {
+                return new Vector3(position.x, position.y + 0.175f + jiggle, position.z);
+            } else {
+                return new Vector3(position.x + 0.175f + jiggle, position.y, position.z);
+            }
+        }
+    }
+
+    public void RotateBullet(InputAction.CallbackContext ctx) {
+        if (!ctx.performed) {
+            return;
+        }
+
+        int nextGun = (int)PlayerManager.instance.curGun + 1;
+        nextGun %= 4;
+        PlayerManager.instance.curGun = (PlayerGun)nextGun;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision) {
         EnemyCollision(collision.gameObject);
     }
@@ -207,7 +302,6 @@ public class Player : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision) {
         EnemyCollision(collision.gameObject);
-        // print("trige enter!");
 
         if (collision.gameObject.CompareTag("Door") && currentState != PlayerState.Transition) {
             Door door = collision.gameObject.GetComponent<Door>();
@@ -232,7 +326,6 @@ public class Player : MonoBehaviour {
     }
 
     private IEnumerator blinkRoutine;
-
 
     private void EnemyCollision(GameObject collision) {
         if (isInvincible || currentState == PlayerState.Dead) {
@@ -267,7 +360,6 @@ public class Player : MonoBehaviour {
     }
 
     IEnumerator Blink() {
-        // print("calling blink");
         while (isInvincible) {
             // print("switching" + Random.Range(1, 10).ToString());
             // I guess we'll allow for some fudge room
