@@ -5,15 +5,15 @@ using UnityEngine.UI;
 using TMPro;
 
 public class HUD : MonoBehaviour {
-    public TMPro.TMP_Text hp;
-    public TMPro.TMP_Text mp;
-    public TMPro.TMP_Text gems;
-    public TMPro.TMP_Text lvl;
-    public TMPro.TMP_Text atk;
-    public TMPro.TMP_Text wis;
-    public TMPro.TMP_Text dex;
-    public TMPro.TMP_Text luk;
-    public TMPro.TMP_Text spd;
+    public TMP_Text hp;
+    public TMP_Text mp;
+    public TMP_Text gems;
+    public TMP_Text lvl;
+    public TMP_Text atk;
+    public TMP_Text wis;
+    public TMP_Text dex;
+    public TMP_Text luk;
+    public TMP_Text spd;
     public SpriteRenderer gunSpriteRenderer;
     [SerializeField]
     private Transform hpBar;

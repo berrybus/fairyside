@@ -5,7 +5,7 @@ using UnityEngine;
 public enum EnemyState {
     Move,
     Knockback,
-    Unready
+    Pause
 }
 
 public class BaseEnemy : MonoBehaviour {
@@ -16,6 +16,7 @@ public class BaseEnemy : MonoBehaviour {
     public Room room;
     public GameObject enemyDeath;
     public GameObject portal;
+    public Transform origin;
     protected int hp = 100;
     protected int maxGems = 2;
     protected int minGems = 0;
@@ -67,19 +68,17 @@ public class BaseEnemy : MonoBehaviour {
 
             // Enemy death
             if (hp <= 0) {
-                if (!isBoss) {
-                    room.numEnemies -= 1;
-                    room.OpenDoorsIfPossible();
-                } else {
-                    if (portal != null) {
-                        Instantiate(portal, transform.position, Quaternion.identity);
-                    }
+                room.numEnemies -= 1;
+                room.OpenDoorsIfPossible();
+                if (isBoss && portal != null) {
+                    Instantiate(portal, origin.position, Quaternion.identity);
                 }
-                Instantiate(enemyDeath, transform.position, Quaternion.identity);
+                Instantiate(enemyDeath, origin.position, Quaternion.identity);
                 for (var i = 0; i < Random.Range(minGems, maxGems); i++) {
+                    Vector3 position = origin.position + new Vector3(0, -0.25f, 0);
                     Gem newGem = Instantiate(
                         gem,
-                        transform.position + new Vector3(Random.Range(-0.25f, 0.25f), Random.Range(-0.25f, 0.25f), 0),
+                        position + new Vector3(Random.Range(-0.25f, 0.25f), Random.Range(-0.25f, 0.25f), 0),
                         Quaternion.identity
                     );
                     newGem.Scatter(knockback);
@@ -90,9 +89,8 @@ public class BaseEnemy : MonoBehaviour {
     }
 
     protected virtual void DamageSelf(bool displayOnTop) {
-        var dmg = PlayerManager.instance.PlayerAttackVal();
+        var dmg = PlayerManager.instance.EnemyHit(hp, origin.position, displayOnTop);
         hp -= dmg;
-        PlayerManager.instance.EnemyHit(dmg, hp, transform.position, displayOnTop);
     }
 
     protected virtual void StartActivity() { }

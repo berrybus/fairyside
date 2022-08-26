@@ -23,6 +23,8 @@ public class BatBoss : BaseEnemy {
     [SerializeField]
     private int minGemCount;
 
+    private bool shouldPause = false;
+
     protected override void Awake() {
         base.Awake();
         animator = GetComponent<Animator>();
@@ -39,14 +41,14 @@ public class BatBoss : BaseEnemy {
         base.OnEnable();
         curAngle = 0;
         targetAngle = 0;
-        currentState = EnemyState.Unready;
+        currentState = EnemyState.Pause;
     }
 
     protected override void StartActivity() {
         curAngle = GetRandomDirection();
         targetAngle = GetRandomDirection();
 
-        if (currentState == EnemyState.Unready) {
+        if (currentState == EnemyState.Pause) {
             currentState = EnemyState.Move;
         }
         StartCoroutine(FollowPlayer());
@@ -55,6 +57,14 @@ public class BatBoss : BaseEnemy {
 
     protected override void FixedUpdate() {
         base.FixedUpdate();
+        if (currentState != EnemyState.Knockback) {
+            if (shouldPause) {
+                currentState = EnemyState.Pause;
+            } else {
+                currentState = EnemyState.Move;
+            }
+        }
+
         if (currentState == EnemyState.Move) {
             var curDirection = (Vector2)(Quaternion.Euler(0, 0, curAngle) * Vector2.right).normalized;
             rbd.AddForce(curDirection * moveForce);
@@ -122,7 +132,8 @@ public class BatBoss : BaseEnemy {
         while (true) {
             // Shoot 4 cardinals
             yield return new WaitForSeconds(Random.Range(2.0f, 3.0f));
-            currentState = currentState == EnemyState.Knockback ? EnemyState.Knockback : EnemyState.Unready;
+
+            shouldPause = Random.Range(0f, 1f) <= 0.5f ? true : false;
             float[] angles_90 = { 0, 90, 180, 270 };
             FireBullets(angles_90);
 
@@ -135,18 +146,21 @@ public class BatBoss : BaseEnemy {
             yield return new WaitForSeconds(Random.Range(0.5f, 1.0f));
             float[] angles = { 0, 45, 90, 135, 180, 225, 270, 315 };
             FireBullets(angles);
+            yield return new WaitForSeconds(Random.Range(0.5f, 1f));
+            shouldPause = false;
 
-            currentState = currentState == EnemyState.Knockback ? EnemyState.Knockback : EnemyState.Move;
 
             // Same thing but in reverse
             yield return new WaitForSeconds(Random.Range(2.0f, 4.0f));
 
-            currentState = currentState == EnemyState.Knockback ? EnemyState.Knockback : EnemyState.Unready;
+            shouldPause = Random.Range(0f, 1f) <= 0.5f ? true : false;
             FireBullets(angles);
             yield return new WaitForSeconds(Random.Range(0.3f, 0.8f));
             FireBullets(angles_diag);
             yield return new WaitForSeconds(Random.Range(0.3f, 0.8f));
             FireBullets(angles_90);
+            yield return new WaitForSeconds(Random.Range(0.5f, 1f));
+            shouldPause = false;
         }
     }
 

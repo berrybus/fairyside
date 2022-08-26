@@ -33,17 +33,18 @@ public class Slime : BaseEnemy {
         base.OnEnable();
         curAngle = 0;
         targetAngle = 0;
-        currentState = EnemyState.Unready;
+        currentState = EnemyState.Pause;
     }
 
     protected override void StartActivity() {
         curAngle = GetRandomDirection();
         targetAngle = GetRandomDirection();
 
-        if (currentState == EnemyState.Unready) {
+        if (currentState == EnemyState.Pause) {
             currentState = EnemyState.Move;
         }
         StartCoroutine(RandomMove());
+        StartCoroutine(MoveAndPause());
     }
 
     protected override void FixedUpdate() {
@@ -71,7 +72,7 @@ public class Slime : BaseEnemy {
     }
 
     private void Update() {
-        if (currentState == EnemyState.Move || currentState == EnemyState.Unready) {
+        if (currentState == EnemyState.Move || currentState == EnemyState.Pause) {
             animator.speed = 1.0f;
         } else {
             animator.speed = 0.0f;
@@ -90,6 +91,22 @@ public class Slime : BaseEnemy {
     IEnumerator EnableCollisionBounce() {
         yield return new WaitForSeconds(1.0f);
         canBounceOffCollision = true;
+    }
+
+    IEnumerator MoveAndPause() {
+        yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
+        while (true) {
+            if (currentState == EnemyState.Move) {
+                currentState = EnemyState.Pause;
+                yield return new WaitForSeconds(Random.Range(0.125f, 0.25f));
+            } else if (currentState == EnemyState.Pause) {
+                currentState = EnemyState.Move;
+                yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
+            } else {
+                // Knockback, so wait for that to finish before trying to change states
+                yield return new WaitForSeconds(Random.Range(2.0f, 3.0f));
+            }
+        }
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision) {

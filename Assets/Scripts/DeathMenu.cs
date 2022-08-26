@@ -9,14 +9,13 @@ public class DeathMenu : UIScreen {
         if (!ctx.performed) {
             return;
         }
-        SceneSwitcher.instance.GoToMenu();
+        SceneSwitcher.instance.GoToGameOver();
     }
 
     public override void Cancel(InputAction.CallbackContext ctx) {
         if (!ctx.performed) {
             return;
         }
-        SceneSwitcher.instance.GoToMenu();
+        SceneSwitcher.instance.GoToGameOver();
     }
-
 }

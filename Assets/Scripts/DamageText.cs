@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 
 public class DamageText : MonoBehaviour {
-    public TMPro.TMP_Text damage;
+    public TMP_Text damage;
     // Start is called before the first frame update
     void Start() {
         StartCoroutine(RemoveSelfAfterTimePeriod());

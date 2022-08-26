@@ -20,7 +20,7 @@ public class Player : MonoBehaviour {
 
     public SpriteRenderer spriteRenderer;
     public Rigidbody2D rbd;
-    public BoxCollider2D boxCollider;
+    public CapsuleCollider2D capsuleCollider;
     public CameraController cameraController;
     public Animator animator;
 
@@ -29,20 +29,24 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private float teleportDistanceY;
 
-    public float moveSpeed;
-    public int maxDelay;
-    public int curDelay = 0;
+    [System.NonSerialized]
+    public float baseSpeed = 7.5f;
+    [System.NonSerialized]
+    public int maxDelay = 12;
+    private int curDelay = 0;
 
     private PlayerState currentState;
     private bool isInvincible;
     Vector2 movement;
     Vector2 fireDirection;
     readonly Vector2[] angles = { Vector2.right, Vector2.left, Vector2.up, Vector2.down };
+    private const int fireArrowCoolLen = 45;
+    private int fireArrowCooldown = fireArrowCoolLen;
 
     private void Awake() {
         spriteRenderer = GetComponent<SpriteRenderer>();
         rbd = GetComponent<Rigidbody2D>();
-        boxCollider = GetComponent<BoxCollider2D>();
+        capsuleCollider = GetComponent<CapsuleCollider2D>();
         animator = GetComponent<Animator>();
 
         firePoints = new Firepoint[] { firePointRight, firePointLeft, firePointUp, firePointDown };
@@ -51,7 +55,7 @@ public class Player : MonoBehaviour {
     }
 
     private void Start() {
-        firePointDown.spriteRenderer.enabled = true;
+        firePointDown.spriteRenderer.enabled = false;
         firePointUp.spriteRenderer.enabled = false;
         firePointLeft.spriteRenderer.enabled = false;
         firePointRight.spriteRenderer.enabled = false;
@@ -66,14 +70,11 @@ public class Player : MonoBehaviour {
             Vector2 moveDir = GetClosestAngle(movement);
             if (moveDir == Vector2.left) {
                 animator.Play("ShirleyLeft", 0, 0.25f);
-            }
-            else if (moveDir == Vector2.right) {
+            } else if (moveDir == Vector2.right) {
                 animator.Play("ShirleyRight", 0, 0.25f);
-            }
-            else if (moveDir == Vector2.up) {
+            } else if (moveDir == Vector2.up) {
                 animator.Play("ShirleyUp", 0, 0.25f);
-            }
-            else {
+            } else {
                 animator.Play("ShirleyDown", 0, 0.25f);
             }
         }
@@ -90,14 +91,11 @@ public class Player : MonoBehaviour {
             fireDirection = GetClosestAngle(fireDirection);
             UpdateFirepoint(fireDirection);
 
-            if (oldFirepoint != currentFirePoint) {
-                // print("changing!");
-                firePointDown.spriteRenderer.enabled = false;
-                firePointUp.spriteRenderer.enabled = false;
-                firePointLeft.spriteRenderer.enabled = false;
-                firePointRight.spriteRenderer.enabled = false;
-                currentFirePoint.spriteRenderer.enabled = true;
-            }
+            firePointDown.spriteRenderer.enabled = false;
+            firePointUp.spriteRenderer.enabled = false;
+            firePointLeft.spriteRenderer.enabled = false;
+            firePointRight.spriteRenderer.enabled = false;
+            currentFirePoint.spriteRenderer.enabled = true;
         }
     }
 
@@ -126,7 +124,7 @@ public class Player : MonoBehaviour {
         if (fireDirection != Vector2.zero && curDelay == 0 && PlayerManager.instance.mp >= PlayerManager.instance.ManaCost()) {
             PlayerManager.instance.mp -= PlayerManager.instance.ManaCost();
             Shoot();
-            curDelay = maxDelay;
+            curDelay = Mathf.Max(4, (maxDelay - PlayerManager.instance.dex));
         }
 
         if (currentState == PlayerState.Transition && cameraController.IsNotSwitchingScene()) {
@@ -150,11 +148,22 @@ public class Player : MonoBehaviour {
     }
     public void FixedUpdate() {
         if (currentState == PlayerState.Move) {
-            rbd.MovePosition(rbd.position + PlayerManager.instance.spd * movement * Time.fixedDeltaTime);
+            float speedMult = baseSpeed + PlayerManager.instance.spd * 0.5f;
+            // rbd.MovePosition(rbd.position + speedMult * movement * Time.fixedDeltaTime);
+            rbd.AddForce(speedMult * movement, ForceMode2D.Impulse);
+            rbd.velocity = Vector2.ClampMagnitude(rbd.velocity, speedMult);
         }
         curDelay -= 1;
         if (curDelay < 0) {
             curDelay = 0;
+        }
+
+        fireArrowCooldown -= 1;
+        if (fireArrowCooldown <= 0) {
+            firePointDown.spriteRenderer.enabled = false;
+            firePointUp.spriteRenderer.enabled = false;
+            firePointLeft.spriteRenderer.enabled = false;
+            firePointRight.spriteRenderer.enabled = false;
         }
     }
 
@@ -182,6 +191,7 @@ public class Player : MonoBehaviour {
                 ShootFire();
                 break;
         }
+        fireArrowCooldown = fireArrowCoolLen;
     }
 
     private void ShootBasic() {
@@ -252,8 +262,7 @@ public class Player : MonoBehaviour {
     private Vector3 GetJiggleDirection(Vector2 direction) {
         if (currentFirePoint == firePointLeft || currentFirePoint == firePointRight) {
             return new Vector2(direction.x, direction.y + Random.Range(-0.05f, 0.05f));
-        }
-        else {
+        } else {
             return new Vector2(direction.x + Random.Range(-0.05f, 0.05f), direction.y);
         }
     }
@@ -309,20 +318,28 @@ public class Player : MonoBehaviour {
 
             switch (door.doorType) {
                 case Door.DoorType.Left:
-                    transform.position += new Vector3(-(teleportDistanceX + boxCollider.bounds.size.x), 0, 0);
+                    // Give 1 px of wiggle room
+                    transform.position += new Vector3(-(teleportDistanceX + capsuleCollider.bounds.size.x + 1f/16f), 0, 0);
                     break;
                 case Door.DoorType.Right:
-                    transform.position += new Vector3(teleportDistanceX + boxCollider.bounds.size.x, 0, 0);
+                    transform.position += new Vector3(teleportDistanceX + capsuleCollider.bounds.size.x + 1f/16f, 0, 0);
                     break;
                 case Door.DoorType.Top:
-                    transform.position += new Vector3(0, teleportDistanceY + boxCollider.bounds.size.y, 0);
+                    transform.position += new Vector3(0, teleportDistanceY + capsuleCollider.bounds.size.y + 1f/16f, 0);
                     break;
                 case Door.DoorType.Bottom:
-                    transform.position += new Vector3(0, -(teleportDistanceY + boxCollider.bounds.size.y), 0);
+                    transform.position += new Vector3(0, -(teleportDistanceY + capsuleCollider.bounds.size.y + 1f/116f), 0);
                     break;
             }
         }
 
+    }
+
+    private void OnTriggerStay2D(Collider2D collision) {
+        // We only want the stay collision for spikes
+        if (collision.gameObject.CompareTag("Spikes")) {
+            EnemyCollision(collision.gameObject);
+        }
     }
 
     private IEnumerator blinkRoutine;
@@ -332,7 +349,7 @@ public class Player : MonoBehaviour {
             return;
         }
 
-        if (collision.CompareTag("Enemy") || collision.CompareTag("EnemyBullet")) {
+        if (collision.CompareTag("Enemy") || collision.CompareTag("EnemyBullet") || collision.CompareTag("Spikes")) {
             if (PlayerManager.instance.PlayerHit()) {
                 DidDie();
                 return;
@@ -340,18 +357,18 @@ public class Player : MonoBehaviour {
             currentState = PlayerState.Knockback;
             isInvincible = true;
             rbd.velocity = Vector2.zero;
-            // spriteRenderer.color = new Color(1.0f, 0.5f, 0.5f, 1.0f);
             Vector2 knockback = transform.position - collision.transform.position;
             knockback = knockback.normalized;
             rbd.velocity = Vector2.zero;
             animator.Play("ShirleyHurt", 0, 0.0f);
             animator.SetFloat("SpeedMultiplier", 0.0f);
-            // print("knockback");
             if (collision.CompareTag("Enemy")) {
-                rbd.AddForce(knockback * 2, ForceMode2D.Impulse);
-            } else {
-                collision.GetComponent<EnemyBullet>().RemoveSelf();
                 rbd.AddForce(knockback * 4, ForceMode2D.Impulse);
+            } else if (collision.CompareTag("EnemyBullet")) {
+                collision.GetComponent<EnemyBullet>().RemoveSelf();
+                rbd.AddForce(knockback * 6, ForceMode2D.Impulse);
+            } else if (collision.CompareTag("Spikes")) {
+                rbd.AddForce(knockback * 6, ForceMode2D.Impulse);
             }
             StartCoroutine(ApplyKnockback());
             blinkRoutine = Blink();
@@ -364,7 +381,7 @@ public class Player : MonoBehaviour {
             // print("switching" + Random.Range(1, 10).ToString());
             // I guess we'll allow for some fudge room
             if (spriteRenderer.color.a == 1.0f) {
-                spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+                spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
             } else {
                 spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             }
@@ -376,7 +393,7 @@ public class Player : MonoBehaviour {
 
     IEnumerator ApplyKnockback() {
         yield return new WaitForSeconds(0.05f);
-        rbd.velocity = Vector2.zero;
+        // rbd.velocity = Vector2.zero;
         StartCoroutine(ResumeMovement());
     }
 
@@ -390,14 +407,11 @@ public class Player : MonoBehaviour {
                 Vector2 moveDir = GetClosestAngle(movement);
                 if (moveDir == Vector2.left) {
                     animator.Play("ShirleyLeft", 0, 0.25f);
-                }
-                else if (moveDir == Vector2.right) {
+                } else if (moveDir == Vector2.right) {
                     animator.Play("ShirleyRight", 0, 0.25f);
-                }
-                else if (moveDir == Vector2.up) {
+                } else if (moveDir == Vector2.up) {
                     animator.Play("ShirleyUp", 0, 0.25f);
-                }
-                else {
+                } else {
                     animator.Play("ShirleyDown", 0, 0.25f);
                 }
             } else {

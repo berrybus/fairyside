@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum PlayerGun {
     Basic,
@@ -23,18 +24,23 @@ public class PlayerManager: MonoBehaviour
     [System.NonSerialized]
     public int lvl = 1;
     [System.NonSerialized]
+    public int maxLvl = 10;
+    [System.NonSerialized]
     public int atk = 3;
     [System.NonSerialized]
     public int wis = 1;
     [System.NonSerialized]
-    public int dex = 1;
+    public int dex = 0;
     [System.NonSerialized]
     public int luk = 0;
     [System.NonSerialized]
-    public int spd = 6;
+    public int spd = 2;
 
     [System.NonSerialized]
     public int gemCount = 0;
+
+    [System.NonSerialized]
+    public int exp = 0;
 
     [System.NonSerialized]
     public PlayerGun curGun;
@@ -46,11 +52,16 @@ public class PlayerManager: MonoBehaviour
 
     public DamageText damageText;
 
+    [System.NonSerialized]
+    public float gameTime = 0;
+
     public void StartGame() {
         hp = maxHp;
         mp = maxMp;
         gemCount = 0;
         curGun = PlayerGun.Basic;
+        gameTime = 0;
+        setupStartStats();
     }
 
     private void Awake() {
@@ -66,9 +77,9 @@ public class PlayerManager: MonoBehaviour
     public int ManaCost() {
         switch (curGun) {
             case PlayerGun.Basic:
-                return 4;
+                return 5;
             default:
-                return 4;
+                return 7;
         }
     }
 
@@ -83,11 +94,19 @@ public class PlayerManager: MonoBehaviour
         }
     }
 
-    public void EnemyHit(int damage, int healthLeft, Vector3 pos, bool displayOnTop) {
-        float textOffset = displayOnTop ? 0.75f : 0.0f;
-        var text = Instantiate(damageText, pos + new Vector3(0, 0.75f + textOffset, 0), Quaternion.identity);
+    public int EnemyHit(int healthLeft, Vector3 pos, bool displayOnTop) {
+        float damage = Random.Range((int)(atk / 2), (int)(atk * 1.5));
+        damage *= GunDamageMultiplier();
+        bool didCrit = Random.Range(0.0f, 1.0f) <= luk * 0.05 + 0.05;
+        if (didCrit) {
+            int critMult = luk >= 5 ? 3 : 2;
+            damage *= critMult;
+        }
+        damage = (int) Mathf.Max(1, damage);
+        float textOffset = displayOnTop ? 0.50f : 0.0f;
+        var text = Instantiate(damageText, pos + new Vector3(0, 0.50f + textOffset, 0), Quaternion.identity);
         text.damage.text = damage.ToString();
-        if (Random.Range(0, 3) == 0) {
+        if (didCrit) {
             text.damage.fontSize = 10;
             text.damage.color = new Color(255f / 255f, 212f / 255f, 95f / 255f, 1.0f);
         }
@@ -95,12 +114,7 @@ public class PlayerManager: MonoBehaviour
             mp += Random.Range(10, 20);
             mp = Mathf.Min(mp, maxMp);
         }
-    }
-
-    public int PlayerAttackVal() {
-        float damage = Random.Range((int) (atk / 2), (int) (atk * 1.5));
-        damage *= GunDamageMultiplier();
-        return (int)Mathf.Max(1, damage);
+        return (int) damage;
     }
 
     public float GunDamageMultiplier() {
@@ -148,9 +162,29 @@ public class PlayerManager: MonoBehaviour
         }
     }
 
+    public int expToLevel() {
+        return (int) (20 * Mathf.Exp(lvl / 4f));
+    }
+
+    public bool atMaxLvl() {
+        return lvl >= maxLvl;
+    }
+
+    private void setupStartStats() {
+        atk = 3 + (lvl + 1) / 5;
+        wis = 1 + (lvl + 3) / 5;
+        dex = 0 + lvl / 5;
+        luk = 0 + (lvl - 1) / 5;
+        spd = 2 + (lvl + 2) / 5;
+    }
+
     private void FixedUpdate() {
         mp += Mathf.Exp((1f + 0.01f * wis) * mp / (float)maxMp) * (0.1f + (0.02f * wis));
         mp = Mathf.Min(mp, maxMp);
+
+        if (System.Array.Exists(SceneSwitcher.levels, level => level == SceneManager.GetActiveScene().name)) {
+            gameTime += Time.deltaTime;
+        }
     }
 
 }

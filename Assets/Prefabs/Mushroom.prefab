@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8334205786732384875
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3642912384088544464}
+  m_Layer: 7
+  m_Name: ExplosionOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3642912384088544464
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334205786732384875}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.4375, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9011300338302578957}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9011300338302578945
 GameObject:
   m_ObjectHideFlags: 0
@@ -35,6 +66,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4813454391039486156}
+  - {fileID: 3642912384088544464}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -175,6 +207,7 @@ MonoBehaviour:
   room: {fileID: 0}
   enemyDeath: {fileID: 718801361135743583, guid: 2eaa01786a9872444950f5a189f665f5, type: 3}
   portal: {fileID: 0}
+  origin: {fileID: 3642912384088544464}
   gem: {fileID: 418760705434424171, guid: 6cf28cc7dfb76b8478636aee6f3fc649, type: 3}
   knockbackForce: 2000
   animator: {fileID: 0}
@@ -183,8 +216,8 @@ MonoBehaviour:
   moveForce: 1200
   firepoint: {fileID: 330113660399901933}
   bulletSpeed: 6
-  maxGemCount: 1
-  minGemCount: 2
+  maxGemCount: 2
+  minGemCount: 1
 --- !u!210 &5581394828764408606
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -203,6 +236,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9011300338302578957}
     m_Modifications:
+    - target: {fileID: -7473012566624728734, guid: c5864e0b7bf9be845b9d0fbb9cfd0b4b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3956110566880164648, guid: c5864e0b7bf9be845b9d0fbb9cfd0b4b, type: 3}
       propertyPath: m_Name
       value: EnemyFirepoint
@@ -257,7 +294,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5832923185420365620, guid: c5864e0b7bf9be845b9d0fbb9cfd0b4b, type: 3}
       propertyPath: m_SortingLayer
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5832923185420365620, guid: c5864e0b7bf9be845b9d0fbb9cfd0b4b, type: 3}
       propertyPath: m_SortingOrder
@@ -265,7 +302,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5832923185420365620, guid: c5864e0b7bf9be845b9d0fbb9cfd0b4b, type: 3}
       propertyPath: m_SortingLayerID
-      value: -140979471
+      value: -1101485093
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c5864e0b7bf9be845b9d0fbb9cfd0b4b, type: 3}

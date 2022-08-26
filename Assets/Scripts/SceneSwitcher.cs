@@ -84,11 +84,24 @@ public class SceneSwitcher : MonoBehaviour {
         yield return null;
     }
 
+    IEnumerator ToGameOver() {
+        yield return FadeOut();
+        SceneManager.LoadScene("GameOver");
+        yield return null;
+    }
+
     public void GoToMenu() {
         if (ChangeInProgress()) {
             return;
         }
         StartCoroutine(ToMenu());
+    }
+
+    public void GoToGameOver() {
+        if (ChangeInProgress()) {
+            return;
+        }
+        StartCoroutine(ToGameOver());
     }
 
     public bool ChangeInProgress() {
