@@ -9,13 +9,10 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: eff0dfe829294cd4782be1b38e66ebc8
   - enabled: 1
-    path: Assets/Scenes/Loading.unity
-    guid: e07da1a2703a0524e8ae58b5f06f2b3a
-  - enabled: 1
-    path: Assets/Scenes/School1.unity
+    path: Assets/Scenes/Game.unity
     guid: eb42bfb40167e4d42b40a674b03fe7b3
   - enabled: 1
-    path: Assets/Scenes/Memory1.unity
+    path: Assets/Scenes/Memory.unity
     guid: a692c96a265fbd649827d5733d8cc5f2
   - enabled: 1
     path: Assets/Scenes/GameOver.unity

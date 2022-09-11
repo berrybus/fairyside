@@ -56,7 +56,9 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Bullet.cs" />
+    <Compile Include="Assets\Scripts\Ghost.cs" />
     <Compile Include="Assets\Scripts\ShopItem.cs" />
     <Compile Include="Assets\Scripts\RoomController.cs" />
     <Compile Include="Assets\Scripts\FireBullet.cs" />
@@ -66,6 +68,7 @@
     <Compile Include="Assets\Scripts\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\EnemyFirepoint.cs" />
     <Compile Include="Assets\Scripts\BasicBullet.cs" />
+    <Compile Include="Assets\Scripts\Reskinner.cs" />
     <Compile Include="Assets\Scripts\Gem.cs" />
     <Compile Include="Assets\Scripts\GrassBullet.cs" />
     <Compile Include="Assets\Scripts\MenuScreenManager.cs" />
@@ -76,22 +79,24 @@
     <Compile Include="Assets\Scripts\GameOverDisplay.cs" />
     <Compile Include="Assets\Scripts\Mushroom.cs" />
     <Compile Include="Assets\Scripts\Minimap.cs" />
-    <Compile Include="Assets\Scripts\LoadingController.cs" />
-    <Compile Include="Assets\Scripts\SceneSwitcher.cs" />
     <Compile Include="Assets\Scripts\DamageText.cs" />
+    <Compile Include="Assets\Scripts\CatBoss.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Scripts\HPDrop.cs" />
     <Compile Include="Assets\Scripts\Wall.cs" />
     <Compile Include="Assets\Scripts\GemDeath.cs" />
     <Compile Include="Assets\Scripts\ResolutionManager.cs" />
+    <Compile Include="Assets\Scripts\MushroomBoss.cs" />
     <Compile Include="Assets\Scripts\WaterBullet.cs" />
     <Compile Include="Assets\Scripts\IngameMenu.cs" />
     <Compile Include="Assets\Scripts\PlayerManager.cs" />
+    <Compile Include="Assets\Scripts\ItemDescription.cs" />
     <Compile Include="Assets\Scripts\UIScreen.cs" />
     <Compile Include="Assets\Scripts\VNManager.cs" />
+    <Compile Include="Assets\Scripts\Pumpkin.cs" />
     <Compile Include="Assets\Scripts\Room.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\HUD.cs" />
-    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\BaseEnemy.cs" />
     <Compile Include="Assets\Scripts\EnemyDeath.cs" />
     <Compile Include="Assets\Scripts\Slime.cs" />
@@ -100,6 +105,9 @@
     <Compile Include="Assets\Scripts\MainMenu.cs" />
     <Compile Include="Assets\Scripts\Door.cs" />
     <Compile Include="Assets\Scripts\Portal.cs" />
+    <Compile Include="Assets\Scripts\ScriptRepository.cs" />
+    <Compile Include="Assets\Scripts\MemoryMenu.cs" />
+    <Compile Include="Assets\Scripts\Save.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
