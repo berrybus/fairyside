@@ -3,38 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
-public struct ScriptLine {
-    public string line;
-    public string name;
-    public string avatar;
-
-    public ScriptLine(string avatar, string name, string line) {
-        this.avatar = avatar;
-        this.name = name;
-        this.line = line;
-    }
-}
 public class VNManager : MonoBehaviour {
 
-    ScriptLine[] script = new ScriptLine[] {
-        new ScriptLine(
-            "ShirleyAvatar",
-            "Shirley",
-            "The first day of school! I'm so excited!"),
-        new ScriptLine(
-            "ShirleyAvatar",
-            "Shirley",
-            "Ah, the bell!"),
-        new ScriptLine(
-            "ShirleyAvatar",
-            "Shirley",
-            "Let's see, where's my first class..."),
-        new ScriptLine(
-            "ShirleyAvatar",
-            "Shirley",
-            "Hmm, maybe I'll just follow those girls, they look like they know where they're going."),
-    };
+    ScriptLine[] script;
 
     public TMP_Text display;
     public TMP_Text nameDisplay;
@@ -42,11 +15,32 @@ public class VNManager : MonoBehaviour {
     private int scriptIndex = 0;
     public SpriteRenderer continueArrowRenderer;
     public SpriteRenderer avatarRenderer;
+    public SpriteRenderer bg;
+    public SpriteRenderer namebox;
+    public Sprite[] bgList;
+
+    public Image intro;
+    public TMP_Text introText;
 
     // Start is called before the first frame update
     void Start() {
         display.text = "";
+        bg.sprite = bgList[GameManager.instance.currentMemory];
+        script = ScriptRepository.scripts[GameManager.instance.currentMemory];
         SetupStaticElements();
+        if (GameManager.instance.currentMemory > 0) {
+            StartCoroutine(ShowIntro());
+        } else {
+            HideIntro();
+            StartCoroutine(Typewriter());
+        }
+    }
+
+    IEnumerator ShowIntro() {
+        intro.enabled = true;
+        introText.text = "Memory " + GameManager.instance.currentMemory;
+        yield return new WaitForSeconds(1.0f);
+        HideIntro();
         StartCoroutine(Typewriter());
     }
 
@@ -70,31 +64,33 @@ public class VNManager : MonoBehaviour {
     }
 
     public void Continue(InputAction.CallbackContext ctx) {
-        if (scriptIndex < script.Length && ctx.performed) {
-            string currentLine = script[scriptIndex].line;
-            if (lineIndex <= currentLine.Length) {
-                display.text = currentLine;
-                lineIndex = currentLine.Length + 1;
+        if (intro.enabled || !ctx.performed || scriptIndex >= script.Length) {
+            return;
+        }
+        string currentLine = script[scriptIndex].line;
+        if (lineIndex <= currentLine.Length) {
+            display.text = currentLine;
+            lineIndex = currentLine.Length + 1;
+        } else {
+            scriptIndex += 1;
+            lineIndex = 1;
+            if (scriptIndex >= script.Length) {
+                GameManager.instance.FinishedPlayingMemory();
             } else {
-                scriptIndex += 1;
-                lineIndex = 1;
-                if (scriptIndex >= script.Length) {
-                    SceneSwitcher.instance.NextLevel();
-                } else {
-                    SetupStaticElements();
-                }
+                SetupStaticElements();
             }
         }
     }
 
     void SetupStaticElements() {
         nameDisplay.text = script[scriptIndex].name;
+        namebox.enabled = script[scriptIndex].name != "";
         Sprite avatar = Resources.Load<Sprite>(script[scriptIndex].avatar);
         avatarRenderer.sprite = avatar;
     }
 
-    // Update is called once per frame
-    void Update() {
-
+    private void HideIntro() {
+        intro.enabled = false;
+        introText.text = "";
     }
 }

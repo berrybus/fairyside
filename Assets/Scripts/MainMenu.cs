@@ -11,7 +11,9 @@ public class MainMenu: UIScreen
             return;
         }
         if (currentSelect == 0) {
-            SceneSwitcher.instance.StartGame();
+            GameManager.instance.StartGame();
+        } else if (currentSelect == 1) {
+            manager.UpdateScreen(MenuScreen.Memories);
         } else if (currentSelect == 3) {
             manager.UpdateScreen(MenuScreen.Settings);
         }

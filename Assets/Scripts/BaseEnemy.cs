@@ -5,45 +5,95 @@ using UnityEngine;
 public enum EnemyState {
     Move,
     Knockback,
-    Pause
+    Unready
+}
+
+public enum EnemyMovePattern {
+    Random,
+    Follow,
+    Stop,
 }
 
 public class BaseEnemy : MonoBehaviour {
-    public Rigidbody2D rbd;
+    protected Rigidbody2D rbd;
+    protected SpriteRenderer spriteRenderer;
+    protected Animator animator;
+
     protected EnemyState currentState;
+    protected EnemyMovePattern movePattern;
+
+    [System.NonSerialized]
     public Transform playerTarget;
-    public SpriteRenderer spriteRenderer;
+    [System.NonSerialized]
     public Room room;
+
     public GameObject enemyDeath;
     public GameObject portal;
     public Transform origin;
-    protected int hp = 100;
-    protected int maxGems = 2;
-    protected int minGems = 0;
-    protected bool isBoss = false;
+    public bool isBoss;
 
     protected Vector2 knockback = Vector2.zero;
+    protected bool canBounceOffCollision = true;
 
+    protected float curAngle;
+    protected float targetAngle;
+
+    [SerializeField]
+    protected float angleMoveThreshold;
+    [SerializeField]
+    protected float moveForce;
     [SerializeField]
     private Gem gem;
-
     [SerializeField]
-    private float knockbackForce = 12000.0f;
+    private HPDrop hpDrop;
+    [SerializeField]
+    private float knockbackForce;
+    [SerializeField]
+    protected EnemyFirepoint firepoint;
+    [SerializeField]
+    protected float bulletSpeed;
+    [SerializeField]
+    private int hp;
+    [SerializeField]
+    private int minGems;
+    [SerializeField]
+    private int maxGems;
 
     protected virtual void Awake() {
         currentState = EnemyState.Move;
         rbd = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
         gameObject.SetActive(false);
     }
 
     protected virtual void OnEnable() {
-        StartCoroutine(EnableEnemy());
+        StartCoroutine(SpawnEnemy());
+    }
+
+    IEnumerator SpawnEnemy() {
+        transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        while (Mathf.Abs(transform.localScale.magnitude - Vector3.one.magnitude) > 0.02f) {
+            float increase = 2.0f * Time.deltaTime;
+            transform.localScale += new Vector3(increase, increase, increase);
+            transform.localScale = Vector3.ClampMagnitude(transform.localScale, Vector3.one.magnitude);
+            yield return null;
+        }
+        transform.localScale = Vector3.one;
+        yield return EnableEnemy();
     }
 
     IEnumerator EnableEnemy() {
         yield return new WaitForSeconds(0.4f);
         StartActivity();
+    }
+
+    protected virtual void Update() {
+        if (currentState == EnemyState.Move || currentState == EnemyState.Unready) {
+            animator.speed = 1.0f;
+        } else {
+            animator.speed = 0.0f;
+        }
     }
 
     protected virtual void FixedUpdate() {
@@ -68,12 +118,15 @@ public class BaseEnemy : MonoBehaviour {
 
             // Enemy death
             if (hp <= 0) {
+                PlayerManager.instance.EnemyDie();
                 room.numEnemies -= 1;
                 room.OpenDoorsIfPossible();
                 if (isBoss && portal != null) {
                     Instantiate(portal, origin.position, Quaternion.identity);
                 }
                 Instantiate(enemyDeath, origin.position, Quaternion.identity);
+
+                // Create gems
                 for (var i = 0; i < Random.Range(minGems, maxGems); i++) {
                     Vector3 position = origin.position + new Vector3(0, -0.25f, 0);
                     Gem newGem = Instantiate(
@@ -83,6 +136,17 @@ public class BaseEnemy : MonoBehaviour {
                     );
                     newGem.Scatter(knockback);
                 }
+                // Create possible HP drop
+                if (hpDrop != null && Random.Range(0f, 1f) <= 0.05f) {
+                    Vector3 position = origin.position + new Vector3(0, -0.25f, 0);
+                    HPDrop hp = Instantiate(
+                        hpDrop,
+                        position + new Vector3(Random.Range(-0.25f, 0.25f), Random.Range(-0.25f, 0.25f), 0),
+                        Quaternion.identity
+                    );
+                    hp.Scatter(knockback);
+                }
+
                 Destroy(gameObject);
             }
         }
@@ -95,10 +159,77 @@ public class BaseEnemy : MonoBehaviour {
 
     protected virtual void StartActivity() { }
 
+    protected void Fire(Vector2 direction) {
+        GameObject bullet = ObjectPool.instance.enemyBullets.Get();
+        if (bullet != null) {
+            bullet.GetComponent<EnemyBullet>().direction = direction.normalized;
+            bullet.GetComponent<EnemyBullet>().speed = bulletSpeed;
+            bullet.transform.position = firepoint.transform.position;
+            bullet.transform.SetParent(transform, true);
+            bullet.SetActive(true);
+        }
+    }
+
+    // Movement functions
+
+    protected IEnumerator RandomMove() {
+        while (true) {
+            curAngle = Mathf.MoveTowardsAngle(curAngle, targetAngle, 20.0f * Time.fixedDeltaTime);
+            curAngle %= 360;
+            if (curAngle < 0) {
+                curAngle += 360;
+            }
+            if (Mathf.Abs(curAngle - targetAngle) <= angleMoveThreshold) {
+                curAngle = targetAngle;
+                yield return new WaitForSeconds(Random.Range(0.5f, 2.0f));
+                targetAngle = GetRandom45Direction();
+            }
+            yield return null;
+        }
+    }
+
+    protected void ReverseMoveAngle() {
+        if (canBounceOffCollision) {
+            curAngle += 180;
+            curAngle %= 360;
+            targetAngle = curAngle;
+            canBounceOffCollision = false;
+            StartCoroutine(EnableCollisionBounce());
+        }
+    }
+
+    protected void BounceOff(Collision2D collision) {
+        if (canBounceOffCollision) {
+            var bounceDirection = Vector2.Reflect(VectorFromAngle(curAngle), collision.GetContact(0).normal);
+            curAngle = AngleFromVector(bounceDirection);
+            targetAngle = curAngle;
+            canBounceOffCollision = false;
+            StartCoroutine(EnableCollisionBounce());
+        }
+    }
+
+    protected IEnumerator EnableCollisionBounce() {
+        yield return new WaitForSeconds(0.25f);
+        canBounceOffCollision = true;
+    }
+
     IEnumerator ResumeMovement() {
         yield return new WaitForSeconds(0.1f);
         spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         knockback = Vector2.zero;
         currentState = EnemyState.Move;
+    }
+
+    protected float GetRandom45Direction() {
+        float[] angles = { 0, 45, 90, 135, 180, 225, 270, 315 };
+        return angles[Random.Range(0, angles.Length)];
+    }
+
+    protected Vector2 VectorFromAngle(float angle) {
+        return (Vector2)(Quaternion.Euler(0, 0, angle) * Vector2.right).normalized;
+    }
+
+    protected float AngleFromVector(Vector2 direction) {
+        return Vector2.Angle(Vector2.right, direction);
     }
 }

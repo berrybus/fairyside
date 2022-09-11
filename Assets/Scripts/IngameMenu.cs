@@ -15,7 +15,8 @@ public class IngameMenu : UIScreen {
         } else if (currentSelect == 1) {
             manager.UpdateScreen(MenuScreen.Settings);
         } else if (currentSelect == 2) {
-            SceneSwitcher.instance.GoToMenu();
+            Time.timeScale = 1;
+            GameManager.instance.GoToMenu();
         }
     }
 }

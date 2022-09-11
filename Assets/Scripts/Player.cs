@@ -7,7 +7,7 @@ public enum PlayerState {
     Move,
     Knockback,
     Transition,
-    Dead
+    Frozen
 }
 
 public class Player : MonoBehaviour {
@@ -120,7 +120,18 @@ public class Player : MonoBehaviour {
         return minAngle;
     }
 
+    public void OnCheat(InputAction.CallbackContext ctx) {
+        if (!ctx.performed) {
+            return;
+        }
+        GameManager.instance.NextLevel();
+    }
+
     public void Update() {
+        if (currentState == PlayerState.Frozen) {
+            return;
+        }
+
         if (fireDirection != Vector2.zero && curDelay == 0 && PlayerManager.instance.mp >= PlayerManager.instance.ManaCost()) {
             PlayerManager.instance.mp -= PlayerManager.instance.ManaCost();
             Shoot();
@@ -141,12 +152,12 @@ public class Player : MonoBehaviour {
                 // print("not mobing");
             }
         }
-
-        if (currentState == PlayerState.Dead) {
-            animator.Play("ShirleyDead", 0, 0.0f);
-        }
     }
     public void FixedUpdate() {
+        if (currentState == PlayerState.Frozen) {
+            return;
+        }
+
         if (currentState == PlayerState.Move) {
             float speedMult = baseSpeed + PlayerManager.instance.spd * 0.5f;
             // rbd.MovePosition(rbd.position + speedMult * movement * Time.fixedDeltaTime);
@@ -168,12 +179,13 @@ public class Player : MonoBehaviour {
     }
 
     public void DidDie() {
-        currentState = PlayerState.Dead;
+        currentState = PlayerState.Frozen;
         rbd.constraints = RigidbodyConstraints2D.FreezeAll;
         firePointDown.spriteRenderer.enabled = false;
         firePointUp.spriteRenderer.enabled = false;
         firePointLeft.spriteRenderer.enabled = false;
         firePointRight.spriteRenderer.enabled = false;
+        animator.Play("ShirleyDead", 0, 0.0f);
     }
 
     private void Shoot() {
@@ -311,28 +323,7 @@ public class Player : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision) {
         EnemyCollision(collision.gameObject);
-
-        if (collision.gameObject.CompareTag("Door") && currentState != PlayerState.Transition) {
-            Door door = collision.gameObject.GetComponent<Door>();
-            currentState = PlayerState.Transition;
-
-            switch (door.doorType) {
-                case Door.DoorType.Left:
-                    // Give 1 px of wiggle room
-                    transform.position += new Vector3(-(teleportDistanceX + capsuleCollider.bounds.size.x + 1f/16f), 0, 0);
-                    break;
-                case Door.DoorType.Right:
-                    transform.position += new Vector3(teleportDistanceX + capsuleCollider.bounds.size.x + 1f/16f, 0, 0);
-                    break;
-                case Door.DoorType.Top:
-                    transform.position += new Vector3(0, teleportDistanceY + capsuleCollider.bounds.size.y + 1f/16f, 0);
-                    break;
-                case Door.DoorType.Bottom:
-                    transform.position += new Vector3(0, -(teleportDistanceY + capsuleCollider.bounds.size.y + 1f/116f), 0);
-                    break;
-            }
-        }
-
+        MoveRoom(collision.gameObject);
     }
 
     private void OnTriggerStay2D(Collider2D collision) {
@@ -342,10 +333,44 @@ public class Player : MonoBehaviour {
         }
     }
 
+    public void WillChangeLevels() {
+        currentState = PlayerState.Frozen;
+    }
+
     private IEnumerator blinkRoutine;
 
+    private void MoveRoom(GameObject collision) {
+        if (currentState == PlayerState.Transition
+            || currentState == PlayerState.Frozen) {
+            return;
+        }
+
+        if (collision.CompareTag("Door") && currentState != PlayerState.Transition) {
+            Door door = collision.GetComponent<Door>();
+            currentState = PlayerState.Transition;
+
+            switch (door.doorType) {
+                case Door.DoorType.Left:
+                    // Give 1 px of wiggle room
+                    transform.position += new Vector3(-(teleportDistanceX + capsuleCollider.bounds.size.x + 1f / 16f), 0, 0);
+                    break;
+                case Door.DoorType.Right:
+                    transform.position += new Vector3(teleportDistanceX + capsuleCollider.bounds.size.x + 1f / 16f, 0, 0);
+                    break;
+                case Door.DoorType.Top:
+                    transform.position += new Vector3(0, teleportDistanceY + capsuleCollider.bounds.size.y + 1f / 16f, 0);
+                    break;
+                case Door.DoorType.Bottom:
+                    transform.position += new Vector3(0, -(teleportDistanceY + capsuleCollider.bounds.size.y + 1f / 116f), 0);
+                    break;
+            }
+        }
+    }
+
     private void EnemyCollision(GameObject collision) {
-        if (isInvincible || currentState == PlayerState.Dead) {
+        if (isInvincible
+            || currentState == PlayerState.Transition
+            || currentState == PlayerState.Frozen) {
             return;
         }
 

@@ -14,6 +14,7 @@ public class HUD : MonoBehaviour {
     public TMP_Text dex;
     public TMP_Text luk;
     public TMP_Text spd;
+    public TMP_Text levelName;
     public SpriteRenderer gunSpriteRenderer;
     [SerializeField]
     private Transform hpBar;
@@ -21,6 +22,7 @@ public class HUD : MonoBehaviour {
     private Transform mpBar;
 
     private void Start() {
+        levelName.text = GameManager.levelNames[GameManager.instance.currentLevel];
         UpdateText();
     }
 

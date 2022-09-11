@@ -3,128 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BatBoss : BaseEnemy {
-    private float curAngle;
-    private float targetAngle;
-    private bool canBounceOffCollision = true;
-    public Animator animator;
-
-    [SerializeField]
-    private float angleMove;
-    [SerializeField]
-    private int MaxHP = 120;
-    [SerializeField]
-    private float moveForce;
-    [SerializeField]
-    private EnemyFirepoint firepoint;
-    [SerializeField]
-    private float bulletSpeed;
-    [SerializeField]
-    private int maxGemCount;
-    [SerializeField]
-    private int minGemCount;
-
-    private bool shouldPause = false;
-
-    protected override void Awake() {
-        base.Awake();
-        animator = GetComponent<Animator>();
-    }
-
-    private void Start() {
-        base.hp = MaxHP;
-        base.maxGems = maxGemCount;
-        base.minGems = minGemCount;
-        base.isBoss = true;
-    }
-
     protected override void OnEnable() {
         base.OnEnable();
-        curAngle = 0;
-        targetAngle = 0;
-        currentState = EnemyState.Pause;
+        currentState = EnemyState.Unready;
+        movePattern = EnemyMovePattern.Follow;
     }
 
     protected override void StartActivity() {
-        curAngle = GetRandomDirection();
-        targetAngle = GetRandomDirection();
-
-        if (currentState == EnemyState.Pause) {
+        if (currentState == EnemyState.Unready) {
             currentState = EnemyState.Move;
         }
-        StartCoroutine(FollowPlayer());
         StartCoroutine(ShootRoutine());
     }
 
     protected override void FixedUpdate() {
         base.FixedUpdate();
-        if (currentState != EnemyState.Knockback) {
-            if (shouldPause) {
-                currentState = EnemyState.Pause;
-            } else {
-                currentState = EnemyState.Move;
-            }
-        }
 
-        if (currentState == EnemyState.Move) {
-            var curDirection = (Vector2)(Quaternion.Euler(0, 0, curAngle) * Vector2.right).normalized;
-            rbd.AddForce(curDirection * moveForce);
+        if (currentState == EnemyState.Move && movePattern == EnemyMovePattern.Follow) {
+            Vector2 direction = (playerTarget.transform.position - gameObject.transform.position).normalized;
+            rbd.AddForce(direction * moveForce);
         }
-    }
-
-    IEnumerator RandomMove() {
-        while (true) {
-            curAngle = Mathf.MoveTowardsAngle(curAngle, targetAngle, 20.0f * Time.fixedDeltaTime);
-            curAngle %= 360;
-            if (curAngle < 0) {
-                curAngle += 360;
-            }
-            if (Mathf.Abs(curAngle - targetAngle) <= angleMove + 5.0f) {
-                curAngle = targetAngle;
-                yield return new WaitForSeconds(Random.Range(0.5f, 2.0f));
-                targetAngle = GetRandomDirection();
-            }
-            yield return null;
-        }
-    }
-
-    IEnumerator FollowPlayer() {
-        while (true) {
-            Vector2 direction = playerTarget.transform.position - gameObject.transform.position;
-            direction = direction.normalized;
-            curAngle = Vector2.SignedAngle(Vector2.right, direction);
-            if (curAngle < 0) {
-                curAngle += 360f;
-            }
-            yield return null;
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision) {
-        if (canBounceOffCollision && false) {
-            curAngle = (curAngle + Random.Range(150, 210)) % 360;
-            targetAngle = curAngle;
-            canBounceOffCollision = false;
-            StartCoroutine(EnableCollisionBounce());
-        }
-    }
-
-    IEnumerator EnableCollisionBounce() {
-        yield return new WaitForSeconds(1.0f);
-        canBounceOffCollision = true;
     }
 
     private void FireBullets(float[] angles) {
         foreach (float angle in angles) {
-            GameObject bullet = ObjectPool.instance.enemyBullets.Get();
-            if (bullet == null) {
-                continue;
-            }
-            var direction = (Vector2)(Quaternion.Euler(0, 0, angle) * Vector2.right).normalized;
-            bullet.GetComponent<EnemyBullet>().direction = direction;
-            bullet.GetComponent<EnemyBullet>().speed = bulletSpeed;
-            bullet.transform.position = firepoint.transform.position;
-            bullet.transform.SetParent(transform, true);
-            bullet.SetActive(true);
+            Fire(VectorFromAngle(angle));
         }
     }
 
@@ -133,7 +36,7 @@ public class BatBoss : BaseEnemy {
             // Shoot 4 cardinals
             yield return new WaitForSeconds(Random.Range(2.0f, 3.0f));
 
-            shouldPause = Random.Range(0f, 1f) <= 0.5f ? true : false;
+            movePattern = Random.Range(0f, 1f) <= 0.5f ? EnemyMovePattern.Random : EnemyMovePattern.Stop;
             float[] angles_90 = { 0, 90, 180, 270 };
             FireBullets(angles_90);
 
@@ -147,29 +50,33 @@ public class BatBoss : BaseEnemy {
             float[] angles = { 0, 45, 90, 135, 180, 225, 270, 315 };
             FireBullets(angles);
             yield return new WaitForSeconds(Random.Range(0.5f, 1f));
-            shouldPause = false;
+            movePattern = EnemyMovePattern.Follow;
 
 
             // Same thing but in reverse
             yield return new WaitForSeconds(Random.Range(2.0f, 4.0f));
 
-            shouldPause = Random.Range(0f, 1f) <= 0.5f ? true : false;
+            movePattern = Random.Range(0f, 1f) <= 0.5f ? EnemyMovePattern.Random : EnemyMovePattern.Stop;
             FireBullets(angles);
             yield return new WaitForSeconds(Random.Range(0.3f, 0.8f));
             FireBullets(angles_diag);
             yield return new WaitForSeconds(Random.Range(0.3f, 0.8f));
             FireBullets(angles_90);
             yield return new WaitForSeconds(Random.Range(0.5f, 1f));
-            shouldPause = false;
+            movePattern = EnemyMovePattern.Follow;
         }
     }
 
-    protected override void OnTriggerEnter2D(Collider2D collision) {
-        base.OnTriggerEnter2D(collision);
+    IEnumerator EnableFollow() {
+        yield return new WaitForSeconds(Random.Range(0.5f, 1.0f));
+        movePattern = EnemyMovePattern.Follow;
     }
-
-    float GetRandomDirection() {
-        float[] angles = { 0, 45, 90, 135, 180, 225, 270, 315 };
-        return angles[Random.Range(0, angles.Length)];
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.CompareTag("Player")
+            && movePattern == EnemyMovePattern.Follow) {
+            movePattern = EnemyMovePattern.Stop;
+            StartCoroutine(EnableFollow());
+            return;
+        }
     }
 }

@@ -51,6 +51,32 @@ public class MenuScreenManager : MonoBehaviour {
         currentScreen.gameObject.SetActive(true);
     }
 
+    public void OpenMenu() {
+        foreach (UIScreen screen in screens) {
+            screen.gameObject.SetActive(false);
+        }
+
+        gameObject.SetActive(true);
+        currentScreen.gameObject.SetActive(true);
+        playerInput.SwitchCurrentActionMap("UI");
+    }
+
+    public void CloseMenu() {
+        Time.timeScale = 1;
+        gameObject.SetActive(false);
+        playerInput.SwitchCurrentActionMap(returnActionMap);
+    }
+
+    public void NotifyOfDeath() {
+        foreach (UIScreen screen in screens) {
+            if (screen.screenType == MenuScreen.Death) {
+                currentScreen = screen;
+                OpenMenu();
+                return;
+            }
+        }
+    }
+
     public void MoveUp(InputAction.CallbackContext ctx) {
         currentScreen.MoveUp(ctx);
     }
@@ -86,35 +112,11 @@ public class MenuScreenManager : MonoBehaviour {
         }
     }
 
-    public void OpenMenu() {
-        foreach (UIScreen screen in screens) {
-            screen.gameObject.SetActive(false);
-        }
-
-        gameObject.SetActive(true);
-        currentScreen.gameObject.SetActive(true);
-        playerInput.SwitchCurrentActionMap("UI");
-    }
-
-    public void CloseMenu() {
-        gameObject.SetActive(false);
-        playerInput.SwitchCurrentActionMap(returnActionMap);
-    }
-
-    public void NotifyOfDeath() {
-        foreach (UIScreen screen in screens) {
-            if (screen.screenType == MenuScreen.Death) {
-                currentScreen = screen;
-                OpenMenu();
-                return;
-            }
-        }
-    }
-
     public void PlayerMenu(InputAction.CallbackContext ctx) {
-        if (!ctx.performed) {
+        if (!ctx.performed || GameManager.instance.isTransitioning) {
             return;
         }
+        Time.timeScale = 0;
         OpenMenu();
     }
 

@@ -61,7 +61,7 @@ public class PlayerManager: MonoBehaviour
         gemCount = 0;
         curGun = PlayerGun.Basic;
         gameTime = 0;
-        setupStartStats();
+        SetupStartStats();
     }
 
     private void Awake() {
@@ -93,13 +93,18 @@ public class PlayerManager: MonoBehaviour
             return false;
         }
     }
+    
+    public void EnemyDie() {
+        mp += Random.Range(10, 20);
+        mp = Mathf.Min(mp, maxMp);
+    }
 
     public int EnemyHit(int healthLeft, Vector3 pos, bool displayOnTop) {
         float damage = Random.Range((int)(atk / 2), (int)(atk * 1.5));
         damage *= GunDamageMultiplier();
-        bool didCrit = Random.Range(0.0f, 1.0f) <= luk * 0.05 + 0.05;
+        bool didCrit = Random.Range(0.0f, 1.0f) <= luk * 0.07 + 0.05;
         if (didCrit) {
-            int critMult = luk >= 5 ? 3 : 2;
+            int critMult = luk >= 3 ? 3 : 2;
             damage *= critMult;
         }
         damage = (int) Mathf.Max(1, damage);
@@ -109,10 +114,6 @@ public class PlayerManager: MonoBehaviour
         if (didCrit) {
             text.damage.fontSize = 10;
             text.damage.color = new Color(255f / 255f, 212f / 255f, 95f / 255f, 1.0f);
-        }
-        if (healthLeft <= 0) {
-            mp += Random.Range(10, 20);
-            mp = Mathf.Min(mp, maxMp);
         }
         return (int) damage;
     }
@@ -162,15 +163,15 @@ public class PlayerManager: MonoBehaviour
         }
     }
 
-    public int expToLevel() {
+    public int ExpToLevel() {
         return (int) (20 * Mathf.Exp(lvl / 4f));
     }
 
-    public bool atMaxLvl() {
+    public bool AtMaxLvl() {
         return lvl >= maxLvl;
     }
 
-    private void setupStartStats() {
+    private void SetupStartStats() {
         atk = 3 + (lvl + 1) / 5;
         wis = 1 + (lvl + 3) / 5;
         dex = 0 + lvl / 5;
@@ -182,7 +183,7 @@ public class PlayerManager: MonoBehaviour
         mp += Mathf.Exp((1f + 0.01f * wis) * mp / (float)maxMp) * (0.1f + (0.02f * wis));
         mp = Mathf.Min(mp, maxMp);
 
-        if (System.Array.Exists(SceneSwitcher.levels, level => level == SceneManager.GetActiveScene().name)) {
+        if (SceneManager.GetActiveScene().name == "Game") {
             gameTime += Time.deltaTime;
         }
     }

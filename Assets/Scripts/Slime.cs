@@ -3,103 +3,73 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Slime : BaseEnemy {
-    private float curAngle;
-    private float targetAngle;
-    private bool canBounceOffCollision = true;
-    public Animator animator;
-
-    [SerializeField]
-    private float angleMove;
-    [SerializeField]
-    private int MaxHP = 100;
-    [SerializeField]
-    private float moveForce;
-    [SerializeField]
-    private int maxGemCount;
-    [SerializeField]
-    private int minGemCount;
-
-    protected override void Awake() {
-        base.Awake();
-        animator = GetComponent<Animator>();
-    }
-
-    private void Start() {
-        base.hp = MaxHP;
-        base.maxGems = maxGemCount;
-        base.minGems = minGemCount;
-    }
     protected override void OnEnable() {
         base.OnEnable();
         curAngle = 0;
         targetAngle = 0;
-        currentState = EnemyState.Pause;
+        currentState = EnemyState.Unready;
+        movePattern = EnemyMovePattern.Random;
     }
 
     protected override void StartActivity() {
-        curAngle = GetRandomDirection();
-        targetAngle = GetRandomDirection();
+        curAngle = GetRandom45Direction();
+        targetAngle = GetRandom45Direction();
 
-        if (currentState == EnemyState.Pause) {
+        if (currentState == EnemyState.Unready) {
             currentState = EnemyState.Move;
         }
         StartCoroutine(RandomMove());
         StartCoroutine(MoveAndPause());
+        if (firepoint) {
+            StartCoroutine(ShootRoutine());
+        }
     }
 
     protected override void FixedUpdate() {
         base.FixedUpdate();
-        if (currentState == EnemyState.Move) {
-            var curDirection = (Vector2)(Quaternion.Euler(0, 0, curAngle) * Vector2.right).normalized;
+        if (currentState == EnemyState.Move && movePattern != EnemyMovePattern.Stop) {
+            var curDirection = VectorFromAngle(curAngle);
             rbd.AddForce(curDirection * moveForce);
         }
     }
 
-    IEnumerator RandomMove() {
+    IEnumerator ShootRoutine() {
         while (true) {
-            curAngle = Mathf.MoveTowardsAngle(curAngle, targetAngle, 20.0f * Time.fixedDeltaTime);
-            curAngle %= 360;
-            if (curAngle < 0) {
-                curAngle += 360;
-            }
-            if (Mathf.Abs(curAngle - targetAngle) <= angleMove + 5.0f) {
-                curAngle = targetAngle;
-                yield return new WaitForSeconds(Random.Range(0.5f, 2.0f));
-                targetAngle = GetRandomDirection();
-            }
-            yield return null;
+            yield return new WaitForSeconds(Random.Range(1.0f, 2.0f));
+            FireDirectional();
+            yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
         }
     }
 
-    private void Update() {
-        if (currentState == EnemyState.Move || currentState == EnemyState.Pause) {
-            animator.speed = 1.0f;
-        } else {
-            animator.speed = 0.0f;
+    private void FireDirectional() {
+        if (firepoint == null) {
+            return;
         }
+
+        int offset = Random.Range(0f, 1f) <= 0.5f ? 0 : 45;
+
+        int[] angles = new int[] { 0, 90, 180, 270 };
+
+        foreach (int angle in angles) {
+            Fire(VectorFromAngle(angle + offset));
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision) {
+        ReverseMoveAngle();
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        if (canBounceOffCollision) {
-            curAngle = (curAngle + Random.Range(150, 210)) % 360;
-            targetAngle = curAngle;
-            canBounceOffCollision = false;
-            StartCoroutine(EnableCollisionBounce());
-        }
-    }
-
-    IEnumerator EnableCollisionBounce() {
-        yield return new WaitForSeconds(1.0f);
-        canBounceOffCollision = true;
+        BounceOff(collision);
     }
 
     IEnumerator MoveAndPause() {
         yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
         while (true) {
             if (currentState == EnemyState.Move) {
-                currentState = EnemyState.Pause;
+                currentState = EnemyState.Unready;
                 yield return new WaitForSeconds(Random.Range(0.125f, 0.25f));
-            } else if (currentState == EnemyState.Pause) {
+            } else if (currentState == EnemyState.Unready) {
                 currentState = EnemyState.Move;
                 yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
             } else {
@@ -107,14 +77,5 @@ public class Slime : BaseEnemy {
                 yield return new WaitForSeconds(Random.Range(2.0f, 3.0f));
             }
         }
-    }
-
-    protected override void OnTriggerEnter2D(Collider2D collision) {
-        base.OnTriggerEnter2D(collision);
-    }
-
-    float GetRandomDirection() {
-        float[] angles = { 0, 45, 90, 135, 180, 225, 270, 315 };
-        return angles[Random.Range(0, angles.Length)];
     }
 }

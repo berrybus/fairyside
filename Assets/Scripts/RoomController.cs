@@ -26,7 +26,6 @@ public static class ListExtensions {
 
 public class RoomController : MonoBehaviour {
 
-    //public static RoomController instance;
     public List<Room> roomTemplates;
     public Room startRoom;
     public Room shopRoom;
@@ -36,6 +35,21 @@ public class RoomController : MonoBehaviour {
     public HashSet<Vector2Int> roomCoords = new HashSet<Vector2Int>();
     public Queue<RoomInfo> plannedRooms = new Queue<RoomInfo>();
 
+    // Enemies and bosses list
+    public List<GameObject> enemies0 = new List<GameObject>();
+    public List<GameObject> enemies1 = new List<GameObject>();
+    public List<GameObject> enemies2 = new List<GameObject>();
+    public List<GameObject> enemies3 = new List<GameObject>();
+    public List<GameObject> enemies4 = new List<GameObject>();
+    public List<GameObject> enemies5 = new List<GameObject>();
+    public List<GameObject> enemies6 = new List<GameObject>();
+    public List<GameObject> enemies7 = new List<GameObject>();
+    public List<GameObject> enemies8 = new List<GameObject>();
+
+    private List<List<GameObject>> enemiesList = new List<List<GameObject>>();
+
+    public List<GameObject> bossList = new List<GameObject>();
+
     public List<GameObject> enemyBank = new List<GameObject>();
     public GameObject boss;
 
@@ -43,14 +57,29 @@ public class RoomController : MonoBehaviour {
 
     public Minimap minimap;
 
-    public int minRooms = 12;
-    public int maxRooms = 24;
+    public int baseRoomNum;
 
     public static readonly float roomHeight = 180f / 16f;
     public static readonly float roomWidth = 320f / 16f;
 
+    public static int minSpawnAmount = 2;
+    public static int maxSpawnAmount = 6;
+
+    private void Awake() {
+        enemiesList.Add(enemies0);
+        enemiesList.Add(enemies1);
+        enemiesList.Add(enemies2);
+        enemiesList.Add(enemies3);
+        enemiesList.Add(enemies4);
+        enemiesList.Add(enemies5);
+        enemiesList.Add(enemies6);
+        enemiesList.Add(enemies7);
+        enemiesList.Add(enemies8);
+    }
 
     private void Start() {
+        enemyBank = enemiesList[GameManager.instance.currentLevel];
+        boss = bossList[GameManager.instance.currentLevel];
         GenerateRandomRooms();
         SetupRooms();
     }
@@ -59,35 +88,62 @@ public class RoomController : MonoBehaviour {
         cameraController.curRoom = room;
     }
 
-    private void AddRandomPosition(Queue<(Vector2Int, Vector2Int)> queue, Vector2Int curPos, Vector2Int lastDir) {
+    private bool NeighborInQueue(
+        Vector2Int curPos,
+        Vector2Int lastDir,
+        Queue<(Vector2Int, Vector2Int)> queue,
+        HashSet<Vector2Int> visited) {
         List<Vector2Int> directions = new List<Vector2Int>() { Vector2Int.left, Vector2Int.right, Vector2Int.up, Vector2Int.down };
         directions.Remove(lastDir * -1);
-        int numIter = Random.Range(1, directions.Count);
-        for (int i = 0; i < numIter; i++) {
-            Vector2Int next = Vector2Int.zero;
-            while (next == Vector2Int.zero) {
-                foreach (var dir in directions) {
-                    if (dir == lastDir) {
-                        if (Random.Range(0, 8) >= 1) {
-                            next = dir;
-                            break;
-                        }
+        foreach (var dir in directions) {
+            foreach (var fromDir in directions) {
+                if (queue.Contains((curPos + dir, fromDir))) {
+                    // print("found niehggbor in queue");
+                    return true;
+                }
+            }
+
+            if (visited.Contains(curPos + dir)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void AddRandomPosition(
+        Queue<(Vector2Int, Vector2Int)> queue,
+        Vector2Int curPos,
+        Vector2Int lastDir,
+        HashSet<Vector2Int> visited) {
+        List<Vector2Int> directions = new List<Vector2Int>() { Vector2Int.left, Vector2Int.right, Vector2Int.up, Vector2Int.down };
+        directions.Remove(lastDir * -1);
+
+        int desiredNeighbors = Random.Range(1, directions.Count);
+        int totalAdded = 0;
+        while (totalAdded < desiredNeighbors) {
+            foreach (var dir in directions) {
+                if (NeighborInQueue(dir + curPos, dir, queue, visited)) {
+                    if (Random.Range(0, 8) == 0) {
+                        queue.Enqueue((dir + curPos, dir));
+                        return;
                     }
-                    else {
-                        if (Random.Range(0, 8) == 1) {
-                            next = dir;
-                            break;
-                        }
+                } else if (dir == lastDir) {
+                    if (Random.Range(0, 6) >= 1) {
+                        queue.Enqueue((dir + curPos, dir));
+                        totalAdded += 1;
+                    }
+                } else {
+                    if (Random.Range(0, 3) >= 1) {
+                        queue.Enqueue((dir + curPos, dir));
+                        totalAdded += 1;
                     }
                 }
             }
-            directions.Remove(next);
-            queue.Enqueue((next + curPos, next));
         }
     }
 
-    // REMINDER: UPDATE WHEN ADDING NEW ROOMS
-    private Room GenerateRandomRoom(Vector2Int coord) {
+        // REMINDER: UPDATE WHEN ADDING NEW ROOMS
+        private Room GenerateRandomRoom(Vector2Int coord) {
         if (coord == Vector2Int.zero) {
             return startRoom;
         }
@@ -98,30 +154,41 @@ public class RoomController : MonoBehaviour {
     private Queue<RoomInfo> GetAvailableRooms(List<RoomInfo> tempRooms) {
         List<RoomInfo> threeWalls = new List<RoomInfo>();
         List<RoomInfo> twoWalls = new List<RoomInfo>();
+        // We should never have to use this list, but as a fail-safe, I guess
+        List<RoomInfo> junkWalls = new List<RoomInfo>();
         foreach (RoomInfo room in tempRooms) {
             if (room.xCoord == 0 && room.yCoord == 0) {
                 continue;
             }
-            int leftWall = DoesPlannedRoomExist(room.xCoord - 1, room.yCoord) ? 0 : 1;
-            int rightWall = DoesPlannedRoomExist(room.xCoord + 1, room.yCoord) ? 0 : 1;
-            int upWall = DoesPlannedRoomExist(room.xCoord, room.yCoord + 1) ? 0 : 1;
-            int downWall = DoesPlannedRoomExist(room.xCoord, room.yCoord - 1) ? 0 : 1;
+
+            bool leftRoomExists = DoesPlannedRoomExist(room.xCoord - 1, room.yCoord);
+            bool rightRoomExists = DoesPlannedRoomExist(room.xCoord + 1, room.yCoord);
+            bool upRoomExists = DoesPlannedRoomExist(room.xCoord, room.yCoord + 1);
+            bool downRoomExists = DoesPlannedRoomExist(room.xCoord, room.yCoord - 1);
+
+            int leftWall = leftRoomExists ? 0 : 1;
+            int rightWall = rightRoomExists ? 0 : 1;
+            int upWall = upRoomExists ? 0 : 1;
+            int downWall = downRoomExists ? 0 : 1;
 
             int total = leftWall + rightWall + upWall + downWall;
 
             if (total >= 3) {
-                // print("adding 3 room");
                 threeWalls.Add(room);
-            }
-            else if (total >= 2) {
-                // print("adding 2 room");
+            } else if ((!leftRoomExists && !upRoomExists)
+                     || (!upRoomExists && !rightRoomExists)
+                     || (!rightRoomExists && !downRoomExists)
+                     || (!downRoomExists && !leftRoomExists)) {
                 twoWalls.Add(room);
+            } else {
+                junkWalls.Add(room);
             }
         }
 
         threeWalls.Shuffle();
         twoWalls.Shuffle();
         threeWalls.AddRange(twoWalls);
+        threeWalls.AddRange(junkWalls);
         Queue<RoomInfo> avail = new Queue<RoomInfo>();
         foreach (var room in threeWalls) {
             avail.Enqueue(room);
@@ -130,7 +197,6 @@ public class RoomController : MonoBehaviour {
     }
 
     private void SetupRooms() {
-        //print("Random rooms:");
         List<RoomInfo> tempRooms = new List<RoomInfo>();
 
         foreach (var coord in roomCoords) {
@@ -138,14 +204,17 @@ public class RoomController : MonoBehaviour {
             info.xCoord = coord.x;
             info.yCoord = coord.y;
             info.room = GenerateRandomRoom(coord);
-            info.numEnemies = coord != Vector2Int.zero ? Random.Range(2, System.Math.Min(8, info.room.spawnPoints.Count)) : 0;
-            // info.numEnemies = coord != Vector2Int.zero ? 1 : 0;
+            if (coord == Vector2Int.zero || info.room.spawnPoints.Count < minSpawnAmount) {
+                info.numEnemies = 0;
+            } else {
+                info.numEnemies = Random.Range(minSpawnAmount, Mathf.Min(info.room.spawnPoints.Count, maxSpawnAmount));
+            }
             tempRooms.Add(info);
         }
 
         Queue<Room> special = new Queue<Room>();
-        special.Enqueue(shopRoom);
         special.Enqueue(bossRoom);
+        special.Enqueue(shopRoom);
 
         Queue<RoomInfo> avail = GetAvailableRooms(tempRooms);
 
@@ -166,7 +235,6 @@ public class RoomController : MonoBehaviour {
 
         // Create empty rooms
         foreach (RoomInfo info in plannedRooms) {
-            //StartCoroutine(CreateScenes());
             Vector2 newPos = new Vector2(info.xCoord * roomWidth, info.yCoord * roomHeight);
             Room newRoom = Instantiate(info.room, newPos, Quaternion.identity);
             newRoom.roomController = this;
@@ -175,7 +243,6 @@ public class RoomController : MonoBehaviour {
             newRoom.xCoord = info.xCoord;
             newRoom.yCoord = info.yCoord;
             newRoom.numEnemies = info.numEnemies;
-            // newRoom.OpenDoorsIfPossible();
             loadedRooms.Add(newRoom);
         }
 
@@ -192,23 +259,21 @@ public class RoomController : MonoBehaviour {
     }
 
     private void GenerateRandomRooms() {
-        //print("generating");
         HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
         Vector2Int startPos = new Vector2Int(0, 0);
         visited.Add(startPos);
         var queue = new Queue<(Vector2Int, Vector2Int)>();
-        AddRandomPosition(queue, startPos, Vector2Int.zero);
-        int numRooms = Random.Range(minRooms, maxRooms);
+        AddRandomPosition(queue, startPos, Vector2Int.zero, visited);
+        int numRooms = Random.Range(0, 4) + baseRoomNum + GameManager.instance.currentLevel * 2;
         while (queue.Count != 0 && visited.Count < numRooms) {
             var (curPos, dir) = queue.Dequeue();
             if (!visited.Contains(curPos)) {
                 visited.Add(curPos);
-                AddRandomPosition(queue, curPos, dir);
+                AddRandomPosition(queue, curPos, dir, visited);
             }
         }
 
         roomCoords = visited;
-
     }
 
     public bool DoesPlannedRoomExist(int x, int y) {

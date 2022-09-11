@@ -8,7 +8,8 @@ public class Portal : MonoBehaviour
 
     protected void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.CompareTag("Player") && !disabled) {
-            SceneSwitcher.instance.NextLevel();
+            collision.gameObject.GetComponent<Player>().WillChangeLevels();
+            GameManager.instance.NextLevel();
             disabled = true;
         }
     }
