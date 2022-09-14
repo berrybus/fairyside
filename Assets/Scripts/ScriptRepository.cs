@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 public struct ScriptLine {
     public string line;
@@ -224,6 +224,142 @@ public static class ScriptRepository
             "",
             "Professor",
             "Now enough of that theory, let's go outside and put it into practice!"),
+        new ScriptLine(
+            "ProfessorAvatar",
+            "Professor",
+            "As a special guest, I have the brilliant Richard here with me."),    
+        new ScriptLine(
+            "",
+            "Professor",
+            "Richard is the son of our dearly beloved Headmaster Fulligan,"),
+        new ScriptLine(
+            "",
+            "Professor",
+            "who sadly passed last summer."),
+        new ScriptLine(
+            "",
+            "Professor",
+            "Richard, please demonstrate the Wonderwall spell!"),
+        new ScriptLine(
+            "",
+            "",
+            "Richard pointed his wand up and a brilliant green light erupted like rays of the sun."),
+        new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "S-so cool..."),
+        new ScriptLine(
+            "",
+            "",
+            "A boar the size of the professor and tusks made of steel"),
+        new ScriptLine(
+            "",
+            "",
+            "emerged from the hedge and started moving toward the class."),
+        new ScriptLine(
+            "",
+            "",
+            "A few students screamed."),
+        new ScriptLine(
+            "",
+            "Professor",
+            "Look, a wild beast! Richard, another incantation!"),
+        new ScriptLine(
+            "",
+            "",
+            "Richard pointed his wand towards the bat and fired off several bursts of red flames."),
+        new ScriptLine(
+            "",
+            "",
+            "The boar practically melted and wisps of smoke escaped from the desiccated carcass."),
+        new ScriptLine(
+            "",
+            "Professor",
+            "Class, wasn’t that incredible! That technique, that poise! "),
+        new ScriptLine(
+            "",
+            "Professor",
+            "And delicious-smelling to boot."),
+        new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "Professor! I would like to try!"), 
+        new ScriptLine(
+            "",
+            "Professor",
+            "Okay then, go ahead Shirley. Make sure to stay safe."),
+        new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "Aha, now there’s a big bat over there."), 
+        new ScriptLine(
+            "",
+            "",
+            "I tried to fire off the same flames that Richard created earlier,"),
+        new ScriptLine(
+            "",
+            "",
+            "but only a small puff came out."),
+        new ScriptLine(
+            "",
+            "",
+            "The bat lunged towards me. My body froze, unable to think of anything else."),
+        new ScriptLine(
+            "",
+            "Richard",
+            "Watch out!"),
+        new ScriptLine(
+            "",
+            "",
+            "The bat was vaporized right in front of my eyes by Richard’s spell."),
+        new ScriptLine(
+            "",
+            "Richard",
+            "Be more careful next time."),
+        new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "I’m sorry... I just got excited..."), 
+        new ScriptLine(
+            "",
+            "Professor",
+            "I hope you all understand why I only allow top tier students"),
+        new ScriptLine(
+            "",
+            "Professor",
+            "like Richard to present these demonstrations."),
+        new ScriptLine(
+            "",
+            "Professor",
+            "It is simply too dangerous for the rest of you!"),
+        new ScriptLine(
+            "",
+            "Girl A",
+            "Now THAT was entertaining."),
+        new ScriptLine(
+            "",
+            "Girl B",
+            "Yeah, that was a pretty stupid thing to do."),
+        new ScriptLine(
+            "",
+            "Girl C",
+            "Stupid Shirley?"),
+        new ScriptLine(
+            "",
+            "Girl A",
+            "Stupid Shirley! Great name."),
+        new ScriptLine(
+            "",
+            "Girl C",
+            "Hehehe"),
+        new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "..."),
+        new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "........."),
     };
 
     public static ScriptLine[][] scripts = new ScriptLine[][] { script0, script1, script2 };
