@@ -362,5 +362,240 @@ public static class ScriptRepository
             "........."),
     };
 
-    public static ScriptLine[][] scripts = new ScriptLine[][] { script0, script1, script2 };
+    static ScriptLine[] script3 = new ScriptLine[] {
+        new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "Uwaa......."),
+        new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "Sob sob sob"),
+        new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "I can’t believe that dumb name actually caught on!"),
+        new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "It was just one mistake... Stupid."),
+        new ScriptLine(
+            "",
+            "Richard",
+            "I agree, I think name-calling is pretty silly as well."),
+        new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "Ack! Where did you come from?"),
+        new ScriptLine(
+            "",
+            "Richard",
+            "I like to take walks outside sometimes."),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "That makes sense I suppose."),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "Anyways, It wasn't just that, you know, the Stupid Shirley thing."),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "I'm just... bad at being a witch!"),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "I can't cast a spell to save my life."),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "Can't brew potions, can't identify any plants, and I sure can't defend myself!"),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "My grades are terrible... I shouldn't have enrolled here."),
+        new ScriptLine(
+            "",
+            "Richard",
+            "Not everyone is born with that kind of ability."),
+        new ScriptLine(
+            "",
+            "Richard",
+            "Some people are late bloomers."),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "I'm worried I'm a never bloomer!"),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "And get this!"),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "They tell me that if I don't get better, these witches called Meffy, Stuffy, and Lessy are going to eat me!"),
+        new ScriptLine(
+            "",
+            "Richard",
+            "Who is they?"),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "Everyone in the class!"),
+        new ScriptLine(
+            "",
+            "Richard",
+            "Okay, now you can't possibly take them seriously."),
+        new ScriptLine(
+            "",
+            "Richard",
+            "Those names are clearly made up."),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "But I know you've heard those rumors before."),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "You have, you have!"),
+        new ScriptLine(
+            "",
+            "",
+            "Richard laughed."),
+        new ScriptLine(
+            "",
+            "",
+            "It was softer than I expected and a little cute."),
+        new ScriptLine(
+            "",
+            "",
+            "Then we were silent as we let our thoughts wander."),
+        new ScriptLine(
+            "",
+            "Richard",
+            "Why did you come here?"),
+        new ScriptLine(
+            "",
+            "Richard",
+            "Not everyone in Elysia needs to go to Redwood Academy."),
+        new ScriptLine(
+            "",
+            "Richard",
+            "It's dark and lonely and hard to think straight."),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "It was my father's dream. To be a great wizard."),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "He died from the plague some years ago."),
+        new ScriptLine(
+            "",
+            "Richard",
+            "But it's not your dream."),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "It is now."),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "You don't know how many times I took that entrance exam."),
+        new ScriptLine(
+            "",
+            "Richard",
+            " I'm surprised they let you keep taking it."),
+        new ScriptLine(
+            "",
+            "Richard",
+            "I thought my old man instituted a cap."),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "What can I say, tenacity is a virtue!"),
+        new ScriptLine(
+            "",
+            "Richard",
+            "And sometimes a vice."),
+        new ScriptLine(
+            "",
+            "Richard",
+            "How about this?"),
+        new ScriptLine(
+            "",
+            "Richard",
+            "Swing by my place sometime."),
+        new ScriptLine(
+            "",
+            "Richard",
+            "I'll show you the ropes around here."),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "R-really? Do I need to pay you?"),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "I don't have much money..."),
+        new ScriptLine(
+            "",
+            "Richard",
+            "No, simply your company is enough."),
+        new ScriptLine(
+            "",
+            "Richard",
+            "I'm not exactly the sociable type, but I enjoy talking to you."),
+        new ScriptLine(
+            "",
+            "Richard",
+            "You should at least take pride in that."),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "Y-yessir!"),
+        new ScriptLine(
+            "",
+            "Richard",
+            "Haha, no need to be so formal."),
+        new ScriptLine(
+            "",
+            "Richard",
+            "By the way, call me Rasha."),
+        new ScriptLine(
+            "",
+            "Rasha",
+            "I don't like Richard."),
+        new ScriptLine(
+            "",
+            "Rasha",
+            "I always get called Richard when someone needs something from me."),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "Rasha... Rasha..."),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "I like the sound of that!"),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "Oh no, I wish I had a cute little nickname to give you as well."),
+        new ScriptLine(
+            "",
+            "Rasha",
+            "That's no problem."),
+        new ScriptLine(
+            "",
+            "Rasha",
+            "I like Shirley the way it is."),
+        new ScriptLine(
+            "",
+            "Rasha",
+            "With no stupid in front of it."),
+    };
+
+    public static ScriptLine[][] scripts = new ScriptLine[][] { script0, script1, script2, script3 };
 }
