@@ -75,10 +75,12 @@
     <Compile Include="Assets\Scripts\PooledParticle.cs" />
     <Compile Include="Assets\Scripts\BatBoss.cs" />
     <Compile Include="Assets\Scripts\SettingsMenu.cs" />
+    <Compile Include="Assets\Scripts\Save.cs" />
     <Compile Include="Assets\Scripts\StatUpIndicator.cs" />
     <Compile Include="Assets\Scripts\GameOverDisplay.cs" />
     <Compile Include="Assets\Scripts\Mushroom.cs" />
     <Compile Include="Assets\Scripts\Minimap.cs" />
+    <Compile Include="Assets\Scripts\MemoryMenu.cs" />
     <Compile Include="Assets\Scripts\DamageText.cs" />
     <Compile Include="Assets\Scripts\CatBoss.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
@@ -97,6 +99,7 @@
     <Compile Include="Assets\Scripts\Room.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\HUD.cs" />
+    <Compile Include="Assets\Scripts\ScriptRepository.cs" />
     <Compile Include="Assets\Scripts\BaseEnemy.cs" />
     <Compile Include="Assets\Scripts\EnemyDeath.cs" />
     <Compile Include="Assets\Scripts\Slime.cs" />
@@ -105,9 +108,6 @@
     <Compile Include="Assets\Scripts\MainMenu.cs" />
     <Compile Include="Assets\Scripts\Door.cs" />
     <Compile Include="Assets\Scripts\Portal.cs" />
-    <Compile Include="Assets\Scripts\ScriptRepository.cs" />
-    <Compile Include="Assets\Scripts\MemoryMenu.cs" />
-    <Compile Include="Assets\Scripts\Save.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

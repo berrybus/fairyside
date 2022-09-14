@@ -275,7 +275,7 @@ public static class ScriptRepository
         new ScriptLine(
             "",
             "Professor",
-            "Class, wasn’t that incredible! That technique, that poise! "),
+            "Class, wasn't that incredible! That technique, that poise! "),
         new ScriptLine(
             "",
             "Professor",
@@ -291,19 +291,19 @@ public static class ScriptRepository
         new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
-            "Aha, now there’s a big bat over there."), 
+            "Aha, now there's a big bat over there."), 
         new ScriptLine(
             "",
             "",
-            "I tried to fire off the same flames that Richard created earlier,"),
+            "I tried to fire off the same flames that Richard created earlier, but only a small puff came out."),
         new ScriptLine(
             "",
             "",
-            "but only a small puff came out."),
+            "The bat lunged towards me."),
         new ScriptLine(
             "",
             "",
-            "The bat lunged towards me. My body froze, unable to think of anything else."),
+            "My body froze, unable to think of anything else."),
         new ScriptLine(
             "",
             "Richard",
@@ -311,7 +311,7 @@ public static class ScriptRepository
         new ScriptLine(
             "",
             "",
-            "The bat was vaporized right in front of my eyes by Richard’s spell."),
+            "The bat was vaporized right in front of my eyes by Richard's spell."),
         new ScriptLine(
             "",
             "Richard",
@@ -319,7 +319,7 @@ public static class ScriptRepository
         new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
-            "I’m sorry... I just got excited..."), 
+            "I'm sorry... I just got excited..."), 
         new ScriptLine(
             "",
             "Professor",
