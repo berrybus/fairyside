@@ -9,6 +9,8 @@ public class Ghost : BaseEnemy {
     private int maxShots;
     [SerializeField]
     private int angleShot;
+    [SerializeField]
+    private bool shouldReverse;
     protected override void OnEnable() {
         base.OnEnable();
         curAngle = 0;
@@ -49,12 +51,23 @@ public class Ghost : BaseEnemy {
 
     IEnumerator FireSpiral() {
         int startAngle = (int) AngleFromVector(playerTarget.transform.position - transform.position);
-        int currentAngle = 0;
-        for (int i = 0; i < Random.Range(minShots, maxShots); i += 1) {
-            currentAngle = i * angleShot + startAngle;
+        int currentAngle = startAngle;
+        int totalShots = Random.Range(minShots, maxShots);
+        for (int i = 0; i < totalShots; i += 1) {
+            currentAngle += angleShot;
             currentAngle %= 360;
             Fire(VectorFromAngle(currentAngle));
             yield return new WaitForSeconds(0.1f);
+        }
+
+        if (shouldReverse) {
+            for (int i = 0; i < totalShots; i++) {
+                currentAngle -= angleShot;
+                curAngle += 360;
+                currentAngle %= 360;
+                Fire(VectorFromAngle(currentAngle));
+                yield return new WaitForSeconds(0.1f);
+            }
         }
     }
 
@@ -76,15 +89,18 @@ public class Ghost : BaseEnemy {
     IEnumerator MoveAndPause() {
         yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
         while (true) {
-            if (currentState == EnemyState.Move) {
-                currentState = EnemyState.Unready;
-                yield return new WaitForSeconds(Random.Range(0.125f, 0.25f));
-            } else if (currentState == EnemyState.Unready) {
-                currentState = EnemyState.Move;
-                yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
-            } else {
-                // Knockback, so wait for that to finish before trying to change states
-                yield return new WaitForSeconds(Random.Range(2.0f, 3.0f));
+            switch (movePattern) {
+                case EnemyMovePattern.Random:
+                    movePattern = EnemyMovePattern.Stop;
+                    yield return new WaitForSeconds(Random.Range(0.5f, 1.0f));
+                    break;
+                case EnemyMovePattern.Stop:
+                    movePattern = EnemyMovePattern.Random;
+                    yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
+                    break;
+                default:
+                    yield return null;
+                    break;
             }
         }
     }

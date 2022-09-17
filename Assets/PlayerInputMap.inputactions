@@ -15,42 +15,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Fire_Right",
-                    "type": "Value",
-                    "id": "9aa75435-bde6-4181-b877-1b5ead2567da",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "Fire_Left",
-                    "type": "Value",
-                    "id": "b5b145d2-6cd0-41b0-9b93-8ca8595b5659",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "Fire_Up",
-                    "type": "Value",
-                    "id": "9f21d858-52f6-4e64-acab-606123065020",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "Fire_Down",
-                    "type": "Value",
-                    "id": "36f6e018-8b18-4e9b-a935-8cbb57af1630",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "Fire",
                     "type": "Value",
                     "id": "ef01b686-a2a3-4087-aabf-48ccec7a2404",
@@ -173,50 +137,6 @@
                     "processors": "",
                     "groups": "Joystick",
                     "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "6aa2b11c-a2bd-426f-9fac-3c3bcbebf5a3",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Fire_Right",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "25ef1675-40a0-4e8f-9257-e620ad849b04",
-                    "path": "<Keyboard>/leftArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Fire_Left",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f1819367-d637-4838-b59f-18f5d0c4385e",
-                    "path": "<Keyboard>/upArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Fire_Up",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "bc8bed39-ff4a-4c30-b608-12ec43020561",
-                    "path": "<Keyboard>/downArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Fire_Down",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

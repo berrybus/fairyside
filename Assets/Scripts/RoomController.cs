@@ -264,7 +264,8 @@ public class RoomController : MonoBehaviour {
         visited.Add(startPos);
         var queue = new Queue<(Vector2Int, Vector2Int)>();
         AddRandomPosition(queue, startPos, Vector2Int.zero, visited);
-        int numRooms = Random.Range(0, 4) + baseRoomNum + GameManager.instance.currentLevel * 2;
+        // int numRooms = Random.Range(0, 3) + baseRoomNum + GameManager.instance.currentLevel;
+        int numRooms = 3;
         while (queue.Count != 0 && visited.Count < numRooms) {
             var (curPos, dir) = queue.Dequeue();
             if (!visited.Contains(curPos)) {

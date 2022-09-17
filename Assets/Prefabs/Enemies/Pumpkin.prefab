@@ -185,7 +185,7 @@ MonoBehaviour:
   knockbackForce: 600
   firepoint: {fileID: 7859022014356622125}
   bulletSpeed: 8
-  hp: 40
+  hp: 45
   minGems: 3
   maxGems: 4
   minShots: 6

@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour {
         "Nacht 3"
     };
     public static int levelsPerSkin = 3;
-    public static int maxLevel = 4;
+    public static int maxLevel = 5;
 
     public static GameManager instance;
 
@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour {
 
     private bool playSingleMemory = false;
     public static int totalMemories = 14;
-    public static int maxMemory = 3;
+    public static int maxMemory = 4;
 
     [System.NonSerialized]
     public int currentMemory = 0;
@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour {
     public bool[] watchedMemory = new bool[totalMemories];
     private (int, int)[] prereqMemories = new (int, int)[] {
         (0, 1),
-        (2, 2),
+        (2, 3),
         (-1, -1),
         (-1, -1),
         (-1, -1),
@@ -206,7 +206,7 @@ public class GameManager : MonoBehaviour {
             Save save = (Save)bf.Deserialize(file);
             file.Close();
 
-            PlayerManager.instance.lvl = save.level;
+            PlayerManager.instance.lvl = Mathf.Min(PlayerManager.maxLvl, Mathf.Max(0, save.level));
             watchedMemory = save.watchedMemory;
         }
     }

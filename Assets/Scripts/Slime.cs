@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Slime : BaseEnemy {
+    public bool shouldFireSingle;
+
     protected override void OnEnable() {
         base.OnEnable();
         curAngle = 0;
@@ -36,8 +38,13 @@ public class Slime : BaseEnemy {
     IEnumerator ShootRoutine() {
         while (true) {
             yield return new WaitForSeconds(Random.Range(1.0f, 2.0f));
-            FireDirectional();
-            yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
+            if (shouldFireSingle) {
+                FireSingle();
+                yield return new WaitForSeconds(Random.Range(3.0f, 4.0f));
+            } else {
+                FireDirectional();
+                yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
+            }
         }
     }
 
@@ -55,6 +62,14 @@ public class Slime : BaseEnemy {
         }
     }
 
+    private void FireSingle() {
+        if (firepoint == null) {
+            return;
+        }
+
+        Fire((playerTarget.transform.position - transform.position).normalized);
+    }
+
     private void OnCollisionStay2D(Collision2D collision) {
         ReverseMoveAngle();
     }
@@ -66,15 +81,18 @@ public class Slime : BaseEnemy {
     IEnumerator MoveAndPause() {
         yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
         while (true) {
-            if (currentState == EnemyState.Move) {
-                currentState = EnemyState.Unready;
-                yield return new WaitForSeconds(Random.Range(0.125f, 0.25f));
-            } else if (currentState == EnemyState.Unready) {
-                currentState = EnemyState.Move;
-                yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
-            } else {
-                // Knockback, so wait for that to finish before trying to change states
-                yield return new WaitForSeconds(Random.Range(2.0f, 3.0f));
+            switch (movePattern) {
+                case EnemyMovePattern.Random:
+                    movePattern = EnemyMovePattern.Stop;
+                    yield return new WaitForSeconds(Random.Range(0.125f, 0.25f));
+                    break;
+                case EnemyMovePattern.Stop:
+                    movePattern = EnemyMovePattern.Random;
+                    yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
+                    break;
+                default:
+                    yield return null;
+                    break;
             }
         }
     }

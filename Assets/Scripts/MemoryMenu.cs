@@ -18,7 +18,7 @@ public class MemoryMenu : UIScreen {
         if (GameManager.instance == null) {
             return;
         }
-        for (int i = GameManager.maxMemory; i < options.Length - 2; i ++) {
+        for (int i = GameManager.maxMemory; i < options.Length - 1; i ++) {
             options[i].text = "Locked";
         }
     }
@@ -27,12 +27,12 @@ public class MemoryMenu : UIScreen {
         if (!ctx.performed) {
             return;
         }
-        if (currentSelect < 13) {
+        if (currentSelect < 14) {
             if (currentSelect < GameManager.maxMemory) {
                 GameManager.instance.PlaySingleMemory(currentSelect);
             }
         }
-        else if (currentSelect == 13) {
+        else if (currentSelect == 14) {
             if (manager) {
                 manager.Cancel(ctx);
             } else {

@@ -571,6 +571,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d5ee0f0a4071f004fb360b5fbb430914, type: 3}
   - {fileID: 21300000, guid: e1715a55be900244e8d448f3d26c2532, type: 3}
   - {fileID: 21300000, guid: 847e26387a6db314cbe8212d1bc294a1, type: 3}
+  - {fileID: 21300000, guid: 847e26387a6db314cbe8212d1bc294a1, type: 3}
+  - {fileID: 21300000, guid: 561261a5ee7a796448c98f50181ab081, type: 3}
   intro: {fileID: 836854407}
   introText: {fileID: 901643458}
 --- !u!4 &382487442
@@ -618,22 +620,6 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: d7cf0fba-0124-4ea1-b691-593fa31ba9ae
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 9aa75435-bde6-4181-b877-1b5ead2567da
-    m_ActionName: Player/Fire_Right[/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: b5b145d2-6cd0-41b0-9b93-8ca8595b5659
-    m_ActionName: Player/Fire_Left[/Keyboard/leftArrow]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 9f21d858-52f6-4e64-acab-606123065020
-    m_ActionName: Player/Fire_Up[/Keyboard/upArrow]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 36f6e018-8b18-4e9b-a935-8cbb57af1630
-    m_ActionName: Player/Fire_Down[/Keyboard/downArrow]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: ef01b686-a2a3-4087-aabf-48ccec7a2404
@@ -1002,6 +988,63 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1001 &571764023
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 9072622690192436971, guid: de4ab9ced244c3049b7d695f0ecf20fc, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 9072622690192436971, guid: de4ab9ced244c3049b7d695f0ecf20fc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9072622690192436971, guid: de4ab9ced244c3049b7d695f0ecf20fc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9072622690192436971, guid: de4ab9ced244c3049b7d695f0ecf20fc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9072622690192436971, guid: de4ab9ced244c3049b7d695f0ecf20fc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9072622690192436971, guid: de4ab9ced244c3049b7d695f0ecf20fc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9072622690192436971, guid: de4ab9ced244c3049b7d695f0ecf20fc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9072622690192436971, guid: de4ab9ced244c3049b7d695f0ecf20fc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9072622690192436971, guid: de4ab9ced244c3049b7d695f0ecf20fc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9072622690192436971, guid: de4ab9ced244c3049b7d695f0ecf20fc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9072622690192436971, guid: de4ab9ced244c3049b7d695f0ecf20fc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9072622690192436973, guid: de4ab9ced244c3049b7d695f0ecf20fc, type: 3}
+      propertyPath: m_Name
+      value: PlayerManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: de4ab9ced244c3049b7d695f0ecf20fc, type: 3}
 --- !u!1 &682872820
 GameObject:
   m_ObjectHideFlags: 0

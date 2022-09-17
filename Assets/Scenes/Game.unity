@@ -3002,7 +3002,6 @@ GameObject:
   - component: {fileID: 1226231329}
   - component: {fileID: 1226231332}
   - component: {fileID: 1226231331}
-  - component: {fileID: 1226231328}
   - component: {fileID: 1226231334}
   - component: {fileID: 1226231336}
   m_Layer: 6
@@ -3012,32 +3011,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!61 &1226231328
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1226231327}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.53110415}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
-    oldSize: {x: 1.625, y: 2}
-    newSize: {x: 0.26, y: 0.47}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.875, y: 0.93779176}
-  m_EdgeRadius: 0
 --- !u!114 &1226231329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4429,30 +4402,37 @@ MonoBehaviour:
   - {fileID: 9011300338302578945, guid: 3f93db3ddd89d7a43afeafb66d772bfa, type: 3}
   enemies3:
   - {fileID: 1705201368475281939, guid: f88b8281e023d914f8ecf58146a5be71, type: 3}
-  - {fileID: 1705201368475281939, guid: f88b8281e023d914f8ecf58146a5be71, type: 3}
-  - {fileID: 1705201368475281939, guid: f88b8281e023d914f8ecf58146a5be71, type: 3}
+  - {fileID: 7008121284541088903, guid: f2868c591a23fa94fb4c31803efe5046, type: 3}
+  - {fileID: 1705201368475281939, guid: 8e57357313a9b164d9577a383e1ca19e, type: 3}
+  - {fileID: 1705201368475281939, guid: 8e57357313a9b164d9577a383e1ca19e, type: 3}
+  - {fileID: 1705201368475281939, guid: 8e57357313a9b164d9577a383e1ca19e, type: 3}
+  - {fileID: 1705201368475281939, guid: 38db05ddc2e3ba349b8f83ed6f4c6eb4, type: 3}
   - {fileID: 9011300338302578945, guid: 77d1f539bab85914aa40674d682ae1b7, type: 3}
   enemies4:
-  - {fileID: 1705201368475281939, guid: f88b8281e023d914f8ecf58146a5be71, type: 3}
-  - {fileID: 1705201368475281939, guid: f88b8281e023d914f8ecf58146a5be71, type: 3}
-  - {fileID: 1705201368475281939, guid: f88b8281e023d914f8ecf58146a5be71, type: 3}
-  - {fileID: 9011300338302578945, guid: 77d1f539bab85914aa40674d682ae1b7, type: 3}
+  - {fileID: 1705201368475281939, guid: c16b15650970df345815d62e32b46026, type: 3}
+  - {fileID: 1705201368475281939, guid: c16b15650970df345815d62e32b46026, type: 3}
+  - {fileID: 1045777798055916185, guid: 7a2cc153268432b4b9b3476728ce014f, type: 3}
+  - {fileID: 1705201368475281939, guid: 38db05ddc2e3ba349b8f83ed6f4c6eb4, type: 3}
+  - {fileID: 1705201368475281939, guid: 8e57357313a9b164d9577a383e1ca19e, type: 3}
+  - {fileID: 1705201368475281939, guid: 8e57357313a9b164d9577a383e1ca19e, type: 3}
+  - {fileID: 1705201368475281939, guid: fc535cbefea915043b78c4757e3c22e1, type: 3}
+  - {fileID: 9011300338302578945, guid: 3f93db3ddd89d7a43afeafb66d772bfa, type: 3}
   enemies5: []
   enemies6: []
   enemies7: []
   enemies8: []
   bossList:
-  - {fileID: 7008121284541088903, guid: 72a65edf3f7bd464ea00e2ffccdc5f7a, type: 3}
+  - {fileID: 7008121284541088903, guid: d7928c2394859304eb7f76a517481a42, type: 3}
   - {fileID: 7008121284541088903, guid: 6a9a338be880bf44597699cd011e7527, type: 3}
   - {fileID: 7008121284541088903, guid: d7928c2394859304eb7f76a517481a42, type: 3}
-  - {fileID: 7008121284541088903, guid: d7928c2394859304eb7f76a517481a42, type: 3}
-  - {fileID: 9011300338302578945, guid: 3f93db3ddd89d7a43afeafb66d772bfa, type: 3}
-  - {fileID: 9011300338302578945, guid: 3f93db3ddd89d7a43afeafb66d772bfa, type: 3}
+  - {fileID: 7008121284541088903, guid: 3121a4f62744c0e4eb1a2c6c3588c958, type: 3}
+  - {fileID: 1705201368475281939, guid: 85bef91297ff7eb42a39423335da1bcd, type: 3}
+  - {fileID: 1705201368475281939, guid: 85bef91297ff7eb42a39423335da1bcd, type: 3}
   enemyBank: []
   boss: {fileID: 0}
   cameraController: {fileID: 1316741307}
   minimap: {fileID: 253881005}
-  baseRoomNum: 8
+  baseRoomNum: 10
 --- !u!4 &1592751079
 Transform:
   m_ObjectHideFlags: 0

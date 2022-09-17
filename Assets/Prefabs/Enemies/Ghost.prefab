@@ -154,11 +154,11 @@ MonoBehaviour:
   knockbackForce: 0
   firepoint: {fileID: 4648991911211732121}
   bulletSpeed: 5
-  hp: 75
-  minGems: 2
-  maxGems: 4
-  minShots: 24
-  maxShots: 48
+  hp: 90
+  minGems: 4
+  maxGems: 6
+  minShots: 12
+  maxShots: 24
   angleShot: 30
 --- !u!70 &7733353666626336836
 CapsuleCollider2D:

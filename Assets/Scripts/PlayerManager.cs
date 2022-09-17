@@ -24,7 +24,7 @@ public class PlayerManager: MonoBehaviour
     [System.NonSerialized]
     public int lvl = 1;
     [System.NonSerialized]
-    public int maxLvl = 10;
+    public static int maxLvl = 10;
     [System.NonSerialized]
     public int atk = 3;
     [System.NonSerialized]
@@ -125,7 +125,7 @@ public class PlayerManager: MonoBehaviour
             case PlayerGun.Grass:
                 return 1f;
             case PlayerGun.Water:
-                return 0.75f;
+                return 1f;
             case PlayerGun.Fire:
                 return 2f;
             default:

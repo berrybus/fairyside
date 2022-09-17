@@ -33,7 +33,7 @@ public class BaseEnemy : MonoBehaviour {
     public bool isBoss;
 
     protected Vector2 knockback = Vector2.zero;
-    protected bool canBounceOffCollision = true;
+    protected bool canChangeAngle = true;
 
     protected float curAngle;
     protected float targetAngle;
@@ -52,6 +52,8 @@ public class BaseEnemy : MonoBehaviour {
     protected EnemyFirepoint firepoint;
     [SerializeField]
     protected float bulletSpeed;
+    [SerializeField]
+    protected float bulletFireDelay;
     [SerializeField]
     private int hp;
     [SerializeField]
@@ -170,6 +172,12 @@ public class BaseEnemy : MonoBehaviour {
         }
     }
 
+    protected void FireAngles(float[] angles) {
+        foreach (float angle in angles) {
+            Fire(VectorFromAngle(angle));
+        }
+    }
+
     // Movement functions
 
     protected IEnumerator RandomMove() {
@@ -179,7 +187,7 @@ public class BaseEnemy : MonoBehaviour {
             if (curAngle < 0) {
                 curAngle += 360;
             }
-            if (Mathf.Abs(curAngle - targetAngle) <= angleMoveThreshold) {
+            if (Mathf.Abs(curAngle - targetAngle) <= angleMoveThreshold && canChangeAngle) {
                 curAngle = targetAngle;
                 yield return new WaitForSeconds(Random.Range(0.5f, 2.0f));
                 targetAngle = GetRandom45Direction();
@@ -189,28 +197,28 @@ public class BaseEnemy : MonoBehaviour {
     }
 
     protected void ReverseMoveAngle() {
-        if (canBounceOffCollision) {
+        if (canChangeAngle) {
+            canChangeAngle = false;
             curAngle += 180;
             curAngle %= 360;
             targetAngle = curAngle;
-            canBounceOffCollision = false;
-            StartCoroutine(EnableCollisionBounce());
+            StartCoroutine(EnableAngleChange());
         }
     }
 
     protected void BounceOff(Collision2D collision) {
-        if (canBounceOffCollision) {
+        if (canChangeAngle) {
+            canChangeAngle = false;
             var bounceDirection = Vector2.Reflect(VectorFromAngle(curAngle), collision.GetContact(0).normal);
             curAngle = AngleFromVector(bounceDirection);
             targetAngle = curAngle;
-            canBounceOffCollision = false;
-            StartCoroutine(EnableCollisionBounce());
+            StartCoroutine(EnableAngleChange());
         }
     }
 
-    protected IEnumerator EnableCollisionBounce() {
+    protected IEnumerator EnableAngleChange() {
         yield return new WaitForSeconds(0.25f);
-        canBounceOffCollision = true;
+        canChangeAngle = true;
     }
 
     IEnumerator ResumeMovement() {
