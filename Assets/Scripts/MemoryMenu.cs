@@ -27,12 +27,9 @@ public class MemoryMenu : UIScreen {
         if (!ctx.performed) {
             return;
         }
-        if (currentSelect < 14) {
-            if (currentSelect < GameManager.maxMemory) {
-                GameManager.instance.PlaySingleMemory(currentSelect);
-            }
-        }
-        else if (currentSelect == 14) {
+        if (currentSelect < GameManager.maxMemory - 1) {
+            GameManager.instance.PlaySingleMemory(currentSelect);
+        } else if (currentSelect == options.Length - 1) {
             if (manager) {
                 manager.Cancel(ctx);
             } else {

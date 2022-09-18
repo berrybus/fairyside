@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour {
         "Nacht 3"
     };
     public static int levelsPerSkin = 3;
-    public static int maxLevel = 5;
+    public static int maxLevel = 6;
 
     public static GameManager instance;
 
@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour {
     public bool isTransitioning = false;
 
     private bool playSingleMemory = false;
-    public static int totalMemories = 14;
+    public static int totalMemories = 13;
     public static int maxMemory = 4;
 
     [System.NonSerialized]
@@ -192,7 +192,7 @@ public class GameManager : MonoBehaviour {
 
     // File client
     public void SaveGame() {
-        Save save = new Save(PlayerManager.instance.lvl, watchedMemory);
+        Save save = new Save(PlayerManager.instance.lvl, watchedMemory, PlayerManager.instance.exp);
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath + "/fairyside.save");
         bf.Serialize(file, save);
@@ -207,7 +207,10 @@ public class GameManager : MonoBehaviour {
             file.Close();
 
             PlayerManager.instance.lvl = Mathf.Min(PlayerManager.maxLvl, Mathf.Max(0, save.level));
-            watchedMemory = save.watchedMemory;
+            PlayerManager.instance.exp = save.xp;
+            for (int i = 0; i < Mathf.Min(save.watchedMemory.Length, watchedMemory.Length); i++) {
+                watchedMemory[i] = save.watchedMemory[i];
+            }
         }
     }
 }

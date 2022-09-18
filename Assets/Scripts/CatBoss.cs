@@ -24,7 +24,6 @@ public class CatBoss : BaseEnemy {
         if (currentState == EnemyState.Unready) {
             currentState = EnemyState.Move;
         }
-        curAngle = GetRandom45Direction();
         StartCoroutine(RandomlyChangeDirections());
         StartCoroutine(HorizontalRoutine());
         StartCoroutine(VerticalRoutine());
@@ -33,7 +32,6 @@ public class CatBoss : BaseEnemy {
     protected override void FixedUpdate() {
         base.FixedUpdate();
         if (currentState == EnemyState.Move && movePattern == EnemyMovePattern.Random) {
-            // rbd.AddForce(VectorFromAngle(curAngle) * moveForce);
             rbd.AddForce(curDirection * moveForce);
         }
     }
@@ -41,7 +39,7 @@ public class CatBoss : BaseEnemy {
     protected override void Update() {
         base.Update();
         int flipX = (curDirection.x < 0) ? -1 : 1;
-        transform.localScale = new Vector3(flipX, 1, 1);
+        spriteRenderer.flipX = curDirection.x < 0;
     }
 
     IEnumerator HorizontalRoutine() {
@@ -70,7 +68,6 @@ public class CatBoss : BaseEnemy {
         while (true) {
             yield return new WaitForSeconds(Random.Range(3.0f, 4.0f));
             curDirection = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
-            curAngle = Random.Range(0, 360);
         }
     }
 
@@ -85,11 +82,9 @@ public class CatBoss : BaseEnemy {
 
     private void OnCollisionEnter2D(Collision2D collision) {
         BounceOffVector(collision);
-        // BounceOff(collision);
     }
 
     private void OnCollisionStay2D(Collision2D collision) {
         BounceOffVector(collision);
-        // BounceOff(collision);
     }
 }

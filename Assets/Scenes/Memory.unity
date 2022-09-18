@@ -573,6 +573,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 847e26387a6db314cbe8212d1bc294a1, type: 3}
   - {fileID: 21300000, guid: 847e26387a6db314cbe8212d1bc294a1, type: 3}
   - {fileID: 21300000, guid: 561261a5ee7a796448c98f50181ab081, type: 3}
+  - {fileID: 21300000, guid: 3bc79b27c78ec614288dfad4186f798f, type: 3}
+  - {fileID: 21300000, guid: 561261a5ee7a796448c98f50181ab081, type: 3}
+  - {fileID: 21300000, guid: 060e5b69e839f5942bedc6d2f4219e05, type: 3}
+  - {fileID: 21300000, guid: 060e5b69e839f5942bedc6d2f4219e05, type: 3}
   intro: {fileID: 836854407}
   introText: {fileID: 901643458}
 --- !u!4 &382487442

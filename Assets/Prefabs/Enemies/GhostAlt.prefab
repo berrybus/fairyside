@@ -154,9 +154,11 @@ MonoBehaviour:
   knockbackForce: 0
   firepoint: {fileID: 4648991911211732121}
   bulletSpeed: 4
+  bulletFireDelay: 0
   hp: 120
   minGems: 6
   maxGems: 8
+  hpBar: {fileID: 0}
   minShots: 12
   maxShots: 24
   angleShot: 30
@@ -225,7 +227,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5334826204759294169, guid: c5864e0b7bf9be845b9d0fbb9cfd0b4b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.3125
+      value: 0.125
       objectReference: {fileID: 0}
     - target: {fileID: 5334826204759294169, guid: c5864e0b7bf9be845b9d0fbb9cfd0b4b, type: 3}
       propertyPath: m_LocalPosition.y

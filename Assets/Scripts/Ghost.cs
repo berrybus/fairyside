@@ -73,9 +73,7 @@ public class Ghost : BaseEnemy {
 
     protected override void Update() {
         base.Update();
-
-        int flipX = (curAngle > 90 && curAngle < 270) ? -1 : 1;
-        transform.localScale = new Vector3(flipX, 1, 1);
+        spriteRenderer.flipX = curAngle > 90 && curAngle < 270;
     }
 
     private void OnCollisionStay2D(Collision2D collision) {

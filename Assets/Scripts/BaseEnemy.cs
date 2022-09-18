@@ -60,6 +60,10 @@ public class BaseEnemy : MonoBehaviour {
     private int minGems;
     [SerializeField]
     private int maxGems;
+    [SerializeField]
+    private Transform hpBar;
+
+    private int maxHp;
 
     protected virtual void Awake() {
         currentState = EnemyState.Move;
@@ -67,6 +71,7 @@ public class BaseEnemy : MonoBehaviour {
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         gameObject.SetActive(false);
+        maxHp = hp;
     }
 
     protected virtual void OnEnable() {
@@ -95,6 +100,10 @@ public class BaseEnemy : MonoBehaviour {
             animator.speed = 1.0f;
         } else {
             animator.speed = 0.0f;
+        }
+        if (hpBar) {
+            float hpPercentage = (float)hp / (float)maxHp;
+            hpBar.localScale = new Vector3(hpPercentage, 1, 1);
         }
     }
 
@@ -139,14 +148,16 @@ public class BaseEnemy : MonoBehaviour {
                     newGem.Scatter(knockback);
                 }
                 // Create possible HP drop
-                if (hpDrop != null && Random.Range(0f, 1f) <= 0.05f) {
+                float dropThreshold = isBoss ? 1.5f : 0.05f;
+                float hpKnockback = isBoss ? 6.0f : 1.0f;
+                if (hpDrop != null && Random.Range(0f, 1f) <= dropThreshold) {
                     Vector3 position = origin.position + new Vector3(0, -0.25f, 0);
                     HPDrop hp = Instantiate(
                         hpDrop,
                         position + new Vector3(Random.Range(-0.25f, 0.25f), Random.Range(-0.25f, 0.25f), 0),
                         Quaternion.identity
                     );
-                    hp.Scatter(knockback);
+                    hp.Scatter(knockback * hpKnockback);
                 }
 
                 Destroy(gameObject);
@@ -161,11 +172,24 @@ public class BaseEnemy : MonoBehaviour {
 
     protected virtual void StartActivity() { }
 
+    protected void Fire(Transform target) {
+        Fire(Vector2.zero, bulletSpeed, target);
+    }
+
     protected void Fire(Vector2 direction) {
+        Fire(direction, bulletSpeed, null);
+    }
+
+    protected void Fire(Vector2 direction, float speed) {
+        Fire(direction, speed, null);
+    }
+
+    protected void Fire(Vector2 direction, float speed, Transform target) {
         GameObject bullet = ObjectPool.instance.enemyBullets.Get();
         if (bullet != null) {
             bullet.GetComponent<EnemyBullet>().direction = direction.normalized;
-            bullet.GetComponent<EnemyBullet>().speed = bulletSpeed;
+            bullet.GetComponent<EnemyBullet>().speed = speed;
+            bullet.GetComponent<EnemyBullet>().playerTarget = target;
             bullet.transform.position = firepoint.transform.position;
             bullet.transform.SetParent(transform, true);
             bullet.SetActive(true);
@@ -187,10 +211,12 @@ public class BaseEnemy : MonoBehaviour {
             if (curAngle < 0) {
                 curAngle += 360;
             }
-            if (Mathf.Abs(curAngle - targetAngle) <= angleMoveThreshold && canChangeAngle) {
+            if (Mathf.Abs(curAngle - targetAngle) <= angleMoveThreshold) {
                 curAngle = targetAngle;
                 yield return new WaitForSeconds(Random.Range(0.5f, 2.0f));
-                targetAngle = GetRandom45Direction();
+                if (canChangeAngle) {
+                    targetAngle = GetRandom45Direction();
+                }
             }
             yield return null;
         }
@@ -238,6 +264,7 @@ public class BaseEnemy : MonoBehaviour {
     }
 
     protected float AngleFromVector(Vector2 direction) {
-        return Vector2.Angle(Vector2.right, direction);
+        float angle = Vector2.SignedAngle(Vector2.right, direction);
+        return angle % 360;
     }
 }

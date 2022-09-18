@@ -27,9 +27,7 @@ public class SnailBoss : BaseEnemy {
 
     protected override void Update() {
         base.Update();
-
-        int flipX = (curAngle > 90 && curAngle < 270) ? -1 : 1;
-        transform.localScale = new Vector3(flipX, 1, 1);
+        spriteRenderer.flipX = curAngle > 90 && curAngle < 270;
     }
 
     protected override void FixedUpdate() {
@@ -129,7 +127,7 @@ public class SnailBoss : BaseEnemy {
     }
 
     private void OnCollisionStay2D(Collision2D collision) {
-        ReverseMoveAngle();
+        BounceOff(collision);
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {

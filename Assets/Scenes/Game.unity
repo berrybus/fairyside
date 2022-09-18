@@ -4375,6 +4375,12 @@ MonoBehaviour:
   - {fileID: 5575491751145538916, guid: ea2b9b631cb5c2d47a8d077ec2846c1e, type: 3}
   - {fileID: 5575491751145538916, guid: 347aa3daab93c9d4691143e06133743c, type: 3}
   - {fileID: 5575491751145538916, guid: c8dd6a6fed648cf46a6555beb174e41f, type: 3}
+  - {fileID: 5575491751145538916, guid: 3d034348305ef884a9312a0826f68ef3, type: 3}
+  - {fileID: 5575491751145538916, guid: 445f588b2ed300840a7440c7ed9b814c, type: 3}
+  - {fileID: 5575491751145538916, guid: 8b78816822a5b0b4e9ca380079934cc8, type: 3}
+  - {fileID: 5575491751145538916, guid: f788fca2ee5e50b4eb03d55aee1d189e, type: 3}
+  - {fileID: 5575491751145538916, guid: e0f15cd00fc36e24dbb93435707f3219, type: 3}
+  - {fileID: 5575491751145538916, guid: bd8539e182d66184fa8de19a405f67ac, type: 3}
   startRoom: {fileID: 5575491751145538916, guid: c88a8d0149517eb4282b3fe228cab078, type: 3}
   shopRoom: {fileID: 5575491751145538916, guid: 900940f779d7a9d41b9a7c862913db5a, type: 3}
   bossRoom: {fileID: 5575491751145538916, guid: 6e867e350cc8f1a4fae8abd642f27bf2, type: 3}
@@ -4417,17 +4423,24 @@ MonoBehaviour:
   - {fileID: 1705201368475281939, guid: 8e57357313a9b164d9577a383e1ca19e, type: 3}
   - {fileID: 1705201368475281939, guid: fc535cbefea915043b78c4757e3c22e1, type: 3}
   - {fileID: 9011300338302578945, guid: 3f93db3ddd89d7a43afeafb66d772bfa, type: 3}
-  enemies5: []
+  enemies5:
+  - {fileID: 1045777798055916185, guid: 7a2cc153268432b4b9b3476728ce014f, type: 3}
+  - {fileID: 1705201368475281939, guid: f88b8281e023d914f8ecf58146a5be71, type: 3}
+  - {fileID: 1705201368475281939, guid: c16b15650970df345815d62e32b46026, type: 3}
+  - {fileID: 7008121284541088903, guid: f2868c591a23fa94fb4c31803efe5046, type: 3}
+  - {fileID: 1705201368475281939, guid: 8e57357313a9b164d9577a383e1ca19e, type: 3}
+  - {fileID: 1705201368475281939, guid: fc535cbefea915043b78c4757e3c22e1, type: 3}
+  - {fileID: 1705201368475281939, guid: 85bef91297ff7eb42a39423335da1bcd, type: 3}
   enemies6: []
   enemies7: []
   enemies8: []
   bossList:
-  - {fileID: 7008121284541088903, guid: d7928c2394859304eb7f76a517481a42, type: 3}
+  - {fileID: 7008121284541088903, guid: 72a65edf3f7bd464ea00e2ffccdc5f7a, type: 3}
   - {fileID: 7008121284541088903, guid: 6a9a338be880bf44597699cd011e7527, type: 3}
   - {fileID: 7008121284541088903, guid: d7928c2394859304eb7f76a517481a42, type: 3}
   - {fileID: 7008121284541088903, guid: 3121a4f62744c0e4eb1a2c6c3588c958, type: 3}
-  - {fileID: 1705201368475281939, guid: 85bef91297ff7eb42a39423335da1bcd, type: 3}
-  - {fileID: 1705201368475281939, guid: 85bef91297ff7eb42a39423335da1bcd, type: 3}
+  - {fileID: 7008121284541088903, guid: 75508cacf5ec41a41b70b1ceb91c46fe, type: 3}
+  - {fileID: 7008121284541088903, guid: 709baeea4831f2a4d97497ed5e2c96f7, type: 3}
   enemyBank: []
   boss: {fileID: 0}
   cameraController: {fileID: 1316741307}

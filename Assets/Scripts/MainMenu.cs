@@ -16,6 +16,8 @@ public class MainMenu: UIScreen
             manager.UpdateScreen(MenuScreen.Memories);
         } else if (currentSelect == 3) {
             manager.UpdateScreen(MenuScreen.Settings);
+        } else if (currentSelect == options.Length - 1) {
+            Application.Quit();
         }
     }
 

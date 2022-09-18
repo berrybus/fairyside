@@ -18,6 +18,8 @@ public class PlayerManager: MonoBehaviour
     [System.NonSerialized]
     public int maxHp = 5;
     [System.NonSerialized]
+    public int startHp = 5;
+    [System.NonSerialized]
     public float mp = 100;
     [System.NonSerialized]
     public int maxMp = 100;
@@ -56,7 +58,8 @@ public class PlayerManager: MonoBehaviour
     public float gameTime = 0;
 
     public void StartGame() {
-        hp = maxHp;
+        hp = startHp;
+        maxHp = startHp;
         mp = maxMp;
         gemCount = 0;
         curGun = PlayerGun.Basic;
@@ -164,7 +167,7 @@ public class PlayerManager: MonoBehaviour
     }
 
     public int ExpToLevel() {
-        return (int) (20 * Mathf.Exp(lvl / 4f));
+        return (int) (15 * Mathf.Exp(lvl / 5f));
     }
 
     public bool AtMaxLvl() {
