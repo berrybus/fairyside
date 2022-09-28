@@ -13,8 +13,12 @@ public class IngameMenu : UIScreen {
             gameObject.SetActive(false);
             manager.CloseMenu();
         } else if (currentSelect == 1) {
-            manager.UpdateScreen(MenuScreen.Settings);
+            manager.UpdateScreen(MenuScreen.Card);
         } else if (currentSelect == 2) {
+            manager.UpdateScreen(MenuScreen.Notes);
+        } else if (currentSelect == 3) {
+            manager.UpdateScreen(MenuScreen.Settings);
+        } else if (currentSelect == 4) {
             Time.timeScale = 1;
             GameManager.instance.GoToMenu();
         }

@@ -44,8 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13c4b5dfc41fdc244a840aa172358e9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basicGunSprite: {fileID: 1319795323, guid: f9d9a8efd8e9cd8488570fd48c2a5d51, type: 3}
-  grassGunSprite: {fileID: 2016098113, guid: 4b1930c86c1ebb146a41de17ddd227e0, type: 3}
-  waterGunSprite: {fileID: -159791118, guid: 78bca2d97078c494b8f7629b8a6604a9, type: 3}
-  fireGunSprite: {fileID: -1394547135, guid: dfb241fe90463b44586f183b1f710369, type: 3}
   damageText: {fileID: 1706053246208317526, guid: dcfee1d4246abfc48870942cea8c7e45, type: 3}
+  greenParticle: {r: 0.741636, g: 1, b: 0.6367924, a: 0}
+  blueParticle: {r: 0.621173, g: 0.9339623, b: 0.81158555, a: 0}
+  redParticle: {r: 0.9056604, g: 0.40947902, b: 0.35457456, a: 0}
+  pinkParticle: {r: 1, g: 0.6084906, b: 0.8833827, a: 0}
+  yellowParticle: {r: 1, g: 0.93563235, b: 0.5424528, a: 0}
+  orangeParticle: {r: 1, g: 0.74544257, b: 0.5235849, a: 0}

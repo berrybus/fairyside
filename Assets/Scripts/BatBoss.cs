@@ -71,7 +71,7 @@ public class BatBoss : BaseEnemy {
         yield return new WaitForSeconds(Random.Range(0.5f, 1.0f));
         movePattern = EnemyMovePattern.Follow;
     }
-    private void OnCollisionEnter2D(Collision2D collision) {
+    protected void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.CompareTag("Player")
             && movePattern == EnemyMovePattern.Follow) {
             movePattern = EnemyMovePattern.Stop;

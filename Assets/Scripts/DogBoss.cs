@@ -24,26 +24,25 @@ public class DogBoss : BaseEnemy {
             yield return new WaitForSeconds(Random.Range(0.5f, 1.0f));
             yield return FireHoning();
             if (Random.Range(0f, 1f) <= 0.5) {
-                yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
+                yield return new WaitForSeconds(Random.Range(0.5f, 1.0f));
                 yield return FireArrowBursts();
             }
             if (Random.Range(0f, 1f) <= 0.5) {
-                yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
+                yield return new WaitForSeconds(Random.Range(0.5f, 1.0f));
                 yield return FireStar(true);
             }
             for (int i = 0; i < Random.Range(2, 4); i++) {
-                yield return new WaitForSeconds(Random.Range(1.0f, 1.5f));
+                yield return new WaitForSeconds(Random.Range(0.5f, 1.0f));
                 yield return FireStar(false);
             }
-            yield return new WaitForSeconds(Random.Range(1.0f, 2.0f));
+            yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
             yield return FireSpiral();
-            yield return new WaitForSeconds(Random.Range(0.5f, 1.0f));
         }
     }
 
     IEnumerator FireHoning() {
         for (int i = 0; i < Random.Range(6, 8); i++) {
-            Fire(Vector2.zero, 4.0f, playerTarget);
+            Fire(Vector2.zero, 6.0f, playerTarget);
             yield return new WaitForSeconds(bulletFireDelay * 2);
         }
     }
@@ -115,8 +114,7 @@ public class DogBoss : BaseEnemy {
         }
     }
 
-
-    private void OnCollisionEnter2D(Collision2D collision) {
+    protected void OnCollisionEnter2D(Collision2D collision) {
         BounceOff(collision);
     }
 

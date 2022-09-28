@@ -7,43 +7,71 @@ public class ItemDescription : MonoBehaviour {
     public TMP_Text description;
     [System.NonSerialized]
     public ShopItemType type;
+    public string overrideText = "";
 
     void Start() {
         StartCoroutine(FadeOut());
         StartCoroutine(MoveUp());
 
+        if (overrideText != "") {
+            description.text = overrideText;
+            return;
+        }
+
         switch (type) {
             case ShopItemType.Atk:
-                description.text = "ATK Up!";
+                description.text = "Attack up!";
                 break;
             case ShopItemType.Wis:
-                description.text = "WIS Up!";
+                description.text = "Regen up!";
                 break;
-            case ShopItemType.Dex:
-                description.text = "DEX Up!";
+            case ShopItemType.CastSpd:
+                description.text = "Cast spd up!";
                 break;
             case ShopItemType.Luk:
-                description.text = "LUK Up!";
+                description.text = "Luck up!";
                 break;
             case ShopItemType.Spd:
-                description.text = "SPD Up!";
+                description.text = "Speed up!";
                 break;
             case ShopItemType.HP:
-                description.text = "HP Up!";
+                description.text = "HP up!";
                 break;
             case ShopItemType.HPRestore:
-                description.text = "HP Full!";
+                description.text = "HP full!";
                 break;
-            case ShopItemType.GrassGun:
-                description.text = "New Spell!";
+            case ShopItemType.DmgMult:
+                description.text = "Dmg mult up!";
                 break;
-            case ShopItemType.WaterGun:
-                description.text = "New Spell!";
+            case ShopItemType.SpellCount:
+                description.text = "Spell count up!";
                 break;
-            case ShopItemType.FireGun:
-                description.text = "New Spell!";
+            case ShopItemType.ShotSpd:
+                description.text = "Shot spd up!";
                 break;
-            default:
+            case ShopItemType.ShotSpdDown:
+                description.text = "Shot spd down!";
+                break;
+            case ShopItemType.Knockback:
+                description.text = "Knockback up!";
+                break;
+            case ShopItemType.Bouncing:
+                description.text = "Bouncing spells!";
+                break;
+            case ShopItemType.Homing:
+                description.text = "Homing spells!";
+                break;
+            case ShopItemType.Phasing:
+                description.text = "Phasing spells!";
+                break;
+            case ShopItemType.Piercing:
+                description.text = "Piercing spells!";
+                break;
+            case ShopItemType.Range:
+                description.text = "Range up!";
+                break;
+            case ShopItemType.SizeUp:
+                description.text = "Size up!";
                 break;
         }
     }

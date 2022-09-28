@@ -70,8 +70,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1268682227
-  m_SortingLayer: 4
+  m_SortingLayerID: 1634925759
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 07f5136dd55ff5a4b8777070baa12c41, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -155,7 +155,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1101485093
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: -741872431, guid: 08dde100ba2f98d47b50622e5fb0e2ee, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -361,14 +361,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   items:
-  - {fileID: 9148439009395258, guid: 0a4cc9fbb0c19404cb197b3002643339, type: 3}
-  - {fileID: 9148439009395258, guid: 115912ca4a1e3f94c813936739a16d0a, type: 3}
+  - {fileID: 9148439009395258, guid: 3904afd681c3fab46866772c5f85cedc, type: 3}
+  - {fileID: 9148439009395258, guid: 03c1ab16ffe925c4cac1e173f1afba73, type: 3}
   - {fileID: 9148439009395258, guid: 96f2310e5e035194ea8c3169ea92b5af, type: 3}
-  - {fileID: 9148439009395258, guid: c63b38cd60ff91e47bab68be29a641f1, type: 3}
+  - {fileID: 9148439009395258, guid: 96f2310e5e035194ea8c3169ea92b5af, type: 3}
+  - {fileID: 9148439009395258, guid: 115912ca4a1e3f94c813936739a16d0a, type: 3}
+  - {fileID: 9148439009395258, guid: 48734b246968c65429f0eb2be2bba6d1, type: 3}
+  - {fileID: 9148439009395258, guid: cc65bc47b4942a942a4a803c745e3a0b, type: 3}
+  - {fileID: 9148439009395258, guid: f15d40a9239caa84cade16fb0aba9962, type: 3}
   pickedItem: {fileID: 0}
   priceDisplay: {fileID: 2872577879970585885}
   itemPosition: {fileID: 3508560668681566586}
   red: {r: 0.9098039, g: 0.23137255, b: 0.23137255, a: 1}
+  itemGetClip: {fileID: 8300000, guid: 4f7997cafc29a384698adcd0fa039689, type: 3}
+  textPopupClip: {fileID: 8300000, guid: b868ebdb35928014f940affd80d1a2b2, type: 3}
 --- !u!1 &7381599488723408509
 GameObject:
   m_ObjectHideFlags: 0
@@ -445,8 +451,8 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1268682227
-  m_SortingLayer: 4
+  m_SortingLayerID: 1634925759
+  m_SortingLayer: 5
   m_SortingOrder: 10
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &2872577879970585885

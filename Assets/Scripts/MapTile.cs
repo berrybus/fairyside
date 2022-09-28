@@ -10,9 +10,11 @@ public class MapTile : MonoBehaviour
     public Sprite selected;
     public Sprite unselected;
     public Sprite clear;
+    public Sprite iconShop;
+    public Sprite iconBoss;
+    public Sprite iconStart;
+    public Sprite iconLibrary;
+    public bool isIconHidden = false;
     public SpriteRenderer spriteRenderer;
-
-    private void Awake() {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-    }
+    public SpriteRenderer iconRenderer;
 }

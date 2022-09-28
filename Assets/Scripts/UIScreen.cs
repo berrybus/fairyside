@@ -5,12 +5,13 @@ using UnityEngine.InputSystem;
 using TMPro;
 
 public class UIScreen : MonoBehaviour {
-    private Color deselect = new Color(138f / 255f, 143f / 255f, 158f / 255f, 1f);
+    protected Color deselect = new Color(138f / 255f, 143f / 255f, 158f / 255f, 1f);
     protected int currentSelect = 0;
     public TMP_Text[] options;
     public MenuScreen screenType;
     public MenuScreen parentScreenType;
     public MenuScreenManager manager;
+    public bool playClicks = true;
 
     protected virtual void Start() {
         SetTextColors();

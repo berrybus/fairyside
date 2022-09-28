@@ -6,34 +6,13 @@ using UnityEngine.Pool;
 public class ObjectPool : MonoBehaviour {
     public static ObjectPool instance;
 
-    public IObjectPool<GameObject> basicBullets;
-    public GameObject basicBullet;
+    public IObjectPool<GameObject>bullets;
+    public GameObject bullet;
     public int playerBulletsToPool;
 
-    public IObjectPool<GameObject> basicBulletParticles;
-    public GameObject basicBulletParticle;
-    public int basicBulletParticlesToPool;
-
-    public IObjectPool<GameObject> grassBullets;
-    public GameObject grassBullet;
-
-    public IObjectPool<GameObject> grassBulletParticles;
-    public GameObject grassBulletParticle;
-    public int grassBulletParticlesToPool;
-
-    public IObjectPool<GameObject> waterBullets;
-    public GameObject waterBullet;
-
-    public IObjectPool<GameObject> waterBulletParticles;
-    public GameObject waterBulletParticle;
-    public int waterBulletParticlesToPool;
-
-    public IObjectPool<GameObject> fireBullets;
-    public GameObject fireBullet;
-
-    public IObjectPool<GameObject> fireBulletParticles;
-    public GameObject fireBulletParticle;
-    public int fireBulletParticlesToPool;
+    public IObjectPool<GameObject> bulletParticles;
+    public GameObject bulletParticle;
+    public int bulletParticlesToPool;
 
     public IObjectPool<GameObject> enemyBullets;
     public GameObject enemyBullet;
@@ -48,38 +27,8 @@ public class ObjectPool : MonoBehaviour {
     }
 
     private void Start() {
-        basicBullets = new ObjectPool<GameObject>(
-          createFunc: () => Instantiate(basicBullet),
-          actionOnGet: (obj) => obj.SetActive(false),
-          actionOnRelease: (obj) => obj.SetActive(false),
-          actionOnDestroy: (obj) => Destroy(obj),
-          collectionCheck: true,
-          defaultCapacity: playerBulletsToPool,
-          maxSize: 100
-        );
-
-        grassBullets = new ObjectPool<GameObject>(
-          createFunc: () => Instantiate(grassBullet),
-          actionOnGet: (obj) => obj.SetActive(false),
-          actionOnRelease: (obj) => obj.SetActive(false),
-          actionOnDestroy: (obj) => Destroy(obj),
-          collectionCheck: true,
-          defaultCapacity: playerBulletsToPool,
-          maxSize: 100
-        );
-
-        waterBullets = new ObjectPool<GameObject>(
-          createFunc: () => Instantiate(waterBullet),
-          actionOnGet: (obj) => obj.SetActive(false),
-          actionOnRelease: (obj) => obj.SetActive(false),
-          actionOnDestroy: (obj) => Destroy(obj),
-          collectionCheck: true,
-          defaultCapacity: playerBulletsToPool,
-          maxSize: 100
-        );
-
-        fireBullets = new ObjectPool<GameObject>(
-          createFunc: () => Instantiate(fireBullet),
+        bullets = new ObjectPool<GameObject>(
+          createFunc: () => Instantiate(bullet),
           actionOnGet: (obj) => obj.SetActive(false),
           actionOnRelease: (obj) => obj.SetActive(false),
           actionOnDestroy: (obj) => Destroy(obj),
@@ -98,63 +47,18 @@ public class ObjectPool : MonoBehaviour {
           maxSize: 100
         );
 
-        basicBulletParticles = new ObjectPool<GameObject>(
+        bulletParticles = new ObjectPool<GameObject>(
           createFunc: () =>
           {
-              var particleObj = Instantiate(basicBulletParticle);
-              particleObj.GetComponent<PooledParticle>().pool = basicBulletParticles;
+              var particleObj = Instantiate(bulletParticle);
+              particleObj.GetComponent<PooledParticle>().pool = bulletParticles;
               return particleObj;
           },
           actionOnGet: (obj) => obj.SetActive(true),
           actionOnRelease: (obj) => obj.SetActive(false),
           actionOnDestroy: (obj) => Destroy(obj),
           collectionCheck: true,
-          defaultCapacity: basicBulletParticlesToPool,
-          maxSize: 100
-        );
-
-        grassBulletParticles = new ObjectPool<GameObject>(
-          createFunc: () =>
-          {
-              var particleObj = Instantiate(grassBulletParticle);
-              particleObj.GetComponent<PooledParticle>().pool = grassBulletParticles;
-              return particleObj;
-          },
-          actionOnGet: (obj) => obj.SetActive(true),
-          actionOnRelease: (obj) => obj.SetActive(false),
-          actionOnDestroy: (obj) => Destroy(obj),
-          collectionCheck: true,
-          defaultCapacity: grassBulletParticlesToPool,
-          maxSize: 100
-        );
-
-        waterBulletParticles = new ObjectPool<GameObject>(
-          createFunc: () =>
-          {
-              var particleObj = Instantiate(waterBulletParticle);
-              particleObj.GetComponent<PooledParticle>().pool = waterBulletParticles;
-              return particleObj;
-          },
-          actionOnGet: (obj) => obj.SetActive(true),
-          actionOnRelease: (obj) => obj.SetActive(false),
-          actionOnDestroy: (obj) => Destroy(obj),
-          collectionCheck: true,
-          defaultCapacity: waterBulletParticlesToPool,
-          maxSize: 100
-        );
-
-        fireBulletParticles = new ObjectPool<GameObject>(
-          createFunc: () =>
-          {
-              var particleObj = Instantiate(fireBulletParticle);
-              particleObj.GetComponent<PooledParticle>().pool = fireBulletParticles;
-              return particleObj;
-          },
-          actionOnGet: (obj) => obj.SetActive(true),
-          actionOnRelease: (obj) => obj.SetActive(false),
-          actionOnDestroy: (obj) => Destroy(obj),
-          collectionCheck: true,
-          defaultCapacity: fireBulletParticlesToPool,
+          defaultCapacity: bulletParticlesToPool,
           maxSize: 100
         );
 

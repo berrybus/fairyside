@@ -80,7 +80,7 @@ public class CatBoss : BaseEnemy {
     }
 
 
-    private void OnCollisionEnter2D(Collision2D collision) {
+    protected void OnCollisionEnter2D(Collision2D collision) {
         BounceOffVector(collision);
     }
 

@@ -267,11 +267,11 @@ public static class ScriptRepository
         new ScriptLine(
             "RashaAvatar",
             "",
-            "Richard pointed his wand towards the bat and fired off several bursts of red flames."),
+            "Richard pointed his wand towards the boar and fired off several bursts of red flames."),
         new ScriptLine(
             "",
             "",
-            "The boar practically melted and wisps of smoke escaped from the desiccated carcass."),
+            "The boar melted and wisps of smoke escaped from the desiccated carcass."),
         new ScriptLine(
             "ProfessorAvatar",
             "Professor",
@@ -386,7 +386,7 @@ public static class ScriptRepository
         new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
-            "Ack! Where did you come from?"),
+            "Ah! Where did you come from?"),
         new ScriptLine(
             "RashaAvatar",
             "Richard",
@@ -394,7 +394,7 @@ public static class ScriptRepository
        new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
-            "That makes sense I suppose."),
+            "Oh yes, of course. That makes sense."),
        new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
@@ -402,7 +402,7 @@ public static class ScriptRepository
        new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
-            "I'm just... bad at being a witch!"),
+            "I'm just bad at being a witch!"),
        new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
@@ -414,11 +414,11 @@ public static class ScriptRepository
        new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
-            "My grades are terrible... I shouldn't have enrolled here."),
+            "My grades are terrible... Maybe I shouldn't have enrolled here."),
         new ScriptLine(
             "RashaAvatar",
             "Richard",
-            "Not everyone is born with that kind of ability."),
+            "Not everyone has a knack for witchcraft."),
         new ScriptLine(
             "RashaAvatar",
             "Richard",
@@ -426,7 +426,7 @@ public static class ScriptRepository
        new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
-            "I'm worried I'm a never bloomer!"),
+            "But I'm worried I'm a never bloomer!"),
        new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
@@ -438,7 +438,7 @@ public static class ScriptRepository
         new ScriptLine(
             "RashaAvatar",
             "Richard",
-            "Who is they?"),
+            "Who are they?"),
        new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
@@ -446,7 +446,7 @@ public static class ScriptRepository
         new ScriptLine(
             "RashaAvatar",
             "Richard",
-            "Okay, now you can't possibly take them seriously."),
+            "Well, you can't possibly take them seriously."),
         new ScriptLine(
             "RashaAvatar",
             "Richard",
@@ -454,11 +454,11 @@ public static class ScriptRepository
        new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
-            "But I know you've heard those rumors before."),
+            "I'm sure you've heard those rumors before."),
        new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
-            "You have, you have!"),
+            "You definitely have!"),
         new ScriptLine(
             "RashaHappyAvatar",
             "",
@@ -466,11 +466,15 @@ public static class ScriptRepository
         new ScriptLine(
             "RashaHappyAvatar",
             "",
-            "It was softer than I expected and a little cute."),
+            "It was softer than I expected and rather cute."),
         new ScriptLine(
             "",
             "",
             "Then we were silent as we let our thoughts wander."),
+        new ScriptLine(
+            "",
+            "",
+            "........................................"),
         new ScriptLine(
             "RashaAvatar",
             "Richard",
@@ -486,19 +490,27 @@ public static class ScriptRepository
        new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
-            "It was my father's dream. To be a great wizard."),
-       new ScriptLine(
-            "ShirleyAvatar",
-            "Shirley",
-            "He died from the plague some years ago."),
+            "Hmmm... Well I've always thought I would look really cool with magic powers."),
         new ScriptLine(
             "RashaAvatar",
             "Richard",
-            "But it's not your dream."),
+            "Is that all?"),
+        new ScriptLine(
+            "RashaAvatar",
+            "Richard",
+            "Surely there's more than that."),
        new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
-            "It is now."),
+            "It was also what my dad wanted. To be a great wizard."),
+        new ScriptLine(
+            "RashaAvatar",
+            "Richard",
+            "But it's not what you want."),
+       new ScriptLine(
+            "ShirleyAvatar",
+            "Shirley",
+            "It is now!"),
        new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
@@ -506,7 +518,7 @@ public static class ScriptRepository
         new ScriptLine(
             "RashaAvatar",
             "Richard",
-            " I'm surprised they let you keep taking it."),
+            "I'm surprised they let you keep taking it."),
         new ScriptLine(
             "RashaAvatar",
             "Richard",
@@ -530,31 +542,31 @@ public static class ScriptRepository
         new ScriptLine(
             "RashaAvatar",
             "Richard",
-            "I'll show you the ropes around here."),
+            "I'll teach you a spell or two."),
        new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
-            "R-really? Do I need to pay you?"),
+            "R-really? What's the catch?"),
        new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
-            "I don't have much money..."),
+            "Do you charge money? My funds are pretty low..."),
         new ScriptLine(
             "RashaAvatar",
             "Richard",
-            "No, simply your company is enough."),
+            "No, just your company is enough."),
         new ScriptLine(
             "RashaAvatar",
             "Richard",
-            "I'm not exactly the sociable type, but I enjoy talking to you."),
+            "I find myself enjoying our conversation quite a bit."),
         new ScriptLine(
             "RashaAvatar",
             "Richard",
-            "You should at least take pride in that."),
+            "And I would like to spend more time with you."),
        new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
-            "Y-yessir!"),
+            "T-thank you sir! I feel the same way!"),
         new ScriptLine(
             "RashaAvatar",
             "Richard",
@@ -582,11 +594,11 @@ public static class ScriptRepository
        new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
-            "Oh no, I wish I had a cute little nickname to give you as well."),
+            "If only I had a nice nickname you could call me too."),
         new ScriptLine(
             "RashaHappyAvatar",
             "Rasha",
-            "That's no problem."),
+            "That's no problem at all."),
         new ScriptLine(
             "RashaHappyAvatar",
             "Rasha",

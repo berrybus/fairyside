@@ -10,10 +10,16 @@ public class Shopkeeper : MonoBehaviour {
     public TMP_Text priceDisplay;
     public Transform itemPosition;
     public Color red;
+
+    public AudioClip itemGetClip;
+    public AudioClip textPopupClip;
+
     // Start is called before the first frame update
     void Start() {
         pickedItem = items[Random.Range(0, items.Length)];
-        Instantiate(pickedItem, itemPosition.position, Quaternion.identity);
+        ShopItem newItem = Instantiate(pickedItem, itemPosition.position, Quaternion.identity);
+        newItem.itemGetClip = itemGetClip;
+        newItem.textPopupClip = textPopupClip;
     }
 
     // Update is called once per frame

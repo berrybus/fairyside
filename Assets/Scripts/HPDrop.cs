@@ -9,6 +9,8 @@ public class HPDrop : MonoBehaviour {
     private Rigidbody2D rbd;
     private float speedLow = 1.0f;
     private float speedHigh = 5.0f;
+
+    public AudioClip coin;
     // Start is called before the first frame update
     void Awake() {
         boxCollider = GetComponent<BoxCollider2D>();
@@ -23,6 +25,7 @@ public class HPDrop : MonoBehaviour {
         if (collision.gameObject.CompareTag("Player")) {
             PlayerManager.instance.hp += 1;
             PlayerManager.instance.hp = Mathf.Min(PlayerManager.instance.maxHp, PlayerManager.instance.hp);
+            GameManager.instance.PlaySFX(coin);
             Instantiate(death, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }

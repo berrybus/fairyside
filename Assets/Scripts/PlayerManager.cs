@@ -1,13 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum PlayerGun {
-    Basic,
-    Grass,
-    Water,
-    Fire
+public enum SpellColor {
+    // default
+    White,
+    // more shots
+    Green,
+    // piercing
+    Blue,
+    // damage mult
+    Red,
+    // bouncing
+    Yellow,
+    // homing
+    Pink,
+    // phasing
+    Orange
 }
 
 public class PlayerManager: MonoBehaviour
@@ -30,13 +38,56 @@ public class PlayerManager: MonoBehaviour
     [System.NonSerialized]
     public int atk = 3;
     [System.NonSerialized]
-    public int wis = 1;
+    public int regen = 1;
     [System.NonSerialized]
-    public int dex = 0;
+    public int castSpeed = 2;
+    [System.NonSerialized]
+    public int castSpeedCap = 10;
     [System.NonSerialized]
     public int luk = 0;
     [System.NonSerialized]
-    public int spd = 2;
+    public int speed = 2;
+    [System.NonSerialized]
+    public int numShots = 1;
+    [System.NonSerialized]
+    public float damageMult = 1f;
+    [System.NonSerialized]
+    public int shotSpeed = 6;
+    [System.NonSerialized]
+    public float knockbackMult = 1f;
+    [System.NonSerialized]
+    public float knockbackCap = 6f;
+    [System.NonSerialized]
+    public int range = 1;
+    [System.NonSerialized]
+    public int bulletSize = 1;
+    [System.NonSerialized]
+    public bool spellCanHone = false;
+    [System.NonSerialized]
+    public bool spellCanBounce = false;
+    [System.NonSerialized]
+    public bool spellCanPierce = false;
+    [System.NonSerialized]
+    public bool spellCanPhase = false;
+
+    [System.NonSerialized]
+    public int maxHPInc;
+    [System.NonSerialized]
+    public int mpRegenInc;
+    [System.NonSerialized]
+    public int speedInc;
+    [System.NonSerialized]
+    public int attackInc;
+    [System.NonSerialized]
+    public int luckInc;
+    [System.NonSerialized]
+    public int castSpdInc;
+    [System.NonSerialized]
+    public int shotSpdInc;
+    [System.NonSerialized]
+    public int rangeInc;
+    [System.NonSerialized]
+    public int knockbackInc;
 
     [System.NonSerialized]
     public int gemCount = 0;
@@ -45,12 +96,7 @@ public class PlayerManager: MonoBehaviour
     public int exp = 0;
 
     [System.NonSerialized]
-    public PlayerGun curGun;
-
-    public Sprite basicGunSprite;
-    public Sprite grassGunSprite;
-    public Sprite waterGunSprite;
-    public Sprite fireGunSprite;
+    public SpellColor spellColor = SpellColor.White;
 
     public DamageText damageText;
 
@@ -58,12 +104,9 @@ public class PlayerManager: MonoBehaviour
     public float gameTime = 0;
 
     public void StartGame() {
-        hp = startHp;
-        maxHp = startHp;
-        mp = maxMp;
         gemCount = 0;
-        curGun = PlayerGun.Basic;
         gameTime = 0;
+        spellColor = SpellColor.White;
         SetupStartStats();
     }
 
@@ -74,16 +117,10 @@ public class PlayerManager: MonoBehaviour
         } else {
             Destroy(gameObject);
         }
-        curGun = PlayerGun.Basic;
     }
 
     public int ManaCost() {
-        switch (curGun) {
-            case PlayerGun.Basic:
-                return 5;
-            default:
-                return 7;
-        }
+        return 5 + (int)(((numShots - 1) / 2f) * 5f);
     }
 
     public bool PlayerHit() {
@@ -102,72 +139,20 @@ public class PlayerManager: MonoBehaviour
         mp = Mathf.Min(mp, maxMp);
     }
 
-    public int EnemyHit(int healthLeft, Vector3 pos, bool displayOnTop) {
+    public (int, bool) EnemyHit() {
         float damage = Random.Range((int)(atk / 2), (int)(atk * 1.5));
-        damage *= GunDamageMultiplier();
+        damage *= damageMult;
         bool didCrit = Random.Range(0.0f, 1.0f) <= luk * 0.07 + 0.05;
         if (didCrit) {
             int critMult = luk >= 3 ? 3 : 2;
             damage *= critMult;
         }
-        damage = (int) Mathf.Max(1, damage);
-        float textOffset = displayOnTop ? 0.50f : 0.0f;
-        var text = Instantiate(damageText, pos + new Vector3(0, 0.50f + textOffset, 0), Quaternion.identity);
-        text.damage.text = damage.ToString();
-        if (didCrit) {
-            text.damage.fontSize = 10;
-            text.damage.color = new Color(255f / 255f, 212f / 255f, 95f / 255f, 1.0f);
-        }
-        return (int) damage;
-    }
-
-    public float GunDamageMultiplier() {
-        switch (curGun) {
-            case PlayerGun.Basic:
-                return 1f;
-            case PlayerGun.Grass:
-                return 1f;
-            case PlayerGun.Water:
-                return 1f;
-            case PlayerGun.Fire:
-                return 2f;
-            default:
-                return 1.0f;
-        }
-    }
-
-    public float GunKnockbackMultiplier() {
-        switch (curGun) {
-            case PlayerGun.Basic:
-                return 1f;
-            case PlayerGun.Grass:
-                return 1f;
-            case PlayerGun.Water:
-                return 0.0f;
-            case PlayerGun.Fire:
-                return 2f;
-            default:
-                return 1.0f;
-        }
-    }
-
-    public Sprite CurrentGunSprite() {
-        switch (curGun) {
-            case PlayerGun.Basic:
-                return basicGunSprite;
-            case PlayerGun.Grass:
-                return grassGunSprite;
-            case PlayerGun.Water:
-                return waterGunSprite;
-            case PlayerGun.Fire:
-                return fireGunSprite;
-            default:
-                return basicGunSprite;
-        }
+        int damageRet = (int) Mathf.Max(1, damage);
+        return (damageRet, didCrit);
     }
 
     public int ExpToLevel() {
-        return (int) (15 * Mathf.Exp(lvl / 5f));
+        return (int) (20 * Mathf.Exp(lvl / 3));
     }
 
     public bool AtMaxLvl() {
@@ -175,19 +160,54 @@ public class PlayerManager: MonoBehaviour
     }
 
     private void SetupStartStats() {
-        atk = 3 + (lvl + 1) / 5;
-        wis = 1 + (lvl + 3) / 5;
-        dex = 0 + lvl / 5;
-        luk = 0 + (lvl - 1) / 5;
-        spd = 2 + (lvl + 2) / 5;
+        hp = startHp;
+        maxHp = startHp;
+        mp = maxMp;
+        atk = 3;
+        regen = 1;
+        castSpeed = 2;
+        shotSpeed = 6;
+        luk = 0;
+        speed = 2;
+        damageMult = 1f;
+        knockbackMult = 1f;
+        range = 1;
+        bulletSize = 1;
+        numShots = 1;
+        spellCanBounce = false;
+        spellCanHone = false;
+        spellCanPierce = false;
+        spellCanPhase = false;
+        spellColor = SpellColor.White;
     }
 
     private void FixedUpdate() {
-        mp += Mathf.Exp((1f + 0.01f * wis) * mp / (float)maxMp) * (0.1f + (0.02f * wis));
+        mp += Mathf.Exp((1f + 0.01f * regen) * mp / (float)maxMp) * (0.1f + (0.02f * regen));
         mp = Mathf.Min(mp, maxMp);
 
         if (SceneManager.GetActiveScene().name == "Game") {
             gameTime += Time.deltaTime;
+        }
+    }
+
+    public Color ParticleColor() {
+        switch (spellColor) {
+            case SpellColor.White:
+                return Color.white;
+            case SpellColor.Blue:
+                return Color.cyan;
+            case SpellColor.Red:
+                return Color.red;
+            case SpellColor.Green:
+                return Color.green;
+            case SpellColor.Pink:
+                return Color.magenta;
+            case SpellColor.Yellow:
+                return Color.yellow;
+            case SpellColor.Orange:
+                return new Color(1.0f, 0.5f, 0.2f);
+            default:
+                return Color.white;
         }
     }
 

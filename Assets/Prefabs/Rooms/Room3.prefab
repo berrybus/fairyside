@@ -1618,6 +1618,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xCoord: 0
   yCoord: 0
+  type: 0
   leftDoor: {fileID: 4965569973053626461}
   rightDoor: {fileID: 8778212732643497271}
   topDoor: {fileID: 8127008381583554524}
@@ -2521,7 +2522,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 0000000073e23737bd73567df1d298f70d7261b4dbab58be
+  m_ApplyToSortingLayers: 0000000073e23737bd73567df1d298f70d7261b4bffc7261dbab58be
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0

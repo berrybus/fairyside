@@ -183,12 +183,17 @@ MonoBehaviour:
   moveForce: 800
   gem: {fileID: 418760705434424171, guid: 6cf28cc7dfb76b8478636aee6f3fc649, type: 3}
   hpDrop: {fileID: 7444403235724501264, guid: 0ede2a3c82b16f542b658cd5bac7b71b, type: 3}
+  note: {fileID: 6778710222733356995, guid: 33c0169e8f5124e438a20d5d1d2e9204, type: 3}
   knockbackForce: 1000
   firepoint: {fileID: 330113660399901933}
   bulletSpeed: 6
+  bulletFireDelay: 0
   hp: 14
   minGems: 1
   maxGems: 3
+  hpBar: {fileID: 0}
+  noteNumber: 4
+  hitClip: {fileID: 8300000, guid: 6f27bfabc5beb4442aff5d24d535a1dc, type: 3}
   minShots: 1
   maxShots: 2
 --- !u!210 &5581394828764408606
@@ -283,7 +288,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5832923185420365620, guid: c5864e0b7bf9be845b9d0fbb9cfd0b4b, type: 3}
       propertyPath: m_SortingLayer
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5832923185420365620, guid: c5864e0b7bf9be845b9d0fbb9cfd0b4b, type: 3}
       propertyPath: m_SortingOrder

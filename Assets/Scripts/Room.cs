@@ -2,9 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum RoomType {
+    Boss,
+    Shop,
+    Start,
+    Regular,
+    Library
+}
+
 public class Room : MonoBehaviour {
     public int xCoord;
     public int yCoord;
+
+    public RoomType type;
 
     public Door leftDoor;
     public Door rightDoor;

@@ -11,10 +11,13 @@ public class MainMenu: UIScreen
             return;
         }
         if (currentSelect == 0) {
-            GameManager.instance.StartGame();
+            PlayerManager.instance.StartGame();
+            manager.UpdateScreen(MenuScreen.Pregame);
         } else if (currentSelect == 1) {
             manager.UpdateScreen(MenuScreen.Memories);
-        } else if (currentSelect == 3) {
+        } else if (currentSelect == 2) {
+            manager.UpdateScreen(MenuScreen.Notes);
+        } else if (currentSelect == 4) {
             manager.UpdateScreen(MenuScreen.Settings);
         } else if (currentSelect == options.Length - 1) {
             Application.Quit();

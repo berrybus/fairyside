@@ -33,18 +33,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "RotateBullet",
+                    "name": "Cheat",
                     "type": "Button",
-                    "id": "ee7a6419-9119-4b90-9d44-af3caf0ed749",
+                    "id": "fcf60c7b-fd97-491a-b24c-6b691d22be08",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Cheat",
+                    "name": "Interact",
                     "type": "Button",
-                    "id": "fcf60c7b-fd97-491a-b24c-6b691d22be08",
+                    "id": "a06ff58f-639e-47c8-aa24-f4bd8a5599f3",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -208,23 +208,23 @@
                 },
                 {
                     "name": "",
-                    "id": "bf1b42a0-f474-4aee-9a7b-59e21a2a9df8",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RotateBullet",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "4127925c-8a27-46d5-9252-8e64ea228da4",
                     "path": "<Keyboard>/n",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Cheat",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d63aa059-52b0-4daf-8495-7a2c885c7b9b",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

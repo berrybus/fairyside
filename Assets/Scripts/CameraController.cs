@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour {
-    //public static CameraController instance;
+    public static Camera gameCamera;
     public Room curRoom;
 
     [SerializeField]
@@ -13,6 +13,10 @@ public class CameraController : MonoBehaviour {
 
     private float moveSpeed;
     private Vector3 targetPos = new Vector3(0, 0, -1);
+
+    private void Awake() {
+        gameCamera = GetComponent<Camera>();
+    }
 
     private void Update() {
         UpdatePosition();

@@ -35,6 +35,16 @@ public class GameManager : MonoBehaviour {
     public static int totalMemories = 13;
     public static int maxMemory = 4;
 
+    public float volume = 1f;
+
+    [SerializeField]
+    private AudioSource audioSource;
+
+    public AudioClip mainTheme;
+
+    public AudioClip roomOpenClip;
+    public AudioClip enemyDieClip;
+
     [System.NonSerialized]
     public int currentMemory = 0;
     private int endMemory = 0;
@@ -51,6 +61,13 @@ public class GameManager : MonoBehaviour {
         (-1, -1),
         (-1, -1),
     };
+
+    public static int totalMonsterNotes = NoteRepository.monsterNotes.Length;
+    public static int totalLoreNotes = NoteRepository.loreNotes.Length;
+    [System.NonSerialized]
+    public bool[] foundMonsterNotes = new bool[totalMonsterNotes];
+    [System.NonSerialized]
+    public bool[] foundLoreNotes = new bool[totalLoreNotes];
 
     void Awake() {
         if (instance == null) {
@@ -69,6 +86,8 @@ public class GameManager : MonoBehaviour {
 
     private void Start() {
         LoadGame();
+        audioSource.clip = mainTheme;
+        audioSource.Play();
     }
 
     IEnumerator FadeIn() {
@@ -104,6 +123,9 @@ public class GameManager : MonoBehaviour {
         yield return new WaitForSeconds(0.1f);
         loadingImage.enabled = false;
         loadingText.text = "";
+        if (sceneName == "Menu") {
+            PlayMusic(mainTheme);
+        }
         yield return FadeIn();
         isTransitioning = false;
     }
@@ -145,7 +167,6 @@ public class GameManager : MonoBehaviour {
             return;
         }
         isTransitioning = true;
-        PlayerManager.instance.StartGame();
         currentLevel = 0;
         Time.timeScale = 1;
         playSingleMemory = false;
@@ -189,11 +210,46 @@ public class GameManager : MonoBehaviour {
         isTransitioning = true;
         StartCoroutine(ToScene("GameOver"));
     }
+    
+    public void PlaySFX(AudioClip clip) {
+        audioSource.PlayOneShot(clip, volume);
+    }
+
+    public void PlayRoomOpenSFX() {
+        PlaySFX(roomOpenClip);
+    }
+
+    public void PlayEnemyDieSFX() {
+        PlaySFX(enemyDieClip);
+    }
+
+    public void PlayMusic(AudioClip clip) {
+        if (audioSource.clip != clip) {
+            audioSource.clip = clip;
+            audioSource.Play();
+        }
+    }
 
     // File client
     public void SaveGame() {
-        Save save = new Save(PlayerManager.instance.lvl, watchedMemory, PlayerManager.instance.exp);
-        BinaryFormatter bf = new BinaryFormatter();
+        Save save = new Save(
+            PlayerManager.instance.lvl,
+            watchedMemory,
+            foundMonsterNotes,
+            foundLoreNotes,
+            PlayerManager.instance.exp,
+            PlayerManager.instance.maxHPInc,
+            PlayerManager.instance.mpRegenInc,
+            PlayerManager.instance.speedInc,
+            PlayerManager.instance.attackInc,
+            PlayerManager.instance.luckInc,
+            PlayerManager.instance.castSpdInc,
+            PlayerManager.instance.shotSpdInc,
+            PlayerManager.instance.rangeInc,
+            PlayerManager.instance.knockbackInc
+        );
+
+    BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath + "/fairyside.save");
         bf.Serialize(file, save);
         file.Close();
@@ -206,11 +262,30 @@ public class GameManager : MonoBehaviour {
             Save save = (Save)bf.Deserialize(file);
             file.Close();
 
-            PlayerManager.instance.lvl = Mathf.Min(PlayerManager.maxLvl, Mathf.Max(0, save.level));
+            PlayerManager.instance.lvl = Mathf.Min(PlayerManager.maxLvl, Mathf.Max(1, save.level));
             PlayerManager.instance.exp = save.xp;
-            for (int i = 0; i < Mathf.Min(save.watchedMemory.Length, watchedMemory.Length); i++) {
+            for (int i = 0; i < Mathf.Min(save.watchedMemory.Length, totalMemories); i++) {
                 watchedMemory[i] = save.watchedMemory[i];
             }
+            if (save.foundMonsterNotes != null && save.foundLoreNotes != null) {
+                for (int i = 0; i < Mathf.Min(save.foundMonsterNotes.Length, totalMonsterNotes); i++) {
+                    foundMonsterNotes[i] = save.foundMonsterNotes[i];
+                }
+
+                for (int i = 0; i < Mathf.Min(save.foundLoreNotes.Length, totalLoreNotes); i++) {
+                    foundLoreNotes[i] = save.foundLoreNotes[i];
+                }
+            }
+
+            PlayerManager.instance.maxHPInc = save.maxHPInc;
+            PlayerManager.instance.mpRegenInc = save.mpRegenInc;
+            PlayerManager.instance.speedInc = save.speedInc;
+            PlayerManager.instance.attackInc = save.attackInc;
+            PlayerManager.instance.luckInc = save.luckInc;
+            PlayerManager.instance.castSpdInc = save.castSpdInc;
+            PlayerManager.instance.shotSpdInc = save.shotSpdInc;
+            PlayerManager.instance.rangeInc = save.rangeInc;
+            PlayerManager.instance.knockbackInc = Mathf.Min(6, save.knockbackInc);
         }
     }
 }

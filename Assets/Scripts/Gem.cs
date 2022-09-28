@@ -9,6 +9,7 @@ public class Gem : MonoBehaviour {
     private Rigidbody2D rbd;
     private float speedLow = 1.0f;
     private float speedHigh = 5.0f;
+    public AudioClip coin;
     // Start is called before the first frame update
     void Awake() {
         boxCollider = GetComponent<BoxCollider2D>();
@@ -22,6 +23,7 @@ public class Gem : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.CompareTag("Player")) {
             PlayerManager.instance.gemCount += 1;
+            GameManager.instance.PlaySFX(coin);
             Instantiate(death, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }

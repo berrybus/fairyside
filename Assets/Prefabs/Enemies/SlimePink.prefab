@@ -131,12 +131,17 @@ MonoBehaviour:
   moveForce: 1200
   gem: {fileID: 418760705434424171, guid: 6cf28cc7dfb76b8478636aee6f3fc649, type: 3}
   hpDrop: {fileID: 7444403235724501264, guid: 0ede2a3c82b16f542b658cd5bac7b71b, type: 3}
+  note: {fileID: 6778710222733356995, guid: 33c0169e8f5124e438a20d5d1d2e9204, type: 3}
   knockbackForce: 900
   firepoint: {fileID: 8003873997469712519}
   bulletSpeed: 8
-  hp: 75
-  minGems: 2
-  maxGems: 4
+  bulletFireDelay: 0
+  hp: 50
+  minGems: 3
+  maxGems: 5
+  hpBar: {fileID: 0}
+  noteNumber: 3
+  hitClip: {fileID: 8300000, guid: 6f27bfabc5beb4442aff5d24d535a1dc, type: 3}
   shouldFireSingle: 1
 --- !u!95 &8080155464659701921
 Animator:

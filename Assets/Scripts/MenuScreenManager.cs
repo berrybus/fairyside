@@ -9,8 +9,11 @@ public enum MenuScreen {
     Memories,
     Stats,
     Settings,
+    Card,
+    Pregame,
     Death,
-    None
+    None,
+    Notes
 }
 
 public class MenuScreenManager : MonoBehaviour {
@@ -20,6 +23,10 @@ public class MenuScreenManager : MonoBehaviour {
     public PlayerInput playerInput;
     public bool ingame;
     public string returnActionMap = "Player";
+
+    public AudioClip confirmClip;
+    public AudioClip moveClip;
+    public AudioClip cancelClip;
 
     private void Awake() {
         currentScreen = screens[0];
@@ -79,10 +86,18 @@ public class MenuScreenManager : MonoBehaviour {
 
     public void MoveUp(InputAction.CallbackContext ctx) {
         currentScreen.MoveUp(ctx);
+
+        if (ctx.performed && currentScreen.options.Length > 0 && currentScreen.playClicks) {
+            GameManager.instance.PlaySFX(moveClip);
+        }
     }
 
     public void MoveDown(InputAction.CallbackContext ctx) {
         currentScreen.MoveDown(ctx);
+
+        if (ctx.performed && currentScreen.options.Length > 0 && currentScreen.playClicks) {
+            GameManager.instance.PlaySFX(moveClip);
+        }
     }
 
     public void MoveLeft(InputAction.CallbackContext ctx) {
@@ -95,14 +110,22 @@ public class MenuScreenManager : MonoBehaviour {
 
     public void Confirm(InputAction.CallbackContext ctx) {
         currentScreen.Confirm(ctx);
+
+        if (!ctx.performed) {
+            return;
+        }
+        GameManager.instance.PlaySFX(confirmClip);
     }
 
     public void Cancel(InputAction.CallbackContext ctx) {
-
         currentScreen.Cancel(ctx);
 
         if (!ctx.performed) {
             return;
+        }
+
+        if (currentScreen.parentScreenType != MenuScreen.None || ingame) {
+            GameManager.instance.PlaySFX(cancelClip);
         }
 
         if (ingame && currentScreen.parentScreenType == MenuScreen.None) {
@@ -116,6 +139,7 @@ public class MenuScreenManager : MonoBehaviour {
         if (!ctx.performed || GameManager.instance.isTransitioning) {
             return;
         }
+        GameManager.instance.PlaySFX(confirmClip);
         Time.timeScale = 0;
         OpenMenu();
     }

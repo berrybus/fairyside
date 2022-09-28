@@ -94,7 +94,7 @@ public class Pumpkin : BaseEnemy {
         ReverseMoveAngle();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) {
+    protected void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.CompareTag("Player")
             && movePattern == EnemyMovePattern.Follow) {
             movePattern = EnemyMovePattern.Stop;

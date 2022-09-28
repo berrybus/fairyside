@@ -10,18 +10,6 @@ public class FireBullet : Bullet {
         }
     }
 
-    public override void RemoveSelf() {
-        if (!released) {
-            ObjectPool.instance.fireBullets.Release(gameObject);
-            GameObject particle = ObjectPool.instance.fireBulletParticles.Get();
-            if (particle != null) {
-                particle.transform.position = transform.position;
-                particle.GetComponent<ParticleSystem>().Play();
-            }
-            released = true;
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Door")) {
             RemoveSelf();

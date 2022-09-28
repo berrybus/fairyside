@@ -30,6 +30,27 @@ public class Minimap : MonoBehaviour
             maxY = Mathf.Max(maxY, room.yCoord);
             minX = Mathf.Min(minX, room.xCoord);
             minY = Mathf.Min(minY, room.yCoord);
+
+            switch (room.type) {
+                case RoomType.Boss:
+                    tile.iconRenderer.sprite = tile.iconBoss;
+                    tile.isIconHidden = true;
+                    break;
+                case RoomType.Shop:
+                    tile.iconRenderer.sprite = tile.iconShop;
+                    tile.isIconHidden = false;
+                    break;
+                case RoomType.Start:
+                    tile.iconRenderer.sprite = tile.iconStart;
+                    tile.isIconHidden = false;
+                    break;
+                case RoomType.Library:
+                    tile.iconRenderer.sprite = tile.iconLibrary;
+                    tile.isIconHidden = true;
+                    break;
+                case RoomType.Regular:
+                    break;
+            }
             mapTiles.Add(tile);
         }
     }
@@ -46,6 +67,8 @@ public class Minimap : MonoBehaviour
                     tile.spriteRenderer.sprite = tile.unselected;
                 }
             }
+
+            tile.iconRenderer.enabled = tile.visited || !tile.isIconHidden;
         }
     }
 

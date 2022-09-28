@@ -130,7 +130,7 @@ public class SnailBoss : BaseEnemy {
         BounceOff(collision);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) {
+    protected void OnCollisionEnter2D(Collision2D collision) {
         BounceOff(collision);
     }
 

@@ -30,6 +30,7 @@ public class RoomController : MonoBehaviour {
     public Room startRoom;
     public Room shopRoom;
     public Room bossRoom;
+    public Room libraryRoom;
 
     public List<Room> loadedRooms = new List<Room>();
     public HashSet<Vector2Int> roomCoords = new HashSet<Vector2Int>();
@@ -65,6 +66,8 @@ public class RoomController : MonoBehaviour {
     public static int minSpawnAmount = 1;
     public static int maxSpawnAmount = 6;
 
+    public AudioClip lorelei;
+
     private void Awake() {
         enemiesList.Add(enemies0);
         enemiesList.Add(enemies1);
@@ -82,6 +85,11 @@ public class RoomController : MonoBehaviour {
         boss = bossList[GameManager.instance.currentLevel];
         GenerateRandomRooms();
         SetupRooms();
+        StartMusic();
+    }
+
+    private void StartMusic() {
+        GameManager.instance.PlayMusic(lorelei);
     }
 
     public void OnPlayerEnterRoom(Room room) {
@@ -215,9 +223,20 @@ public class RoomController : MonoBehaviour {
         Queue<Room> special = new Queue<Room>();
         special.Enqueue(bossRoom);
         special.Enqueue(shopRoom);
-        if (GameManager.instance.currentLevel >= 4) {
-            special.Enqueue(shopRoom);
+        if (GameManager.instance.currentLevel < 3) {
+            if (Random.Range(0f, 1f) <= 0.25f) {
+                special.Enqueue(shopRoom);
+            }
+        } else if (GameManager.instance.currentLevel < 6) {
+            if (Random.Range(0f, 1f) <= 0.5f) {
+                special.Enqueue(shopRoom);
+            }
+        } else {
+            if (Random.Range(0f, 1f) <= 0.75f) {
+                special.Enqueue(shopRoom);
+            }
         }
+        special.Enqueue(libraryRoom);
 
         Queue<RoomInfo> avail = GetAvailableRooms(tempRooms);
 
@@ -246,6 +265,20 @@ public class RoomController : MonoBehaviour {
             newRoom.xCoord = info.xCoord;
             newRoom.yCoord = info.yCoord;
             newRoom.numEnemies = info.numEnemies;
+
+            // Determine room type
+            if (info.room == bossRoom) {
+                newRoom.type = RoomType.Boss;
+            } else if (info.room == shopRoom) {
+                newRoom.type = RoomType.Shop;
+            } else if (info.xCoord == 0 && info.yCoord == 0) {
+                newRoom.type = RoomType.Start;
+            } else if (info.room == libraryRoom) {
+                newRoom.type = RoomType.Library;
+            } else {
+                newRoom.type = RoomType.Regular;
+            }
+
             loadedRooms.Add(newRoom);
         }
 
@@ -268,7 +301,7 @@ public class RoomController : MonoBehaviour {
         var queue = new Queue<(Vector2Int, Vector2Int)>();
         AddRandomPosition(queue, startPos, Vector2Int.zero, visited);
         int numRooms = Random.Range(0, 3) + baseRoomNum + GameManager.instance.currentLevel;
-        // numRooms = 3;
+        // numRooms = 5;
         while (queue.Count != 0 && visited.Count < numRooms) {
             var (curPos, dir) = queue.Dequeue();
             if (!visited.Contains(curPos)) {

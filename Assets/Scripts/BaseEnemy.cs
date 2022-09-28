@@ -18,6 +18,7 @@ public class BaseEnemy : MonoBehaviour {
     protected Rigidbody2D rbd;
     protected SpriteRenderer spriteRenderer;
     protected Animator animator;
+    protected CapsuleCollider2D capsuleCollider2D;
 
     protected EnemyState currentState;
     protected EnemyMovePattern movePattern;
@@ -47,6 +48,8 @@ public class BaseEnemy : MonoBehaviour {
     [SerializeField]
     private HPDrop hpDrop;
     [SerializeField]
+    private Note note;
+    [SerializeField]
     private float knockbackForce;
     [SerializeField]
     protected EnemyFirepoint firepoint;
@@ -65,11 +68,19 @@ public class BaseEnemy : MonoBehaviour {
 
     private int maxHp;
 
+    private int damageQueueCooldown = 8;
+    private int totalDamageTexts = 0;
+
+    public int noteNumber = 0;
+
+    public AudioClip hitClip;
+
     protected virtual void Awake() {
         currentState = EnemyState.Move;
         rbd = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        capsuleCollider2D = GetComponent<CapsuleCollider2D>();
         gameObject.SetActive(false);
         maxHp = hp;
     }
@@ -111,25 +122,44 @@ public class BaseEnemy : MonoBehaviour {
         if (currentState == EnemyState.Knockback) {
             rbd.AddForce(knockback * knockbackForce);
         }
+
+        if (damageQueueCooldown == 0) {
+            totalDamageTexts = 0;
+        } else {
+            damageQueueCooldown -= 1;
+        }
+
+    }
+    
+    private void ShowDamageText(int dmg, bool didCrit) {
+        float textOffset = 0.625f * totalDamageTexts;
+        var text = Instantiate(PlayerManager.instance.damageText, origin.position + new Vector3(Random.Range(-0.125f, 0.125f), 0.125f + textOffset, 0), Quaternion.identity);
+        text.damage.text = dmg.ToString();
+        if (didCrit) {
+            text.damage.fontSize = 10;
+            text.damage.color = new Color(255f / 255f, 212f / 255f, 95f / 255f, 1.0f);
+        }
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.CompareTag("Bullet") && hp > 0) {
-            DamageSelf(collision.gameObject.GetComponent<Bullet>().displayOnTop);
+            DamageSelf();
+            GameManager.instance.PlaySFX(hitClip);
             currentState = EnemyState.Knockback;
             rbd.velocity = Vector2.zero;
-            knockback = transform.position - collision.transform.position;
+            knockback = capsuleCollider2D.bounds.center - collision.bounds.center;
             knockback = knockback.normalized;
-            knockback *= PlayerManager.instance.GunKnockbackMultiplier();
-            if (collision.gameObject.GetComponent<Bullet>().destroyOnEnemyImpact) {
-                collision.gameObject.GetComponent<Bullet>().RemoveSelf();
-            }
+            knockback *= PlayerManager.instance.knockbackMult;
             StartCoroutine(ResumeMovement());
             spriteRenderer.color = new Color(1.0f, 0.6f, 0.5f, 1.0f);
 
             // Enemy death
             if (hp <= 0) {
                 PlayerManager.instance.EnemyDie();
+                GameManager.instance.PlayEnemyDieSFX();
+                if (room.numEnemies == 1) {
+                    GameManager.instance.PlayRoomOpenSFX();
+                }
                 room.numEnemies -= 1;
                 room.OpenDoorsIfPossible();
                 if (isBoss && portal != null) {
@@ -147,8 +177,9 @@ public class BaseEnemy : MonoBehaviour {
                     );
                     newGem.Scatter(knockback);
                 }
+
                 // Create possible HP drop
-                float dropThreshold = isBoss ? 1.5f : 0.05f;
+                float dropThreshold = isBoss ? 0.75f : 0.05f;
                 float hpKnockback = isBoss ? 6.0f : 1.0f;
                 if (hpDrop != null && Random.Range(0f, 1f) <= dropThreshold) {
                     Vector3 position = origin.position + new Vector3(0, -0.25f, 0);
@@ -160,14 +191,34 @@ public class BaseEnemy : MonoBehaviour {
                     hp.Scatter(knockback * hpKnockback);
                 }
 
+                // Create possible note drop
+                float noteDropThreshold = isBoss ? 0.25f : 0.1f;
+                float noteForce = isBoss ? 6.0f : 2.0f;
+                if (note != null && Random.Range(0f, 1f) <= noteDropThreshold) {
+                    Vector3 position = origin.position + new Vector3(0, -0.25f, 0);
+                    Note noteDrop = Instantiate(note,
+                        position + new Vector3(Random.Range(-0.25f, 0.25f), Random.Range(-0.25f, 0.25f), 0),
+                        Quaternion.identity
+                    );
+                    noteDrop.SetIsLore(false);
+                    noteDrop.noteNumber = noteNumber;
+                    noteDrop.Scatter(noteForce * new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized);
+                }
+
                 Destroy(gameObject);
             }
+            return;
         }
     }
 
-    protected virtual void DamageSelf(bool displayOnTop) {
-        var dmg = PlayerManager.instance.EnemyHit(hp, origin.position, displayOnTop);
+    protected virtual void DamageSelf() {
+        var status = PlayerManager.instance.EnemyHit();
+        int dmg = status.Item1;
+        bool didCrit = status.Item2;
         hp -= dmg;
+        ShowDamageText(dmg, didCrit);
+        totalDamageTexts += 1;
+        damageQueueCooldown = 8;
     }
 
     protected virtual void StartActivity() { }
@@ -260,11 +311,12 @@ public class BaseEnemy : MonoBehaviour {
     }
 
     protected Vector2 VectorFromAngle(float angle) {
-        return (Vector2)(Quaternion.Euler(0, 0, angle) * Vector2.right).normalized;
+        var clampedAngle = (angle % 360 + 360) % 360;
+        return (Vector2)(Quaternion.Euler(0, 0, clampedAngle) * Vector2.right).normalized;
     }
 
     protected float AngleFromVector(Vector2 direction) {
         float angle = Vector2.SignedAngle(Vector2.right, direction);
-        return angle % 360;
+        return (angle % 360 + 360) % 360;
     }
 }

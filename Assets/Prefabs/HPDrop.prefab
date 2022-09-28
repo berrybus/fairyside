@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   death: {fileID: 1287619641310530063, guid: c9e921d1a608e5b4a83ef3d04ca3470e, type: 3}
+  coin: {fileID: 8300000, guid: 8bdb30f6b57b9674bad9505aa58c20c8, type: 3}
 --- !u!50 &9054272122607819598
 Rigidbody2D:
   serializedVersion: 4

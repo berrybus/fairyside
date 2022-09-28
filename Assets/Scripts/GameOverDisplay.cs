@@ -34,6 +34,7 @@ public class GameOverDisplay : MonoBehaviour {
         lvlDisplay.text = "LVL " + displayLvl;
         if (PlayerManager.instance.AtMaxLvl()) {
             xpDisplay.text = "XP: 0/--";
+            PlayerManager.instance.exp = 0;
         } else {
             xpDisplay.text = string.Format("XP: {0}/{1}", PlayerManager.instance.exp, PlayerManager.instance.ExpToLevel());
         }

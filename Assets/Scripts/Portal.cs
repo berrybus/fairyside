@@ -8,7 +8,7 @@ public class Portal : MonoBehaviour
 
     protected void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.CompareTag("Player") && !disabled) {
-            collision.gameObject.GetComponent<Player>().WillChangeLevels();
+            collision.gameObject.GetComponent<Shirley>().WillChangeLevels();
             GameManager.instance.NextLevel();
             disabled = true;
         }
