@@ -18,8 +18,7 @@ public enum SpellColor {
     Orange
 }
 
-public class PlayerManager: MonoBehaviour
-{
+public class PlayerManager : MonoBehaviour {
     public static PlayerManager instance;
     [System.NonSerialized]
     public int hp = 5;
@@ -69,6 +68,10 @@ public class PlayerManager: MonoBehaviour
     public bool spellCanPierce = false;
     [System.NonSerialized]
     public bool spellCanPhase = false;
+    [System.NonSerialized]
+    public bool itemsAreMagnetic = false;
+    [System.NonSerialized]
+    public bool writerDead = false;
 
     [System.NonSerialized]
     public int maxHPInc;
@@ -103,6 +106,35 @@ public class PlayerManager: MonoBehaviour
     [System.NonSerialized]
     public float gameTime = 0;
 
+    [System.NonSerialized]
+    public RunSave currentSave;
+
+    public void LoadGame(RunSave save) {
+        currentSave = save;
+        hp = save.hp;
+        maxHp = save.maxHp;
+        mp = maxMp;
+        atk = save.atk;
+        regen = save.regen;
+        castSpeed = save.castSpeed;
+        shotSpeed = save.shotSpeed;
+        luk = save.luk;
+        speed = save.speed;
+        damageMult = save.damageMult;
+        knockbackMult = save.knockbackMult;
+        range = save.range;
+        bulletSize = save.bulletSize;
+        numShots = save.numShots;
+        spellCanBounce = save.spellCanBounce;
+        spellCanHone = save.spellCanHone;
+        spellCanPierce = save.spellCanPierce;
+        spellCanPhase = save.spellCanPhase;
+        itemsAreMagnetic = save.itemsAreMagnetic;
+        spellColor = save.spellColor;
+        gameTime = save.gameTime;
+        gemCount = save.gemCount;
+    }
+
     public void StartGame() {
         gemCount = 0;
         gameTime = 0;
@@ -133,7 +165,7 @@ public class PlayerManager: MonoBehaviour
             return false;
         }
     }
-    
+
     public void EnemyDie() {
         mp += Random.Range(10, 20);
         mp = Mathf.Min(mp, maxMp);
@@ -147,12 +179,12 @@ public class PlayerManager: MonoBehaviour
             int critMult = luk >= 3 ? 3 : 2;
             damage *= critMult;
         }
-        int damageRet = (int) Mathf.Max(1, damage);
+        int damageRet = (int)Mathf.Max(1, damage);
         return (damageRet, didCrit);
     }
 
     public int ExpToLevel() {
-        return (int) (20 * Mathf.Exp(lvl / 3));
+        return (int)(20 * Mathf.Exp(lvl / 3));
     }
 
     public bool AtMaxLvl() {
@@ -179,6 +211,7 @@ public class PlayerManager: MonoBehaviour
         spellCanPierce = false;
         spellCanPhase = false;
         spellColor = SpellColor.White;
+        itemsAreMagnetic = false;
     }
 
     private void FixedUpdate() {
@@ -209,6 +242,34 @@ public class PlayerManager: MonoBehaviour
             default:
                 return Color.white;
         }
+    }
+
+    public void DidStartLevel(int level) {
+        currentSave = new RunSave(
+            level,
+            maxHp,
+            hp,
+            atk,
+            regen,
+            castSpeed,
+            castSpeedCap,
+            luk,
+            speed,
+            numShots,
+            damageMult,
+            shotSpeed,
+            knockbackMult,
+            range,
+            bulletSize,
+            spellCanHone,
+            spellCanBounce,
+            spellCanPierce,
+            spellCanPhase,
+            itemsAreMagnetic,
+            gemCount,
+            spellColor,
+            gameTime
+            );
     }
 
 }

@@ -21,7 +21,8 @@ public enum ShopItemType {
     ShotSpdDown,
     Piercing,
     Range,
-    SizeUp
+    SizeUp,
+    Magnet
 }
 
 public class ShopItem : MonoBehaviour {
@@ -112,6 +113,9 @@ public class ShopItem : MonoBehaviour {
                 break;
             case ShopItemType.SizeUp:
                 PlayerManager.instance.bulletSize += 1;
+                break;
+            case ShopItemType.Magnet:
+                PlayerManager.instance.itemsAreMagnetic = true;
                 break;
         }
     }

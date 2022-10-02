@@ -145,6 +145,8 @@ public class Bullet : MonoBehaviour {
             } else {
                 canHone = false;
             }
+        } else if (collision.gameObject.CompareTag("Writer")) {
+            RemoveSelf();
         }
     }
 }

@@ -75,6 +75,8 @@ public class BaseEnemy : MonoBehaviour {
 
     public AudioClip hitClip;
 
+    public bool wasSummoned = false;
+
     protected virtual void Awake() {
         currentState = EnemyState.Move;
         rbd = GetComponent<Rigidbody2D>();
@@ -162,7 +164,7 @@ public class BaseEnemy : MonoBehaviour {
                 }
                 room.numEnemies -= 1;
                 room.OpenDoorsIfPossible();
-                if (isBoss && portal != null) {
+                if ((isBoss || wasSummoned) && portal != null && room.numEnemies == 0) {
                     Instantiate(portal, origin.position, Quaternion.identity);
                 }
                 Instantiate(enemyDeath, origin.position, Quaternion.identity);
@@ -192,7 +194,7 @@ public class BaseEnemy : MonoBehaviour {
                 }
 
                 // Create possible note drop
-                float noteDropThreshold = isBoss ? 0.25f : 0.1f;
+                float noteDropThreshold = isBoss ? 0.25f : 0.02f;
                 float noteForce = isBoss ? 6.0f : 2.0f;
                 if (note != null && Random.Range(0f, 1f) <= noteDropThreshold) {
                     Vector3 position = origin.position + new Vector3(0, -0.25f, 0);
@@ -224,29 +226,37 @@ public class BaseEnemy : MonoBehaviour {
     protected virtual void StartActivity() { }
 
     protected void Fire(Transform target) {
-        Fire(Vector2.zero, bulletSpeed, target);
+        Fire(Vector2.zero, bulletSpeed, target, 0);
     }
 
     protected void Fire(Vector2 direction) {
-        Fire(direction, bulletSpeed, null);
+        Fire(direction, bulletSpeed, null, 0);
     }
 
     protected void Fire(Vector2 direction, float speed) {
-        Fire(direction, speed, null);
+        Fire(direction, speed, null, 0);
     }
 
     protected void Fire(Vector2 direction, float speed, Transform target) {
+        Fire(direction, speed, target, 0);
+    }
+
+    protected void FireWithMoreTime(Vector2 direction, float time) {
+        Fire(direction, bulletSpeed, null, time);
+    }
+
+    protected void Fire(Vector2 direction, float speed, Transform target, float additionalTime) {
         GameObject bullet = ObjectPool.instance.enemyBullets.Get();
         if (bullet != null) {
             bullet.GetComponent<EnemyBullet>().direction = direction.normalized;
             bullet.GetComponent<EnemyBullet>().speed = speed;
             bullet.GetComponent<EnemyBullet>().playerTarget = target;
+            bullet.GetComponent<EnemyBullet>().additionalStartTime = additionalTime;
             bullet.transform.position = firepoint.transform.position;
             bullet.transform.SetParent(transform, true);
             bullet.SetActive(true);
         }
     }
-
     protected void FireAngles(float[] angles) {
         foreach (float angle in angles) {
             Fire(VectorFromAngle(angle));

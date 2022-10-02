@@ -13,15 +13,13 @@ public class Save {
     public int shotSpdInc;
     public int rangeInc;
     public int knockbackInc;
+    public bool writerDead;
     public bool[] watchedMemory;
-    public bool[] foundMonsterNotes;
-    public bool[] foundLoreNotes;
+    public bool finishedGame;
 
     public Save(
         int _level,
         bool[] _memories,
-        bool[] _foundMonsterNotes,
-        bool[] _foundLoreNotes,
         int _xp,
         int _maxHPInc,
         int _mpRegenInc,
@@ -31,13 +29,13 @@ public class Save {
         int _castSpdInc,
         int _shotSpdInc,
         int _rangeInc,
-        int _knockbackInc
+        int _knockbackInc,
+        bool _writerDead,
+        bool _finishedGame
     ) {
         watchedMemory = _memories;
         level = _level;
         xp = _xp;
-        foundMonsterNotes = _foundMonsterNotes;
-        foundLoreNotes = _foundLoreNotes;
         maxHPInc = _maxHPInc;
         mpRegenInc = _mpRegenInc;
         speedInc = _speedInc;
@@ -47,6 +45,7 @@ public class Save {
         shotSpdInc = _shotSpdInc;
         rangeInc = _rangeInc;
         knockbackInc = _knockbackInc;
-
+        writerDead = _writerDead;
+        finishedGame = _finishedGame;
     }
 }

@@ -11,6 +11,7 @@ public class EnemyBullet : MonoBehaviour {
     [System.NonSerialized]
     public Transform playerTarget;
     private bool canHone = false;
+    public float additionalStartTime = 0;
 
     private void Awake() {
         rbd = GetComponent<Rigidbody2D>();
@@ -48,6 +49,9 @@ public class EnemyBullet : MonoBehaviour {
 
     IEnumerator EnableMove() {
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+        if (additionalStartTime > 0) {
+            yield return new WaitForSeconds(additionalStartTime);
+        }
         rbd.velocity = direction * speed;
         transform.SetParent(null);
         canHone = true;

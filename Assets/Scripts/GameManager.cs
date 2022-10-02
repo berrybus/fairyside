@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour {
         "Nacht 3"
     };
     public static int levelsPerSkin = 3;
-    public static int maxLevel = 6;
+    public static int maxLevel = 9;
 
     public static GameManager instance;
 
@@ -31,9 +31,11 @@ public class GameManager : MonoBehaviour {
 
     public bool isTransitioning = false;
 
-    private bool playSingleMemory = false;
-    public static int totalMemories = 13;
-    public static int maxMemory = 4;
+    public bool playSingleMemory = false;
+    public static int totalMemories = 12;
+    public static int maxMemory = 12;
+
+    public bool finishedGame = false;
 
     public float volume = 1f;
 
@@ -53,11 +55,11 @@ public class GameManager : MonoBehaviour {
     private (int, int)[] prereqMemories = new (int, int)[] {
         (0, 1),
         (2, 3),
-        (-1, -1),
-        (-1, -1),
-        (-1, -1),
-        (-1, -1),
-        (-1, -1),
+        (4, 5),
+        (6, 6),
+        (7, 7),
+        (8, 8),
+        (9, 9),
         (-1, -1),
         (-1, -1),
     };
@@ -162,12 +164,26 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public void StartGame() {
+    public void LoadRunAndStart() {
+        int levelToStart = 0;
+        if (File.Exists(Application.persistentDataPath + "/run.save")) {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(Application.persistentDataPath + "/run.save", FileMode.Open);
+            RunSave save = (RunSave)bf.Deserialize(file);
+            file.Close();
+
+            PlayerManager.instance.LoadGame(save);
+            levelToStart = save.runLevel;
+        }
+        StartGame(levelToStart);
+    }
+
+    public void StartGame(int level) {
         if (isTransitioning) {
             return;
         }
         isTransitioning = true;
-        currentLevel = 0;
+        currentLevel = level;
         Time.timeScale = 1;
         playSingleMemory = false;
         StartLevelOrMemory();
@@ -200,6 +216,7 @@ public class GameManager : MonoBehaviour {
         }
         isTransitioning = true;
         SaveGame();
+        SaveRunIfPossible();
         StartCoroutine(ToScene("Menu"));
     }
 
@@ -210,7 +227,7 @@ public class GameManager : MonoBehaviour {
         isTransitioning = true;
         StartCoroutine(ToScene("GameOver"));
     }
-    
+
     public void PlaySFX(AudioClip clip) {
         audioSource.PlayOneShot(clip, volume);
     }
@@ -231,12 +248,30 @@ public class GameManager : MonoBehaviour {
     }
 
     // File client
+    public static bool SavedRunAvailable() {
+        return File.Exists(Application.persistentDataPath + "/run.save");
+    }
+
+    public static void DeleteSavedRun() {
+        File.Delete(Application.persistentDataPath + "/run.save");
+    }
+
+    public void SaveRunIfPossible() {
+        if (SceneManager.GetActiveScene().name == "Game" && PlayerManager.instance.currentSave != null) {
+            RunSave runSave = PlayerManager.instance.currentSave;
+            runSave.gameTime = PlayerManager.instance.gameTime;
+
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream runFile = File.Create(Application.persistentDataPath + "/run.save");
+            bf.Serialize(runFile, runSave);
+            runFile.Close();
+        }
+    }
+
     public void SaveGame() {
         Save save = new Save(
             PlayerManager.instance.lvl,
             watchedMemory,
-            foundMonsterNotes,
-            foundLoreNotes,
             PlayerManager.instance.exp,
             PlayerManager.instance.maxHPInc,
             PlayerManager.instance.mpRegenInc,
@@ -246,13 +281,29 @@ public class GameManager : MonoBehaviour {
             PlayerManager.instance.castSpdInc,
             PlayerManager.instance.shotSpdInc,
             PlayerManager.instance.rangeInc,
-            PlayerManager.instance.knockbackInc
+            PlayerManager.instance.knockbackInc,
+            PlayerManager.instance.writerDead,
+            finishedGame
         );
 
-    BinaryFormatter bf = new BinaryFormatter();
+        LoreSave loreSave = new LoreSave(foundMonsterNotes, foundLoreNotes);
+
+        BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath + "/fairyside.save");
         bf.Serialize(file, save);
         file.Close();
+        FileStream loreFile = File.Create(Application.persistentDataPath + "/lore.save");
+        bf.Serialize(loreFile, loreSave);
+        loreFile.Close();
+    }
+
+    public void SaveLore() {
+        LoreSave loreSave = new LoreSave(foundMonsterNotes, foundLoreNotes);
+
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream loreFile = File.Create(Application.persistentDataPath + "/lore.save");
+        bf.Serialize(loreFile, loreSave);
+        loreFile.Close();
     }
 
     public void LoadGame() {
@@ -267,15 +318,6 @@ public class GameManager : MonoBehaviour {
             for (int i = 0; i < Mathf.Min(save.watchedMemory.Length, totalMemories); i++) {
                 watchedMemory[i] = save.watchedMemory[i];
             }
-            if (save.foundMonsterNotes != null && save.foundLoreNotes != null) {
-                for (int i = 0; i < Mathf.Min(save.foundMonsterNotes.Length, totalMonsterNotes); i++) {
-                    foundMonsterNotes[i] = save.foundMonsterNotes[i];
-                }
-
-                for (int i = 0; i < Mathf.Min(save.foundLoreNotes.Length, totalLoreNotes); i++) {
-                    foundLoreNotes[i] = save.foundLoreNotes[i];
-                }
-            }
 
             PlayerManager.instance.maxHPInc = save.maxHPInc;
             PlayerManager.instance.mpRegenInc = save.mpRegenInc;
@@ -286,6 +328,25 @@ public class GameManager : MonoBehaviour {
             PlayerManager.instance.shotSpdInc = save.shotSpdInc;
             PlayerManager.instance.rangeInc = save.rangeInc;
             PlayerManager.instance.knockbackInc = Mathf.Min(6, save.knockbackInc);
+            PlayerManager.instance.writerDead = save.writerDead;
+            finishedGame = save.finishedGame;
+        }
+
+        if (File.Exists(Application.persistentDataPath + "/lore.save")) {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(Application.persistentDataPath + "/lore.save", FileMode.Open);
+            LoreSave save = (LoreSave)bf.Deserialize(file);
+            file.Close();
+
+            for (int i = 0; i < Mathf.Min(save.foundMonsterNotes.Length, totalMonsterNotes); i++) {
+                foundMonsterNotes[i] = save.foundMonsterNotes[i];
+            }
+
+            for (int i = 0; i < Mathf.Min(save.foundLoreNotes.Length, totalLoreNotes); i++) {
+                foundLoreNotes[i] = save.foundLoreNotes[i];
+            }
+
         }
     }
 }
+

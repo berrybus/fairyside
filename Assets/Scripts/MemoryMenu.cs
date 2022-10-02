@@ -12,15 +12,18 @@ public class MemoryMenu : UIScreen {
 
     protected override void OnEnable() {
         base.OnEnable();
-        setMemoryText();
+        if (GameManager.instance) {
+            setMemoryText();
+        }
     }
     private void setMemoryText() {
         if (GameManager.instance == null) {
             return;
         }
-        for (int i = GameManager.maxMemory; i < options.Length - 1; i ++) {
+        for (int i = GameManager.maxMemory; i < options.Length - 2; i ++) {
             options[i].text = "Locked";
         }
+        options[options.Length - 2].text = GameManager.instance.finishedGame ? "Credits" : "Locked";
     }
 
     public override void Confirm(InputAction.CallbackContext ctx) {

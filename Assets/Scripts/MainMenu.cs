@@ -3,23 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using System.Linq;
 
 public class MainMenu: UIScreen
 {
+    public TMP_Text[] originalOptions;
+
+    private void Awake() {
+        originalOptions = options;
+    }
+
+    protected override void OnEnable() {
+        base.OnEnable();
+        if (!GameManager.SavedRunAvailable()) {
+            originalOptions[0].color = deselect;
+            originalOptions[0].fontSize = 16;
+            options = originalOptions.Skip(1).ToArray();
+        } else {
+            options = originalOptions;
+        }
+    }
+
     public override void Confirm(InputAction.CallbackContext ctx) {
         if (!ctx.performed) {
             return;
         }
-        if (currentSelect == 0) {
+        if (options[currentSelect].text == "Continue") {
+            GameManager.instance.LoadRunAndStart();
+        } else if (options[currentSelect].text == "Start") {
             PlayerManager.instance.StartGame();
             manager.UpdateScreen(MenuScreen.Pregame);
-        } else if (currentSelect == 1) {
+        } else if (options[currentSelect].text == "Memories") {
             manager.UpdateScreen(MenuScreen.Memories);
-        } else if (currentSelect == 2) {
+        } else if (options[currentSelect].text == "Notes") {
             manager.UpdateScreen(MenuScreen.Notes);
-        } else if (currentSelect == 4) {
+        } else if (options[currentSelect].text == "Settings") {
             manager.UpdateScreen(MenuScreen.Settings);
-        } else if (currentSelect == options.Length - 1) {
+        } else if (options[currentSelect].text == "Quit") {
             Application.Quit();
         }
     }

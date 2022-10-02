@@ -84,6 +84,10 @@ public static class NoteRepository {
 
     public static NoteEntry[] loreNotes = new NoteEntry[] {
         new NoteEntry(
+            "My head",
+            "It hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts it hurts"
+        ),
+        new NoteEntry(
             "Headmaster Fulligan",
             "A highly accomplished healer who quickly rose through the ranks of Redwood Academy. A small, kind man whose distinctive features were his large hawthorne glasses. He was known to occasionally lose confidence in himself."
         ),
@@ -120,6 +124,10 @@ public static class NoteRepository {
             "One of the first institutions established after the great Fairy-Human War. It is the dream of many Luninsula residents to attend, for the art of magic has been lost to many on the island."
         ),
         new NoteEntry(
+            "Redwood Academy (II)",
+            "It was created over the vestiges of another, more ancient institution, likely a dwelling-place of the original fairy civilization."
+        ),
+        new NoteEntry(
             "The Fairy-Human War",
             "Luninsula used to be inhabited only by fairies. However, humans, in their wretched ways, discovered the island and tried to take the precious resource of magic by force. It is said that the fairies bravely defended themselves."
         ),
@@ -143,5 +151,9 @@ public static class NoteRepository {
             "Love",
             "Some say that the real source of our magic lies not in lunites but in love."
         ),
+        new NoteEntry(
+            "Speedrunning",
+            "I was thinking about why so many in the radical left participate in \'speedrunning\'. The reason is the left's lack of work ethic (\'go fast\' rather than \'do it right\') and, in a Petersonian sense, to elevate alternative sexual archetypes in the marketplace (\'fastest mario\')"
+        )
     };
 }

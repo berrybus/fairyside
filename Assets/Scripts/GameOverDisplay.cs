@@ -76,5 +76,6 @@ public class GameOverDisplay : MonoBehaviour {
             return;
         }
         GameManager.instance.GoToMenu();
+        GameManager.DeleteSavedRun();
     }
 }

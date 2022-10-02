@@ -117,8 +117,8 @@ public class NotesMenu : UIScreen {
     }
 
     private void SetupNoteSection() {
-        monsterInfo.gameObject.SetActive(currentSelect == 0);
-        loreInfo.gameObject.SetActive(currentSelect == 1);
+        monsterInfo.gameObject.SetActive(currentSelect == 1);
+        loreInfo.gameObject.SetActive(currentSelect == 0);
     }
 
     public override void MoveUp(InputAction.CallbackContext ctx) {
@@ -159,8 +159,8 @@ public class NotesMenu : UIScreen {
 
     private void Update() {
         int movement = downMove - upMove;
-        GameObject info = currentSelect == 0 ? monsterInfo : loreInfo;
-        float maxY = currentSelect == 0 ? monsterTextHeight : loreTextHeight;
+        GameObject info = currentSelect == 1 ? monsterInfo : loreInfo;
+        float maxY = currentSelect == 1 ? monsterTextHeight : loreTextHeight;
         maxY += startPosY - 120f;
         maxY = Mathf.Max(startPosY, maxY);
         MoveInfo(movement, info, maxY);

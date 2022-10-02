@@ -73,6 +73,9 @@ public class ItemDescription : MonoBehaviour {
             case ShopItemType.SizeUp:
                 description.text = "Size up!";
                 break;
+            case ShopItemType.Magnet:
+                description.text = "Magnetic items!";
+                break;
         }
     }
 

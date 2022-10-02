@@ -67,6 +67,8 @@ public class RoomController : MonoBehaviour {
     public static int maxSpawnAmount = 6;
 
     public AudioClip lorelei;
+    public AudioClip gretchen;
+    public AudioClip nacht;
 
     private void Awake() {
         enemiesList.Add(enemies0);
@@ -86,10 +88,17 @@ public class RoomController : MonoBehaviour {
         GenerateRandomRooms();
         SetupRooms();
         StartMusic();
+        PlayerManager.instance.DidStartLevel(GameManager.instance.currentLevel);
     }
 
     private void StartMusic() {
-        GameManager.instance.PlayMusic(lorelei);
+        if (GameManager.instance.currentLevel < 3) {
+            GameManager.instance.PlayMusic(lorelei);
+        } else if (GameManager.instance.currentLevel < 6) {
+            GameManager.instance.PlayMusic(gretchen);
+        } else {
+            GameManager.instance.PlayMusic(nacht);
+        }
     }
 
     public void OnPlayerEnterRoom(Room room) {
@@ -301,7 +310,7 @@ public class RoomController : MonoBehaviour {
         var queue = new Queue<(Vector2Int, Vector2Int)>();
         AddRandomPosition(queue, startPos, Vector2Int.zero, visited);
         int numRooms = Random.Range(0, 3) + baseRoomNum + GameManager.instance.currentLevel;
-        // numRooms = 5;
+        // numRooms = 4;
         while (queue.Count != 0 && visited.Count < numRooms) {
             var (curPos, dir) = queue.Dequeue();
             if (!visited.Contains(curPos)) {

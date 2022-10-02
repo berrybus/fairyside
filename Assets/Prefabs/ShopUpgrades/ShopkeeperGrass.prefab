@@ -368,6 +368,7 @@ MonoBehaviour:
   - {fileID: 9148439009395258, guid: 3abb769a967a4994b8f8321a8da8fb1c, type: 3}
   - {fileID: 9148439009395258, guid: ed331cf80e5da584c8fe7d961fa337bd, type: 3}
   - {fileID: 9148439009395258, guid: 115912ca4a1e3f94c813936739a16d0a, type: 3}
+  - {fileID: 9148439009395258, guid: 115912ca4a1e3f94c813936739a16d0a, type: 3}
   pickedItem: {fileID: 0}
   priceDisplay: {fileID: 2872577879970585885}
   itemPosition: {fileID: 3508560668681566586}

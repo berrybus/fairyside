@@ -234,6 +234,6 @@ public class PregameMenu : UIScreen {
         }
         Apply();
         GameManager.instance.PlaySFX(startClip);
-        GameManager.instance.StartGame();
+        GameManager.instance.StartGame(0);
     }
 }

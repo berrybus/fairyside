@@ -94,6 +94,14 @@ public static class ScriptRepository
             "Professor",
             "Press ESC to access the in-game menu at any time."),
         new ScriptLine(
+            "ProfessorAvatar",
+            "Professor",
+            "If you press \"End game\" in the in-game menu, your progress up until the current floor will be saved."),
+        new ScriptLine(
+            "ProfessorAvatar",
+            "Professor",
+            "But be careful! Anything you do on the the current floor will not be saved."),
+        new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
             "Wait a minute, what does any of this have to do with magic?"),
@@ -630,7 +638,7 @@ public static class ScriptRepository
             "",
             "",
             "I was not to tell others of his location since Rasha favored a highly secretive lifestyle."),
-                new ScriptLine(
+        new ScriptLine(
             "",
             "",
             "My heart was simply overjoyed to know that I was an exception to that rule."),
@@ -1044,7 +1052,7 @@ public static class ScriptRepository
         new ScriptLine(
             "",
             "",
-            "I held up a book with the title “7 Forbidden Spells”"),
+            "I held up a book with the title \"7 Forbidden Spells\""),
         new ScriptLine(
             "RashaAvatar",
             "Rasha",
@@ -1081,8 +1089,6 @@ public static class ScriptRepository
             "ShirleyAvatar",
             "Shirley",
             "Yeah, that is pretty dumb."),
-
-
         new ScriptLine(
             "",
             "",
@@ -1141,7 +1147,7 @@ public static class ScriptRepository
         new ScriptLine(
             "",
             "",
-            "“My dearest Shirley,"),
+            "\"My dearest Shirley,"),
         new ScriptLine(
             "",
             "",
@@ -1165,7 +1171,7 @@ public static class ScriptRepository
         new ScriptLine(
             "",
             "",
-            "Love, Rasha”"),
+            "Love, Rasha\""),
         new ScriptLine(
             "",
             "",
@@ -1366,19 +1372,19 @@ public static class ScriptRepository
             "Shirley",
             "You surprised me."),
         new ScriptLine(
-            "",
+            "FifiAvatar",
             "???",
-            "Well hello there."),\
+            "Well hello there."),
         new ScriptLine(
-            "",
+            "FifiAvatar",
             "???",
             "Now that you've seen me, perhaps we should do introductions."),
         new ScriptLine(
-            "",
+            "FifiAvatar",
             "???",
             "Wait, what's my name again?"),
         new ScriptLine(
-            "",
+            "FifiAvatar",
             "???",
             "Honestly, they call me so many things."),
         new ScriptLine(
@@ -1386,15 +1392,15 @@ public static class ScriptRepository
             "Shirley",
             "How do you forget your own name?"),
         new ScriptLine(
-            "",
+            "FifiAvatar",
             "???",
             "Fifi!"),
         new ScriptLine(
-            "",
+            "FifiAvatar",
             "???",
             "Call me Fifi!"),
         new ScriptLine(
-            "",
+            "FifiAvatar",
             "???",
             "That one was my favorite."),
         new ScriptLine(
@@ -1687,7 +1693,7 @@ public static class ScriptRepository
         new ScriptLine(
             "ClaraAvatar",
             "???",
-            "Hahaha, I can't believe you named yourself after a dog again."),
+            "I can't believe you named yourself after a dog again."),
         new ScriptLine(
             "FifiAvatar",
             "Fifi",
@@ -1837,11 +1843,11 @@ public static class ScriptRepository
             "Shirley",
             "because I did not want to grow up like all the other villagers and do the same thing day in and day out."),
         new ScriptLine(
-            "ShirleyAvatar",
+            "ShirleyAngryAvatar",
             "Shirley",
             "But I have a reason for needing magic now, and that's finding Rasha!"),
         new ScriptLine(
-            "ShirleyAvatar",
+            "ShirleyAngryAvatar",
             "Shirley",
             "Because I love him so very much!"),
         new ScriptLine(
@@ -1898,7 +1904,7 @@ public static class ScriptRepository
         new ScriptLine(
             "",
             "",
-            "The first thing I saw when I stepped outside was the brilliant full moon shining above me."),\
+            "The first thing I saw when I stepped outside was the brilliant full moon shining above me."),
         new ScriptLine(
             "",
             "",
@@ -1950,7 +1956,7 @@ public static class ScriptRepository
         new ScriptLine(
             "MeffyAvatar",
             "???",
-            "Some introductions are in order.")
+            "Some introductions are in order."),
         new ScriptLine(
             "MeffyAvatar",
             "???",
@@ -1994,7 +2000,7 @@ public static class ScriptRepository
         new ScriptLine(
             "StuffyAvatar",
             "Stuffy",
-            "You've brought us an unexpected gift"),
+            "You've brought us an unexpected gift."),
         new ScriptLine(
             "StuffyAvatar",
             "Stuffy",
@@ -2057,7 +2063,7 @@ public static class ScriptRepository
         new ScriptLine(
             "MeffyAvatar",
             "Meffy",
-            "My dear boy"),
+            "My dear boy!"),
         new ScriptLine(
             "MeffyAvatar",
             "Meffy",
@@ -2095,23 +2101,23 @@ public static class ScriptRepository
             "Shirley",
             "And mastered every spell worth knowing."),
         new ScriptLine(
-            "ShirleyAvatar",
+            "ShirleyAngryAvatar",
             "Shirley",
             "But you can do it again with me!"),
         new ScriptLine(
-            "ShirleyAvatar",
+            "ShirleyAngryAvatar",
             "Shirley",
             "It'll be something new, I promise!"),
         new ScriptLine(
-            "ShirleyAvatar",
+            "ShirleyAngryAvatar",
             "Shirley",
             "Something different."),
         new ScriptLine(
-            "ShirleyAvatar",
+            "ShirleyAngryAvatar",
             "Shirley",
             "Let's explore love together!"),
         new ScriptLine(
-            "ShirleyAvatar",
+            "ShirleyAngryAvatar",
             "Shirley",
             "Rasha, I love you!"),
         new ScriptLine(
@@ -2121,9 +2127,9 @@ public static class ScriptRepository
         new ScriptLine(
             "MeffyAvatar",
             "Meffy",
-            "What can you learn with this human girl that the spell cannot bequeath to you?")
+            "What can you learn with this human girl that the spell cannot bequeath to you?"),
         new ScriptLine(
-            "ShirleyAvatar",
+            "ShirleyAngryAvatar",
             "Shirley",
             "I've got a really bad feeling about this whole Fairyside process!"),
         new ScriptLine(
@@ -2266,5 +2272,5 @@ public static class ScriptRepository
             "",
             "where I will brew a cup of hot tea, for the cruel night air has caused my own headaches to start again."),
     };
-    public static ScriptLine[][] scripts = new ScriptLine[][] { script0, script1, script2, script3, script4, script5, script6, script7, script8, script9, script10, script11  };
+    public static ScriptLine[][] scripts = new ScriptLine[][] { script0, script1, script2, script3, script4, script5, script6, script7, script8, script9, script10, script11 };
 }
