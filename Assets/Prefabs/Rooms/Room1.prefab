@@ -1655,6 +1655,7 @@ MonoBehaviour:
   numEnemies: 0
   roomController: {fileID: 0}
   cameraController: {fileID: 0}
+  instructions: {fileID: 0}
 --- !u!1 &5575491751354677852
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,7 +25,6 @@ public static class ListExtensions {
 }
 
 public class RoomController : MonoBehaviour {
-
     public List<Room> roomTemplates;
     public Room startRoom;
     public Room shopRoom;
@@ -35,6 +34,8 @@ public class RoomController : MonoBehaviour {
     public List<Room> loadedRooms = new List<Room>();
     public HashSet<Vector2Int> roomCoords = new HashSet<Vector2Int>();
     public Queue<RoomInfo> plannedRooms = new Queue<RoomInfo>();
+
+    private List<Room> possibleRoomTemplates;
 
     // Enemies and bosses list
     public List<GameObject> enemies0 = new List<GameObject>();
@@ -46,6 +47,8 @@ public class RoomController : MonoBehaviour {
     public List<GameObject> enemies6 = new List<GameObject>();
     public List<GameObject> enemies7 = new List<GameObject>();
     public List<GameObject> enemies8 = new List<GameObject>();
+
+    public GameObject goldenSlime;
 
     private List<List<GameObject>> enemiesList = new List<List<GameObject>>();
 
@@ -69,6 +72,9 @@ public class RoomController : MonoBehaviour {
     public AudioClip lorelei;
     public AudioClip gretchen;
     public AudioClip nacht;
+    public AudioClip writerTheme;
+    public AudioClip shopTheme;
+    public AudioClip bossTheme;
 
     private void Awake() {
         enemiesList.Add(enemies0);
@@ -80,6 +86,7 @@ public class RoomController : MonoBehaviour {
         enemiesList.Add(enemies6);
         enemiesList.Add(enemies7);
         enemiesList.Add(enemies8);
+        possibleRoomTemplates = new List<Room>(roomTemplates);
     }
 
     private void Start() {
@@ -87,17 +94,31 @@ public class RoomController : MonoBehaviour {
         boss = bossList[GameManager.instance.currentLevel];
         GenerateRandomRooms();
         SetupRooms();
-        StartMusic();
+        StartMusic(RoomType.Regular);
         PlayerManager.instance.DidStartLevel(GameManager.instance.currentLevel);
+        GameManager.instance.DidStartLevel();
     }
 
-    private void StartMusic() {
-        if (GameManager.instance.currentLevel < 3) {
-            GameManager.instance.PlayMusic(lorelei);
-        } else if (GameManager.instance.currentLevel < 6) {
-            GameManager.instance.PlayMusic(gretchen);
-        } else {
-            GameManager.instance.PlayMusic(nacht);
+    public void StartMusic(RoomType roomType) {
+        switch (roomType) {
+            case RoomType.Regular: case RoomType.Start:
+                if (GameManager.instance.currentLevel < 3) {
+                    GameManager.instance.PlayMusic(lorelei);
+                } else if (GameManager.instance.currentLevel < 6) {
+                    GameManager.instance.PlayMusic(gretchen);
+                } else {
+                    GameManager.instance.PlayMusic(nacht);
+                }
+                break;
+            case RoomType.Shop:
+                GameManager.instance.PlayMusic(shopTheme);
+                break;
+            case RoomType.Library:
+                GameManager.instance.PlayMusic(writerTheme);
+                break;
+            case RoomType.Boss:
+                GameManager.instance.PlayMusic(bossTheme);
+                break;
         }
     }
 
@@ -159,13 +180,19 @@ public class RoomController : MonoBehaviour {
         }
     }
 
-        // REMINDER: UPDATE WHEN ADDING NEW ROOMS
-        private Room GenerateRandomRoom(Vector2Int coord) {
+    // REMINDER: UPDATE WHEN ADDING NEW ROOMS
+    private Room GenerateRandomRoom(Vector2Int coord) {
         if (coord == Vector2Int.zero) {
             return startRoom;
-        }
-        else {
-            return roomTemplates[Random.Range(0, roomTemplates.Count)];
+        } else {
+            if (possibleRoomTemplates.Count == 0) {
+                possibleRoomTemplates = new List<Room>(roomTemplates);
+            }
+
+            int idx = Random.Range(0, possibleRoomTemplates.Count);
+            Room retRoom = possibleRoomTemplates[idx];
+            possibleRoomTemplates.RemoveAt(idx);
+            return retRoom;
         }
     }
     private Queue<RoomInfo> GetAvailableRooms(List<RoomInfo> tempRooms) {
@@ -271,6 +298,7 @@ public class RoomController : MonoBehaviour {
             newRoom.roomController = this;
             newRoom.cameraController = cameraController;
             newRoom.enemyBank = (info.room == bossRoom) ? new List<GameObject> { boss } : enemyBank;
+            newRoom.goldenSlime = goldenSlime;
             newRoom.xCoord = info.xCoord;
             newRoom.yCoord = info.yCoord;
             newRoom.numEnemies = info.numEnemies;

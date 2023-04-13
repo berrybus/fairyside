@@ -412,12 +412,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe0aaab81dfc1c145b22b21b430717a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  price: 30
+  price: 25
   enemyDeath: {fileID: 718801361135743583, guid: 2eaa01786a9872444950f5a189f665f5, type: 3}
   itemDescription: {fileID: 205113980205522882, guid: 237c6f09df258184698f47529c53c1a3, type: 3}
   type: 15
   popupText: {fileID: 7462015899757995760}
   popup: {fileID: 4295795086751422083}
+  itemGetClip: {fileID: 0}
+  textPopupClip: {fileID: 0}
 --- !u!1 &8068070928794943440
 GameObject:
   m_ObjectHideFlags: 0

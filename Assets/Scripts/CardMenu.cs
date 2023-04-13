@@ -24,7 +24,7 @@ public class CardMenu : UIScreen {
         maxHP.text = "Max HP: " + info.maxHp;
         mpRegen.text = "MP regen: " + info.regen;
         speed.text = "Speed: " + info.speed;
-        dmgMult.text = "Dmg mult: " + info.damageMult;
+        dmgMult.text = "Dmg mult: " + info.damageMult.ToString("0.0");
         attack.text = "Attack: " + info.atk;
         luck.text = "Luck: " + info.luk;
         castSpd.text = "Cast spd: " + info.castSpeed;
@@ -32,7 +32,17 @@ public class CardMenu : UIScreen {
         range.text = "Range: " + info.range;
         spellCount.text = "Spell count: " + info.numShots;
         knockback.text = "Knockback: " + info.knockbackMult;
-        level.text = "Level " + info.lvl;
+        level.text = CreateLevelText(info);
+    }
+
+    private string CreateLevelText(PlayerManager info) {
+        string xpText;
+        if (info.AtMaxLvl()) {
+            xpText = "0/-- XP";
+        } else {
+            xpText = string.Format("{0}/{1} XP", info.exp, info.ExpToLevel());
+        }
+        return "Level " + info.lvl + " - " + xpText;
     }
 
     public override void MoveUp(InputAction.CallbackContext ctx) { }

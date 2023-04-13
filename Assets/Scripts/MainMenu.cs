@@ -37,9 +37,12 @@ public class MainMenu: UIScreen
             manager.UpdateScreen(MenuScreen.Memories);
         } else if (options[currentSelect].text == "Notes") {
             manager.UpdateScreen(MenuScreen.Notes);
+        } else if (options[currentSelect].text == "Stats") {
+            manager.UpdateScreen(MenuScreen.Stats);
         } else if (options[currentSelect].text == "Settings") {
             manager.UpdateScreen(MenuScreen.Settings);
         } else if (options[currentSelect].text == "Quit") {
+            GameManager.instance.StoreAchievements();
             Application.Quit();
         }
     }

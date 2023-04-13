@@ -22,7 +22,8 @@ public enum ShopItemType {
     Piercing,
     Range,
     SizeUp,
-    Magnet
+    Magnet,
+    Cauldron
 }
 
 public class ShopItem : MonoBehaviour {
@@ -42,6 +43,7 @@ public class ShopItem : MonoBehaviour {
             popupText.text = "";
             popup.enabled = false;
         }
+        price += 10 * (GameManager.instance.currentLevel / 3);
     }
 
     private void Activate() {
@@ -76,7 +78,7 @@ public class ShopItem : MonoBehaviour {
                 PlayerManager.instance.shotSpeed -= 1;
                 break;
             case ShopItemType.DmgMult:
-                PlayerManager.instance.damageMult += 1;
+                PlayerManager.instance.damageMult += 0.5f;
                 PlayerManager.instance.damageMult = Mathf.Min(PlayerManager.instance.damageMult, 4);
                 PlayerManager.instance.castSpeed -= 1;
                 PlayerManager.instance.spellColor = SpellColor.Red;
@@ -117,6 +119,9 @@ public class ShopItem : MonoBehaviour {
             case ShopItemType.Magnet:
                 PlayerManager.instance.itemsAreMagnetic = true;
                 break;
+            case ShopItemType.Cauldron:
+                GameManager.instance.RepeatRun();
+                break;
         }
     }
 
@@ -124,11 +129,15 @@ public class ShopItem : MonoBehaviour {
         if (PlayerManager.instance.gemCount >= price) {
             PlayerManager.instance.gemCount -= price;
             Activate();
-            Destroy(gameObject);
-            GameObject poof = Instantiate(enemyDeath, transform.position, Quaternion.identity);
-            poof.GetComponent<SpriteRenderer>().sortingOrder = 1;
-            ItemDescription description = Instantiate(itemDescription, transform.position, Quaternion.identity);
-            description.type = type;
+            if (enemyDeath) {
+                Destroy(gameObject);
+                GameObject poof = Instantiate(enemyDeath, transform.position, Quaternion.identity);
+                poof.GetComponent<SpriteRenderer>().sortingOrder = 1;
+            }
+            if (itemDescription) {
+                ItemDescription description = Instantiate(itemDescription, transform.position, Quaternion.identity);
+                description.type = type;
+            }
             GameManager.instance.PlaySFX(itemGetClip);
         }
     }

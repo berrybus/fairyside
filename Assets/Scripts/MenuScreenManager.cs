@@ -28,6 +28,8 @@ public class MenuScreenManager : MonoBehaviour {
     public AudioClip moveClip;
     public AudioClip cancelClip;
 
+    private bool canTakeAction = false;
+
     private void Awake() {
         currentScreen = screens[0];
         if (instance == null) {
@@ -46,6 +48,18 @@ public class MenuScreenManager : MonoBehaviour {
         if (ingame) {
             gameObject.SetActive(false);
         }
+        canTakeAction = false;
+        if (gameObject.activeInHierarchy) {
+            StartCoroutine(AllowAction());
+        } else {
+            canTakeAction = true;
+        }
+    }
+
+    private IEnumerator AllowAction() {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSecondsRealtime(0.5f);
+        canTakeAction = true;
     }
 
     public void UpdateScreen(MenuScreen newScreen) {
@@ -109,6 +123,10 @@ public class MenuScreenManager : MonoBehaviour {
     }
 
     public void Confirm(InputAction.CallbackContext ctx) {
+        if (!canTakeAction) {
+            return;
+        }
+
         currentScreen.Confirm(ctx);
 
         if (!ctx.performed) {

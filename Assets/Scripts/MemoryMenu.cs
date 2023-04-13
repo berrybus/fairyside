@@ -7,23 +7,29 @@ using TMPro;
 public class MemoryMenu : UIScreen {
     protected override void Start() {
         base.Start();
-        setMemoryText();
+        SetMemoryText();
     }
 
     protected override void OnEnable() {
         base.OnEnable();
         if (GameManager.instance) {
-            setMemoryText();
+            SetMemoryText();
         }
     }
-    private void setMemoryText() {
+    private void SetMemoryText() {
         if (GameManager.instance == null) {
             return;
         }
-        for (int i = GameManager.maxMemory; i < options.Length - 2; i ++) {
-            options[i].text = "Locked";
+        for (int i = 1; i < GameManager.maxMemory - 1; i ++) {
+            if (GameManager.instance.watchedMemory[i]) {
+                options[i].text = "Memory" + i;
+            } else {
+                options[i].text = "Locked";
+            }
         }
-        options[options.Length - 2].text = GameManager.instance.finishedGame ? "Credits" : "Locked";
+        options[0].text = GameManager.instance.watchedMemory[0] ? "Prologue" : "Locked";
+        options[GameManager.maxMemory - 1].text = GameManager.instance.watchedMemory[^1] ? "Epilogue" : "Locked";
+        options[^2].text = GameManager.instance.finishedGame ? "Credits" : "Locked";
     }
 
     public override void Confirm(InputAction.CallbackContext ctx) {
@@ -31,7 +37,13 @@ public class MemoryMenu : UIScreen {
             return;
         }
         if (currentSelect < GameManager.maxMemory) {
-            GameManager.instance.PlaySingleMemory(currentSelect);
+            if (GameManager.instance.watchedMemory[currentSelect]) {
+                GameManager.instance.PlaySingleMemory(currentSelect);
+            }
+        } else if (currentSelect == options.Length - 2) {
+            if (GameManager.instance.finishedGame) {
+                GameManager.instance.PlayCredits();
+            }
         } else if (currentSelect == options.Length - 1) {
             if (manager) {
                 manager.Cancel(ctx);

@@ -11,7 +11,8 @@ public class EnemyBullet : MonoBehaviour {
     [System.NonSerialized]
     public Transform playerTarget;
     private bool canHone = false;
-    public float additionalStartTime = 0;
+    public float additionalStartTime = 0f;
+    public bool canTargetImmediately = true;
 
     private void Awake() {
         rbd = GetComponent<Rigidbody2D>();
@@ -42,6 +43,12 @@ public class EnemyBullet : MonoBehaviour {
         }
     }
 
+    IEnumerator TargetAfterDelay() {
+        yield return new WaitForSeconds(0.5f);
+        var direction = (playerTarget.transform.position - transform.position).normalized;
+        rbd.velocity = speed * 0.75f * direction;
+    }
+
     IEnumerator DisableHoning() {
         yield return new WaitForSeconds(1.5f);
         canHone = false;
@@ -54,8 +61,11 @@ public class EnemyBullet : MonoBehaviour {
         }
         rbd.velocity = direction * speed;
         transform.SetParent(null);
-        canHone = true;
+        canHone = canTargetImmediately;
         StartCoroutine(DisableHoning());
+        if (playerTarget && !canTargetImmediately) {
+            StartCoroutine(TargetAfterDelay());
+        }
         animator.Play("EnemyBulletContract");
     }
 

@@ -31,6 +31,8 @@ public class PregameMenu : UIScreen {
     public int rangeInc;
     public int knockbackInc;
 
+    private Color unused = new Color(255f/255f, 226f/255f, 155f/255f, 1f);
+
     public Sprite selectedArrow;
     public Sprite unSelectedArrow;
 
@@ -212,7 +214,13 @@ public class PregameMenu : UIScreen {
         knockback.text = (info.knockbackMult + knockbackInc).ToString();
         level.text = "Level " + info.lvl;
 
-        pointsLeft.text = "Points left: " + (info.lvl - PointsUsed());
+        pointsLeft.text = (info.lvl - PointsUsed()).ToString();
+        if ((info.lvl - PointsUsed()) == 0) {
+            pointsLeft.color = Color.white;
+
+        } else {
+            pointsLeft.color = unused;
+        }
 
         hpArrow.sprite = maxHPInc > 0 ? selectedArrow : unSelectedArrow;
         regenArrow.sprite = mpRegenInc > 0 ? selectedArrow : unSelectedArrow;
@@ -234,6 +242,6 @@ public class PregameMenu : UIScreen {
         }
         Apply();
         GameManager.instance.PlaySFX(startClip);
-        GameManager.instance.StartGame(0);
+        GameManager.instance.StartGame(0, 0);
     }
 }

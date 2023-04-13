@@ -201,7 +201,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Level 1
+  m_text: Level 1 - 0/10 XP
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a5c5e15971e801a4f9c7e152db6c565c, type: 2}
   m_sharedMaterial: {fileID: 4882720166413262437, guid: a5c5e15971e801a4f9c7e152db6c565c, type: 2}
@@ -4560,7 +4560,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7036955181992962436}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 36, y: -16, z: 0}
+  m_LocalPosition: {x: 19.125, y: -16.125, z: 0}
   m_LocalScale: {x: 16, y: 16, z: 16}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5953,6 +5953,12 @@ MonoBehaviour:
   - {fileID: 7036955182474283182}
   selectedArrow: {fileID: -1375953691, guid: 1ea14f38982fb754fa7a852e7a7f77a0, type: 3}
   deselectedArrow: {fileID: -841848893, guid: 1ea14f38982fb754fa7a852e7a7f77a0, type: 3}
+  audioFill: {fileID: 7036955181992962436}
+  audioSelect: {fileID: -276297850, guid: b1732ad396c40bd4182995a67a278ab1, type: 3}
+  audioDeselect: {fileID: -777804398, guid: b1732ad396c40bd4182995a67a278ab1, type: 3}
+  audioOutline: {fileID: 7036955181063063379}
+  audioOutlineSelect: {fileID: 239060941, guid: 9953f6c7deddf2948b724dcbea3a943e, type: 3}
+  audioOutlineDeselect: {fileID: 855697984, guid: 9953f6c7deddf2948b724dcbea3a943e, type: 3}
 --- !u!1 &7036955182471667924
 GameObject:
   m_ObjectHideFlags: 0

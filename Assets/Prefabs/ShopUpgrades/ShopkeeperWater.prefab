@@ -362,6 +362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   items:
   - {fileID: 9148439009395258, guid: 3904afd681c3fab46866772c5f85cedc, type: 3}
+  - {fileID: 9148439009395258, guid: e5320ef38407e7d47ace2b98a81d9c19, type: 3}
   - {fileID: 9148439009395258, guid: 03c1ab16ffe925c4cac1e173f1afba73, type: 3}
   - {fileID: 9148439009395258, guid: 96f2310e5e035194ea8c3169ea92b5af, type: 3}
   - {fileID: 9148439009395258, guid: 96f2310e5e035194ea8c3169ea92b5af, type: 3}
@@ -369,6 +370,7 @@ MonoBehaviour:
   - {fileID: 9148439009395258, guid: 48734b246968c65429f0eb2be2bba6d1, type: 3}
   - {fileID: 9148439009395258, guid: cc65bc47b4942a942a4a803c745e3a0b, type: 3}
   - {fileID: 9148439009395258, guid: f15d40a9239caa84cade16fb0aba9962, type: 3}
+  - {fileID: 9148439009395258, guid: 33b095160e3c5eb4da97e5ab1b1838cf, type: 3}
   pickedItem: {fileID: 0}
   priceDisplay: {fileID: 2872577879970585885}
   itemPosition: {fileID: 3508560668681566586}

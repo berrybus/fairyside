@@ -188,12 +188,14 @@ MonoBehaviour:
   firepoint: {fileID: 7859022014356622125}
   bulletSpeed: 10
   bulletFireDelay: 0
-  hp: 100
-  minGems: 0
-  maxGems: 0
+  hp: 200
+  minGems: 5
+  maxGems: 8
   hpBar: {fileID: 526760202848928463}
   noteNumber: 6
   hitClip: {fileID: 8300000, guid: 6f27bfabc5beb4442aff5d24d535a1dc, type: 3}
+  wasSummoned: 0
+  cauldron: {fileID: 0}
 --- !u!70 &4930275417272903772
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

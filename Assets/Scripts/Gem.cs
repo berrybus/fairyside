@@ -17,6 +17,9 @@ public class Gem : MagneticItem {
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.CompareTag("Player")) {
             PlayerManager.instance.gemCount += 1;
+            if (PlayerManager.instance.gemCount >= 100) {
+                GameManager.instance.UnlockAchievement(Achievement.HOARDER);
+            }
             GameManager.instance.PlaySFX(coin);
             Instantiate(death, transform.position, Quaternion.identity);
             Destroy(gameObject);

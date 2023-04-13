@@ -23,6 +23,7 @@ public class Shirley : MonoBehaviour {
     public CapsuleCollider2D capsuleCollider;
     public CameraController cameraController;
     public Animator animator;
+    public SpriteRenderer hitbox;
 
     [SerializeField]
     private float teleportDistanceX;
@@ -40,6 +41,7 @@ public class Shirley : MonoBehaviour {
 
     private PlayerState currentState;
     private bool isInvincible;
+    private bool isWalking = false;
     Vector2 movement;
     Vector2 fireDirection;
     readonly Vector2[] angles = { Vector2.right, Vector2.left, Vector2.up, Vector2.down };
@@ -79,9 +81,10 @@ public class Shirley : MonoBehaviour {
         currentFirePoint = firePointDown;
     }
     public void OnMove(InputAction.CallbackContext ctx) {
+        Vector2 previousMove = movement;
         movement = ctx.ReadValue<Vector2>();
 
-        if (movement != Vector2.zero && currentState != PlayerState.Knockback) {
+        if (movement != previousMove && movement != Vector2.zero && currentState != PlayerState.Knockback) {
             // animator.SetFloat("SpeedMultiplier", 1.0f);
             Vector2 moveDir = GetClosestAngle(movement);
             if (moveDir == Vector2.left) {
@@ -134,6 +137,10 @@ public class Shirley : MonoBehaviour {
             }
         }
         return minAngle;
+    }
+
+    public void OnWalk (InputAction.CallbackContext ctx) {
+        isWalking = ctx.ReadValueAsButton();
     }
 
     public void OnCheat(InputAction.CallbackContext ctx) {
@@ -189,9 +196,10 @@ public class Shirley : MonoBehaviour {
                 animator.SetFloat("SpeedMultiplier", 0.0f);
                 AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
                 animator.Play(info.shortNameHash, 0, 0.0f);
-                // print("not mobing");
             }
         }
+
+        hitbox.enabled = isWalking;
     }
     public void FixedUpdate() {
         if (currentState == PlayerState.Frozen) {
@@ -199,10 +207,14 @@ public class Shirley : MonoBehaviour {
         }
 
         if (currentState == PlayerState.Move) {
-            float speedMult = baseSpeed + PlayerManager.instance.speed * 0.5f;
-            // rbd.MovePosition(rbd.position + speedMult * movement * Time.fixedDeltaTime);
-            rbd.AddForce(speedMult * movement, ForceMode2D.Impulse);
-            rbd.velocity = Vector2.ClampMagnitude(rbd.velocity, speedMult);
+            if (isWalking) {
+                rbd.velocity = 4.0f * movement;
+            } else {
+                float speedMult = baseSpeed + PlayerManager.instance.speed * 0.5f;
+                // rbd.MovePosition(rbd.position + speedMult * movement * Time.fixedDeltaTime);
+                rbd.AddForce(speedMult * movement, ForceMode2D.Impulse);
+                rbd.velocity = Vector2.ClampMagnitude(rbd.velocity, speedMult);
+            }
         }
         curDelay -= 1;
         curDelay = Mathf.Max(0, curDelay);
@@ -230,6 +242,7 @@ public class Shirley : MonoBehaviour {
             animator.Play("ShirleyDead", 0, 0.0f);
             GameManager.instance.PlaySFX(awawaClip);
             isDead = true;
+            GameManager.DeleteSavedRun();
         }
     }
 
@@ -305,31 +318,6 @@ public class Shirley : MonoBehaviour {
     private float AngleFromVector(Vector2 direction) {
         float angle = Vector2.SignedAngle(Vector2.right, direction);
         return angle % 360;
-    }
-
-    private void ShootGrass() {
-        //GameObject bullet1 = ObjectPool.instance.grassBullets.Get();
-        //GameObject bullet2 = ObjectPool.instance.grassBullets.Get();
-        //Vector2 direction = GetJiggleDirection(fireDirection);
-        //float jiggle = Random.Range(-0.125f, 0.125f);
-        //GameObject[] bullets = new GameObject[] { bullet1, bullet2 };
-        //for (int i = 0; i < bullets.Length; i++) {
-        //    GameObject bullet = bullets[i];
-        //    if (bullet == null) {
-        //        continue;
-        //    }
-        //    bullet.GetComponent<Bullet>().direction = direction;
-        //    bullet.GetComponent<Bullet>().playerDirection = movement;
-        //    var position = GetShootTwicePosition(currentFirePoint.transform.position, jiggle, i);
-        //    bullet.transform.position = position;
-        //    bullet.transform.rotation = Quaternion.identity;
-        //    bullet.transform.Rotate(currentFirePoint.transform.rotation.eulerAngles);
-        //    bullet.SetActive(true);
-        //}
-        //if (bullet2) {
-        //    bullet2.GetComponent<Bullet>().displayOnTop = true;
-        //}
-        //currentFirePoint.Animate();
     }
 
     private Vector3 GetJiggleDirection(Vector2 direction) {

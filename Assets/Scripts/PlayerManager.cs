@@ -158,6 +158,7 @@ public class PlayerManager : MonoBehaviour {
     public bool PlayerHit() {
         int oldHP = hp;
         hp -= 1;
+        GameManager.instance.DidGetHit();
         if (hp <= 0 && oldHP > 0) {
             MenuScreenManager.instance.NotifyOfDeath();
             return true;
@@ -184,7 +185,7 @@ public class PlayerManager : MonoBehaviour {
     }
 
     public int ExpToLevel() {
-        return (int)(20 * Mathf.Exp(lvl / 3));
+        return (int)(20 * Mathf.Exp(lvl / 3f));
     }
 
     public bool AtMaxLvl() {
@@ -268,7 +269,8 @@ public class PlayerManager : MonoBehaviour {
             itemsAreMagnetic,
             gemCount,
             spellColor,
-            gameTime
+            gameTime,
+            GameManager.instance.numRepeats
             );
     }
 

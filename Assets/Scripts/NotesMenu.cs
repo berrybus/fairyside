@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.UI;
 
 public class NotesMenu : UIScreen {
     public GameObject monsterInfo;
@@ -10,6 +11,7 @@ public class NotesMenu : UIScreen {
     public TMP_Text nameText;
     public TMP_Text descText;
     public TMP_Text totalNotes;
+    public Image scrollBar;
 
     private int upMove = 0;
     private int downMove = 0;
@@ -164,6 +166,8 @@ public class NotesMenu : UIScreen {
         maxY += startPosY - 120f;
         maxY = Mathf.Max(startPosY, maxY);
         MoveInfo(movement, info, maxY);
+        Vector3 scrollbarPos = scrollBar.transform.localPosition;
+        scrollBar.transform.localPosition = new Vector3(scrollbarPos.x, 54 - (info.transform.localPosition.y / maxY) * 120, scrollbarPos.z);
     }
 
     private void MoveInfo(int movement, GameObject info, float maxY) {

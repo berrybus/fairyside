@@ -11,8 +11,7 @@ public struct ScriptLine {
         this.line = line;
     }
 }
-public static class ScriptRepository
-{
+public static class ScriptRepository {
     static ScriptLine[] script0 = new ScriptLine[] {
         new ScriptLine(
             "",
@@ -235,7 +234,7 @@ public static class ScriptRepository
         new ScriptLine(
             "ProfessorAvatar",
             "Professor",
-            "As a special guest, I have the brilliant Richard here with me."),    
+            "As a special guest, I have the brilliant Richard here with me."),
         new ScriptLine(
             "ProfessorAvatar",
             "Professor",
@@ -291,7 +290,7 @@ public static class ScriptRepository
         new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
-            "Professor! I would like to try!"), 
+            "Professor! I would like to try!"),
         new ScriptLine(
             "ProfessorAvatar",
             "Professor",
@@ -299,7 +298,7 @@ public static class ScriptRepository
         new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
-            "Aha, now there's a big bat over there."), 
+            "Aha, now there's a big bat over there."),
         new ScriptLine(
             "",
             "",
@@ -327,7 +326,7 @@ public static class ScriptRepository
         new ScriptLine(
             "ShirleyAvatar",
             "Shirley",
-            "I'm sorry... I just got excited..."), 
+            "I'm sorry... I just got excited..."),
         new ScriptLine(
             "ProfessorAvatar",
             "Professor",

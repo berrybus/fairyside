@@ -10,6 +10,7 @@ public class Portal : MonoBehaviour
         if (collision.gameObject.CompareTag("Player") && !disabled) {
             collision.gameObject.GetComponent<Shirley>().WillChangeLevels();
             GameManager.instance.NextLevel();
+            // GameManager.instance.RepeatRun();
             disabled = true;
         }
     }

@@ -5,7 +5,10 @@ using TMPro;
 using UnityEngine.InputSystem;
 
 public class GameOverDisplay : MonoBehaviour {
+    public TMP_Text endDisplay;
     public TMP_Text timeDisplay;
+    public TMP_Text rerunDisplay;
+    public TMP_Text streakDisplay;
     public TMP_Text lvlDisplay;
     public TMP_Text xpDisplay;
     public TMP_Text gemDisplay;
@@ -16,9 +19,13 @@ public class GameOverDisplay : MonoBehaviour {
     private Transform expBar;
     private bool isAnimating = true;
     private int displayLvl;
+
+    public AudioClip greatJob;
+    public AudioClip goodTry;
+
     void Start() {
         System.TimeSpan time = System.TimeSpan.FromSeconds(PlayerManager.instance.gameTime);
-        string timeString = "";
+        string timeString;
         if (time.Hours > 0) {
             timeString = time.ToString("hh':'mm':'ss");
         } else {
@@ -26,11 +33,42 @@ public class GameOverDisplay : MonoBehaviour {
         }
         timeDisplay.text = "Time: " + timeString;
         displayLvl = PlayerManager.instance.lvl;
+        rerunDisplay.text = "Reruns: " + GameManager.instance.numRepeats;
         SetupAnimateText();
+        UpdateStats();
+        streakDisplay.text = "Win streak: " + GameManager.instance.currentStreak;
         StartCoroutine(AnimateXPIncrease());
+        if (GameManager.instance.currentLevel == GameManager.maxLevel) {
+            GameManager.instance.PlaySFX(greatJob);
+        } else {
+            GameManager.instance.PlaySFX(goodTry);
+        }
+    }
+
+    private void UpdateStats() {
+        if (GameManager.instance.currentLevel == GameManager.maxLevel) {
+            GameManager.instance.currentStreak += 1;
+            GameManager.instance.highestStreak = Mathf.Max(GameManager.instance.highestStreak, GameManager.instance.currentStreak);
+            if (GameManager.instance.fastestTime == 0) {
+                GameManager.instance.fastestTime = PlayerManager.instance.gameTime;
+            } else {
+                GameManager.instance.fastestTime = Mathf.Min(GameManager.instance.fastestTime, PlayerManager.instance.gameTime);
+            }
+            GameManager.instance.CheckSpeedrunnerAchievement();
+            GameManager.instance.totalWins += 1;
+        } else {
+            GameManager.instance.currentStreak = 0;
+            GameManager.instance.totalDeaths += 1;
+        }
+        GameManager.instance.maxRepeats = Mathf.Max(GameManager.instance.maxRepeats, GameManager.instance.numRepeats);
     }
 
     private void SetupAnimateText() {
+        if (GameManager.instance.currentLevel == GameManager.maxLevel) {
+            endDisplay.text = "You Won!";
+        } else {
+            endDisplay.text = "Game Over";
+        }
         lvlDisplay.text = "LVL " + displayLvl;
         if (PlayerManager.instance.AtMaxLvl()) {
             xpDisplay.text = "XP: 0/--";
@@ -75,7 +113,7 @@ public class GameOverDisplay : MonoBehaviour {
         if (!ctx.performed || isAnimating) {
             return;
         }
-        GameManager.instance.GoToMenu();
+        GameManager.instance.GoToMenuOrCredits();
         GameManager.DeleteSavedRun();
     }
 }

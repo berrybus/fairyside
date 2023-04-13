@@ -216,11 +216,13 @@ MonoBehaviour:
   bulletSpeed: 0
   bulletFireDelay: 0
   hp: 75
-  minGems: 2
-  maxGems: 4
+  minGems: 1
+  maxGems: 2
   hpBar: {fileID: 0}
-  noteNumber: 0
+  noteNumber: 17
   hitClip: {fileID: 8300000, guid: 6f27bfabc5beb4442aff5d24d535a1dc, type: 3}
+  wasSummoned: 0
+  cauldron: {fileID: 0}
 --- !u!1001 &632139398790277141
 PrefabInstance:
   m_ObjectHideFlags: 0

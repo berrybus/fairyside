@@ -38,7 +38,6 @@ public class CatBoss : BaseEnemy {
 
     protected override void Update() {
         base.Update();
-        int flipX = (curDirection.x < 0) ? -1 : 1;
         spriteRenderer.flipX = curDirection.x < 0;
     }
 

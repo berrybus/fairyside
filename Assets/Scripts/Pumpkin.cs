@@ -67,7 +67,7 @@ public class Pumpkin : BaseEnemy {
 
     IEnumerator ShootRoutine() {
         while (true) {
-            yield return new WaitForSeconds(Random.Range(1.0f, 2.0f));
+            yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
             if (movePattern == EnemyMovePattern.Random) {
                 int numShots = Random.Range(minShots, maxShots);
                 for (int i = 0; i < numShots; i++) {

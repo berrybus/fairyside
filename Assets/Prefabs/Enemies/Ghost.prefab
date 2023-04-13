@@ -157,11 +157,12 @@ MonoBehaviour:
   bulletSpeed: 5
   bulletFireDelay: 0
   hp: 80
-  minGems: 4
-  maxGems: 6
+  minGems: 3
+  maxGems: 5
   hpBar: {fileID: 0}
   noteNumber: 10
   hitClip: {fileID: 8300000, guid: 6f27bfabc5beb4442aff5d24d535a1dc, type: 3}
+  wasSummoned: 0
   minShots: 12
   maxShots: 24
   angleShot: 30

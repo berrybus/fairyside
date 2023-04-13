@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{02E11CD3-6505-BB42-D4FD-7C03E980EF83}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "com.rlabrecque.steamworks.net", "com.rlabrecque.steamworks.net.csproj", "{5CCA0E92-525B-E573-5B05-B7813545DF4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "com.rlabrecque.steamworks.net.editor", "com.rlabrecque.steamworks.net.editor.csproj", "{37CC84A8-7C5F-809D-838F-BA372A212667}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +17,14 @@ Global
 		{02E11CD3-6505-BB42-D4FD-7C03E980EF83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02E11CD3-6505-BB42-D4FD-7C03E980EF83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02E11CD3-6505-BB42-D4FD-7C03E980EF83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CCA0E92-525B-E573-5B05-B7813545DF4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CCA0E92-525B-E573-5B05-B7813545DF4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CCA0E92-525B-E573-5B05-B7813545DF4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CCA0E92-525B-E573-5B05-B7813545DF4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37CC84A8-7C5F-809D-838F-BA372A212667}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37CC84A8-7C5F-809D-838F-BA372A212667}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37CC84A8-7C5F-809D-838F-BA372A212667}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37CC84A8-7C5F-809D-838F-BA372A212667}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

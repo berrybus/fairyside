@@ -25,8 +25,9 @@ public class RunSave {
     public int gemCount = 0;
     public SpellColor spellColor;
     public float gameTime = 0;
+    public int repeats = 0;
 
-    public RunSave(int runLevel, int maxHp, int hp, int atk, int regen, int castSpeed, int castSpeedCap, int luk, int speed, int numShots, float damageMult, int shotSpeed, float knockbackMult, int range, int bulletSize, bool spellCanHone, bool spellCanBounce, bool spellCanPierce, bool spellCanPhase, bool itemsAreMagnetic, int gemCount, SpellColor spellColor, float gameTime) {
+    public RunSave(int runLevel, int maxHp, int hp, int atk, int regen, int castSpeed, int castSpeedCap, int luk, int speed, int numShots, float damageMult, int shotSpeed, float knockbackMult, int range, int bulletSize, bool spellCanHone, bool spellCanBounce, bool spellCanPierce, bool spellCanPhase, bool itemsAreMagnetic, int gemCount, SpellColor spellColor, float gameTime, int repeats) {
         this.runLevel = runLevel;
         this.maxHp = maxHp;
         this.hp = hp;
@@ -50,5 +51,6 @@ public class RunSave {
         this.gemCount = gemCount;
         this.spellColor = spellColor;
         this.gameTime = gameTime;
+        this.repeats = repeats;
     }
 }

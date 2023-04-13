@@ -21,6 +21,14 @@ public class SettingsMenu : UIScreen {
     public Sprite selectedArrow;
     public Sprite deselectedArrow;
 
+    public GameObject audioFill;
+    public Sprite audioSelect;
+    public Sprite audioDeselect;
+
+    public SpriteRenderer audioOutline;
+    public Sprite audioOutlineSelect;
+    public Sprite audioOutlineDeselect;
+
     private void Awake() {
         FindAvailableResolutions();
     }
@@ -83,6 +91,9 @@ public class SettingsMenu : UIScreen {
                 rightArrows[i].sprite = deselectedArrow;
             }
         }
+        audioFill.GetComponent<SpriteRenderer>().sprite = currentSelect == 2 ? audioSelect : audioDeselect;
+        audioFill.transform.localScale = new Vector3(GameManager.instance.volume, 1, 1) * 16;
+        audioOutline.sprite = currentSelect == 2 ? audioOutlineSelect : audioOutlineDeselect;
     }
 
     public override void MoveRight(InputAction.CallbackContext ctx) {
@@ -96,6 +107,8 @@ public class SettingsMenu : UIScreen {
             UpdateScreen(false);
         } else if (currentSelect == 1) {
             UpdateScreen(!Screen.fullScreen);
+        } else if (currentSelect == 2) {
+            GameManager.instance.AdjustVolume(0.1f);
         }
     }
 
@@ -113,6 +126,8 @@ public class SettingsMenu : UIScreen {
             UpdateScreen(false);
         } else if (currentSelect == 1) {
             UpdateScreen(!Screen.fullScreen);
+        } else if (currentSelect == 2) {
+            GameManager.instance.AdjustVolume(-0.1f);
         }
     }
 

@@ -204,12 +204,14 @@ MonoBehaviour:
   firepoint: {fileID: 7859022014356622125}
   bulletSpeed: 7
   bulletFireDelay: 0.125
-  hp: 225
-  minGems: 0
-  maxGems: 0
+  hp: 350
+  minGems: 5
+  maxGems: 8
   hpBar: {fileID: 4775317464861723487}
   noteNumber: 13
   hitClip: {fileID: 8300000, guid: 6f27bfabc5beb4442aff5d24d535a1dc, type: 3}
+  wasSummoned: 0
+  cauldron: {fileID: 0}
   minShots: 8
   maxShots: 12
   angleShot: 15

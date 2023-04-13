@@ -16,6 +16,12 @@ public class Save {
     public bool writerDead;
     public bool[] watchedMemory;
     public bool finishedGame;
+    public int currentStreak = 0;
+    public int highestStreak = 0;
+    public int totalWins = 0;
+    public int totalDeaths = 0;
+    public float fastestTime = 0f;
+    public int maxRepeats = 0;
 
     public Save(
         int _level,
@@ -31,7 +37,13 @@ public class Save {
         int _rangeInc,
         int _knockbackInc,
         bool _writerDead,
-        bool _finishedGame
+        bool _finishedGame,
+        int _currentStreak,
+        int _highestStreak,
+        int _totalWins,
+        int _totalDeaths,
+        float _fastestTime,
+        int _maxRepeats
     ) {
         watchedMemory = _memories;
         level = _level;
@@ -47,5 +59,11 @@ public class Save {
         knockbackInc = _knockbackInc;
         writerDead = _writerDead;
         finishedGame = _finishedGame;
+        currentStreak = _currentStreak;
+        highestStreak = _highestStreak;
+        totalWins = _totalWins;
+        totalDeaths = _totalDeaths;
+        fastestTime = _fastestTime;
+        maxRepeats = _maxRepeats;
     }
 }

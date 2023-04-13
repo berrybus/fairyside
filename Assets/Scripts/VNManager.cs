@@ -22,17 +22,64 @@ public class VNManager : MonoBehaviour {
     public Image intro;
     public TMP_Text introText;
 
+    public AudioClip whimsical;
+    public AudioClip somber;
+    public AudioClip writerTheme;
+    public AudioClip creation;
+    public AudioClip arcadia;
+    public AudioClip gretchen;
+    public AudioClip nacht;
+    public AudioClip mainTheme;
+
+    public AudioClip click;
+    public AudioClip enter;
+
     // Start is called before the first frame update
     void Start() {
         display.text = "";
         bg.sprite = bgList[GameManager.instance.currentMemory];
         script = ScriptRepository.scripts[GameManager.instance.currentMemory];
         SetupStaticElements();
-        if (GameManager.instance.currentMemory > 0) {
+        if (GameManager.instance.currentMemory > 0
+            && GameManager.instance.currentMemory < GameManager.maxMemory  -1) {
             StartCoroutine(ShowIntro());
         } else {
             HideIntro();
             StartCoroutine(Typewriter());
+        }
+        StartMusic();
+    }
+
+    void StartMusic() {
+        switch (GameManager.instance.currentMemory) {
+            case 0:
+                GameManager.instance.PlayMusic(mainTheme);
+                break;
+            case 1:
+                GameManager.instance.PlayMusic(whimsical);
+                break;
+            case 2: case 3:
+                GameManager.instance.PlayMusic(somber);
+                break;
+            case 4: case 5:
+                GameManager.instance.PlayMusic(creation);
+                break;
+            case 6:
+                GameManager.instance.PlayMusic(writerTheme);
+                break;
+            case 7:
+                GameManager.instance.PlayMusic(gretchen);
+                break;
+            case 8:
+                GameManager.instance.PlayMusic(arcadia);
+                break;
+            case 9:
+                GameManager.instance.PlayMusic(nacht);
+                break;
+            case 10: case 11:
+                GameManager.instance.PlayMusic(mainTheme);
+                break;
+
         }
     }
 
@@ -50,7 +97,13 @@ public class VNManager : MonoBehaviour {
             while (lineIndex <= currentLine.Length) {
                 display.text = currentLine[..lineIndex];
                 lineIndex += 1;
+                if (lineIndex % 2 == 0) {
+                    GameManager.instance.PlaySFX(click);
+                }
                 yield return new WaitForSeconds(0.0625f);
+                if (scriptIndex < script.Length) {
+                    currentLine = script[scriptIndex].line;
+                }
             }
             yield return null;
         }
@@ -79,6 +132,7 @@ public class VNManager : MonoBehaviour {
             } else {
                 SetupStaticElements();
             }
+            GameManager.instance.PlaySFX(enter);
         }
     }
 

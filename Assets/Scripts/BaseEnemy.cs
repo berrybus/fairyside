@@ -32,6 +32,7 @@ public class BaseEnemy : MonoBehaviour {
     public GameObject portal;
     public Transform origin;
     public bool isBoss;
+    public bool isGolden;
 
     protected Vector2 knockback = Vector2.zero;
     protected bool canChangeAngle = true;
@@ -46,7 +47,7 @@ public class BaseEnemy : MonoBehaviour {
     [SerializeField]
     private Gem gem;
     [SerializeField]
-    private HPDrop hpDrop;
+    protected HPDrop hpDrop;
     [SerializeField]
     private Note note;
     [SerializeField]
@@ -58,7 +59,7 @@ public class BaseEnemy : MonoBehaviour {
     [SerializeField]
     protected float bulletFireDelay;
     [SerializeField]
-    private int hp;
+    protected int hp;
     [SerializeField]
     private int minGems;
     [SerializeField]
@@ -66,7 +67,9 @@ public class BaseEnemy : MonoBehaviour {
     [SerializeField]
     private Transform hpBar;
 
-    private int maxHp;
+    protected Vector3 startPos;
+
+    protected int maxHp;
 
     private int damageQueueCooldown = 8;
     private int totalDamageTexts = 0;
@@ -77,6 +80,11 @@ public class BaseEnemy : MonoBehaviour {
 
     public bool wasSummoned = false;
 
+    public GameObject cauldron;
+
+    // Warning: this assumes you are using curAngle to determine velocity
+    protected RaycastHit2D hit;
+
     protected virtual void Awake() {
         currentState = EnemyState.Move;
         rbd = GetComponent<Rigidbody2D>();
@@ -84,10 +92,13 @@ public class BaseEnemy : MonoBehaviour {
         animator = GetComponent<Animator>();
         capsuleCollider2D = GetComponent<CapsuleCollider2D>();
         gameObject.SetActive(false);
+        hp *= (GameManager.instance.numRepeats + 1);
         maxHp = hp;
     }
 
     protected virtual void OnEnable() {
+        startPos = transform.position;
+        hit = new RaycastHit2D();
         StartCoroutine(SpawnEnemy());
     }
 
@@ -130,6 +141,7 @@ public class BaseEnemy : MonoBehaviour {
         } else {
             damageQueueCooldown -= 1;
         }
+        hit = Physics2D.Raycast(capsuleCollider2D.bounds.center, VectorFromAngle(curAngle), 6f);
 
     }
     
@@ -164,12 +176,34 @@ public class BaseEnemy : MonoBehaviour {
                 }
                 room.numEnemies -= 1;
                 room.OpenDoorsIfPossible();
+
+                if (isGolden) {
+                    GameManager.instance.UnlockAchievement(Achievement.GOLDEN_TOUCH);
+                }
                 if ((isBoss || wasSummoned) && portal != null && room.numEnemies == 0) {
-                    Instantiate(portal, origin.position, Quaternion.identity);
+                    Instantiate(portal, startPos, Quaternion.identity);
+                }
+                if (cauldron && GameManager.instance.finishedGame) {
+                    Instantiate(cauldron, startPos + new Vector3(0, -2f, 0), Quaternion.identity);
                 }
                 Instantiate(enemyDeath, origin.position, Quaternion.identity);
 
+                // Create possible note drop
+                float noteDropThreshold = isBoss ? 0.25f : 0.02f;
+                float noteForce = isBoss ? 4.0f : 2.0f;
+                if (note != null && Random.Range(0f, 1f) <= noteDropThreshold) {
+                    Vector3 position = origin.position + new Vector3(0, -0.25f, 0);
+                    Note noteDrop = Instantiate(note,
+                        position + new Vector3(Random.Range(-0.25f, 0.25f), Random.Range(-0.25f, 0.25f), 0),
+                        Quaternion.identity
+                    );
+                    noteDrop.SetIsLore(false);
+                    noteDrop.noteNumber = noteNumber;
+                    noteDrop.Scatter(noteForce * new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized);
+                }
+
                 // Create gems
+                float gemKnockback = isBoss ? 4.0f : 1.0f;
                 for (var i = 0; i < Random.Range(minGems, maxGems); i++) {
                     Vector3 position = origin.position + new Vector3(0, -0.25f, 0);
                     Gem newGem = Instantiate(
@@ -182,7 +216,7 @@ public class BaseEnemy : MonoBehaviour {
 
                 // Create possible HP drop
                 float dropThreshold = isBoss ? 0.75f : 0.05f;
-                float hpKnockback = isBoss ? 6.0f : 1.0f;
+                float hpKnockback = isBoss ? 4.0f : 1.0f;
                 if (hpDrop != null && Random.Range(0f, 1f) <= dropThreshold) {
                     Vector3 position = origin.position + new Vector3(0, -0.25f, 0);
                     HPDrop hp = Instantiate(
@@ -190,21 +224,7 @@ public class BaseEnemy : MonoBehaviour {
                         position + new Vector3(Random.Range(-0.25f, 0.25f), Random.Range(-0.25f, 0.25f), 0),
                         Quaternion.identity
                     );
-                    hp.Scatter(knockback * hpKnockback);
-                }
-
-                // Create possible note drop
-                float noteDropThreshold = isBoss ? 0.25f : 0.02f;
-                float noteForce = isBoss ? 6.0f : 2.0f;
-                if (note != null && Random.Range(0f, 1f) <= noteDropThreshold) {
-                    Vector3 position = origin.position + new Vector3(0, -0.25f, 0);
-                    Note noteDrop = Instantiate(note,
-                        position + new Vector3(Random.Range(-0.25f, 0.25f), Random.Range(-0.25f, 0.25f), 0),
-                        Quaternion.identity
-                    );
-                    noteDrop.SetIsLore(false);
-                    noteDrop.noteNumber = noteNumber;
-                    noteDrop.Scatter(noteForce * new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized);
+                    hp.Scatter(knockback);
                 }
 
                 Destroy(gameObject);
@@ -218,10 +238,13 @@ public class BaseEnemy : MonoBehaviour {
         int dmg = status.Item1;
         bool didCrit = status.Item2;
         hp -= dmg;
+        HPDidChange(hp + dmg);
         ShowDamageText(dmg, didCrit);
         totalDamageTexts += 1;
         damageQueueCooldown = 8;
     }
+
+    protected virtual void HPDidChange(int oldHP) { }
 
     protected virtual void StartActivity() { }
 
@@ -252,6 +275,7 @@ public class BaseEnemy : MonoBehaviour {
             bullet.GetComponent<EnemyBullet>().speed = speed;
             bullet.GetComponent<EnemyBullet>().playerTarget = target;
             bullet.GetComponent<EnemyBullet>().additionalStartTime = additionalTime;
+            bullet.GetComponent<EnemyBullet>().canTargetImmediately = true;
             bullet.transform.position = firepoint.transform.position;
             bullet.transform.SetParent(transform, true);
             bullet.SetActive(true);
@@ -286,8 +310,13 @@ public class BaseEnemy : MonoBehaviour {
     protected void ReverseMoveAngle() {
         if (canChangeAngle) {
             canChangeAngle = false;
-            curAngle += 180;
-            curAngle %= 360;
+            if (hit.normal != Vector2.zero) {
+                var bounceDirection = Vector2.Reflect(VectorFromAngle(curAngle), hit.normal);
+                curAngle = AngleFromVector(bounceDirection);
+            } else {
+                curAngle += 180;
+                curAngle %= 360;
+            }
             targetAngle = curAngle;
             StartCoroutine(EnableAngleChange());
         }

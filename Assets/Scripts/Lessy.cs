@@ -10,14 +10,8 @@ public class Lessy: BaseEnemy
     [SerializeField]
     private List<BaseEnemy> bossPool;
 
-    private Vector3 startPos;
-
     [SerializeField]
     private AudioClip cackle;
-
-    private void Start() {
-        startPos = transform.position;
-    }
 
     protected override void OnEnable() {
         base.OnEnable();
@@ -80,10 +74,8 @@ public class Lessy: BaseEnemy
             yield return new WaitForSeconds(1.5f);
             SummonEnemy(totalSummons < 2 ? bossPool : enemyPool);
             movePattern = EnemyMovePattern.Random;
-            if (totalSummons == 0) {
-                yield return new WaitForSeconds(Random.Range(8.0f, 10.0f));
-            } else if (totalSummons == 1) {
-                yield return new WaitForSeconds(12f);
+            if (totalSummons < 2) {
+                yield return new WaitForSeconds(Random.Range(6f, 8f));
             } else {
                 yield return new WaitForSeconds(Random.Range(4.0f, 6.0f));
             }

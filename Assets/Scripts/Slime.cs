@@ -11,6 +11,14 @@ public class Slime : BaseEnemy {
         targetAngle = 0;
         currentState = EnemyState.Unready;
         movePattern = EnemyMovePattern.Random;
+        if (isGolden) {
+            StartCoroutine(RemoveSelf());
+        }
+    }
+
+    private IEnumerator RemoveSelf() {
+        yield return new WaitForSeconds(5.0f);
+        Destroy(gameObject);
     }
 
     protected override void StartActivity() {

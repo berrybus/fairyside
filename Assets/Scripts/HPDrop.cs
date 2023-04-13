@@ -10,6 +10,14 @@ public class HPDrop: MagneticItem {
 
     public AudioClip coin;
 
+    public bool shouldRemoveSelf = false;
+
+    public void Start() {
+        if (shouldRemoveSelf) {
+            StartCoroutine(RemoveSelf());
+        }
+    }
+
     public void Scatter(Vector2 dir) {
         rbd.AddForce(dir * Random.Range(speedLow, speedHigh), ForceMode2D.Impulse);
     }
@@ -23,6 +31,11 @@ public class HPDrop: MagneticItem {
             Destroy(gameObject);
         }
 
+    }
+
+    private IEnumerator RemoveSelf() {
+        yield return new WaitForSeconds(5.0f);
+        Destroy(gameObject);
     }
 
 

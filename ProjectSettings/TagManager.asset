@@ -12,6 +12,10 @@ TagManager:
   - Wall
   - Gem
   - Spikes
+  - ShopItem
+  - Rock
+  - Note
+  - Writer
   layers:
   - Default
   - TransparentFX
@@ -21,7 +25,7 @@ TagManager:
   - UI
   - Player
   - Enemy
-  - 
+  - Bullet
   - 
   - 
   - 
@@ -60,6 +64,9 @@ TagManager:
     locked: 0
   - name: Bullets
     uniqueID: 3026285069
+    locked: 0
+  - name: ShopUI
+    uniqueID: 1634925759
     locked: 0
   - name: UI
     uniqueID: 3193482203

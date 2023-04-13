@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8081928876032605837}
   m_Layer: 0
   m_Name: Bat
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -174,10 +174,12 @@ MonoBehaviour:
   bulletFireDelay: 0
   hp: 60
   minGems: 4
-  maxGems: 8
+  maxGems: 6
   hpBar: {fileID: 0}
   noteNumber: 12
   hitClip: {fileID: 8300000, guid: 6f27bfabc5beb4442aff5d24d535a1dc, type: 3}
+  wasSummoned: 0
+  cauldron: {fileID: 0}
   minShots: 3
   maxShots: 5
 --- !u!1 &5806613867069978178

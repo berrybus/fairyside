@@ -216,11 +216,13 @@ MonoBehaviour:
   bulletSpeed: 10
   bulletFireDelay: 0.08
   hp: 120
-  minGems: 4
-  maxGems: 6
+  minGems: 2
+  maxGems: 5
   hpBar: {fileID: 0}
-  noteNumber: 0
+  noteNumber: 16
   hitClip: {fileID: 8300000, guid: 6f27bfabc5beb4442aff5d24d535a1dc, type: 3}
+  wasSummoned: 0
+  cauldron: {fileID: 0}
   minShots: 2
   maxShots: 4
 --- !u!1001 &632139398790277141

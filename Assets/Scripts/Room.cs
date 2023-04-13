@@ -33,6 +33,7 @@ public class Room : MonoBehaviour {
 
     public List<GameObject> enemyBank = new List<GameObject>();
     public List<BaseEnemy> enemies = new List<BaseEnemy>();
+    public GameObject goldenSlime;
 
     public List<GameObject> spawnPoints = new List<GameObject>();
 
@@ -40,6 +41,8 @@ public class Room : MonoBehaviour {
 
     public RoomController roomController;
     public CameraController cameraController;
+
+    public GameObject instructions;
 
     private void AssignDest(Door doorObject, int xCoord, int yCoord) {
         doorObject.roomController = roomController;
@@ -56,6 +59,10 @@ public class Room : MonoBehaviour {
         AssignDest(bottomDoor, xCoord, yCoord - 1);
         GenerateEnemies();
         OpenDoorsIfPossible();
+
+        if (instructions != null && ! (GameManager.instance.currentLevel == 0 && xCoord == 0 && yCoord == 0)) {
+            Destroy(instructions);
+        }
     }
 
     private void RemoveUnconnectedDoors() {
@@ -108,15 +115,22 @@ public class Room : MonoBehaviour {
 
     public void GenerateEnemies() {
         for (int i = 0; i < numEnemies; i++) {
-            var idx = Random.Range(0, spawnPoints.Count);
-            GameObject spawnPoint = spawnPoints[idx];
-            spawnPoints.RemoveAt(idx);
-            Vector3 pos = new Vector3(spawnPoint.transform.position.x, spawnPoint.transform.position.y, 0);
-            GameObject enemy = enemyBank[Random.Range(0, enemyBank.Count)];
-            GameObject newEnemy = Instantiate(enemy, pos, Quaternion.identity);
-            BaseEnemy enemyController = newEnemy.GetComponent<BaseEnemy>();
-            enemyController.room = this;
-            enemies.Add(enemyController);
+            InstantiateEnemy(enemyBank[Random.Range(0, enemyBank.Count)]);
         }
+
+        if (spawnPoints.Count > 0 && numEnemies > 0 && Random.Range(0f, 1.0f) <= 0.005f) {
+            InstantiateEnemy(goldenSlime);
+        }
+    }
+
+    private void InstantiateEnemy(GameObject enemy) {
+        var idx = Random.Range(0, spawnPoints.Count);
+        GameObject spawnPoint = spawnPoints[idx];
+        spawnPoints.RemoveAt(idx);
+        Vector3 pos = new Vector3(spawnPoint.transform.position.x, spawnPoint.transform.position.y, 0);
+        GameObject newEnemy = Instantiate(enemy, pos, Quaternion.identity);
+        BaseEnemy enemyController = newEnemy.GetComponent<BaseEnemy>();
+        enemyController.room = this;
+        enemies.Add(enemyController);
     }
 }

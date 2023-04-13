@@ -13,15 +13,15 @@ public class StatUpIndicator : MonoBehaviour {
         StartCoroutine(MoveUp());
 
         if ((newLvl - 1) % 5 == 0) {
-            text.text = "LUK Up!";
+            text.text = "Level Up!";
         } else if ((newLvl % 5) == 0) {
-            text.text = "DEX Up!";
+            text.text = "Level Up!";
         } else if ((newLvl + 1) % 5 == 0) {
-            text.text = "ATK Up!";
+            text.text = "Level Up!";
         } else if ((newLvl + 2) % 5 == 0) {
-            text.text = "SPD Up!";
+            text.text = "Level Up!";
         } else {
-            text.text = "WIS Up!";
+            text.text = "Level Up!";
         }
     }
 

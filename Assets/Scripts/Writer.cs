@@ -10,7 +10,7 @@ public class Writer : MonoBehaviour {
     public AudioClip awawa;
     public AudioClip honk;
     private int hp;
-    private int maxHp = 100;
+    private int maxHp = 1000;
 
     public string initialText;
 
@@ -33,17 +33,26 @@ public class Writer : MonoBehaviour {
     private string[] textBankSchool = new string[] {
         "I'm working!",
         "Who are you...?",
+        "I'm on the verge of a breakthrough!",
+        "You should be careful here",
+        "Fools, the lot of them!",
     };
 
     private string[] textBankCastle = new string[] {
         "What are you doing here?",
         "I haven't finished writing yet!",
+        "Please don't come any closer!",
+        "Do you believe me?",
+        "This place is awful",
     };
 
     private string[] textBankForest = new string[] {
         "My notes, my notes...!",
         "My head hurts...",
-        "I lost everything!",
+        "I've lost everything!",
+        "It was true after all...",
+        "I can't think at all!",
+        "I'm scared!",
     };
 
     private void Start() {
@@ -106,6 +115,7 @@ public class Writer : MonoBehaviour {
 
             if (hp <= 0) {
                 PlayerManager.instance.writerDead = true;
+                GameManager.instance.UnlockAchievement(Achievement.AUTHOR_DEATH);
                 GameManager.instance.PlaySFX(awawa);
                 GameManager.instance.SaveGame();
                 Instantiate(enemyDeath, transform.position, Quaternion.identity);

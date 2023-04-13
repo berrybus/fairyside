@@ -365,12 +365,12 @@ MonoBehaviour:
   - {fileID: 9148439009395258, guid: e5320ef38407e7d47ace2b98a81d9c19, type: 3}
   - {fileID: 9148439009395258, guid: e5320ef38407e7d47ace2b98a81d9c19, type: 3}
   - {fileID: 9148439009395258, guid: 33b095160e3c5eb4da97e5ab1b1838cf, type: 3}
+  - {fileID: 9148439009395258, guid: 33b095160e3c5eb4da97e5ab1b1838cf, type: 3}
   - {fileID: 9148439009395258, guid: 153a8a8d6154e884990598d6384ad94d, type: 3}
   - {fileID: 9148439009395258, guid: 965164910e99d484d9e4dccf2df596a5, type: 3}
   - {fileID: 9148439009395258, guid: fc45b06a3ead97d4a920f884c7badddf, type: 3}
   - {fileID: 9148439009395258, guid: 96f2310e5e035194ea8c3169ea92b5af, type: 3}
   - {fileID: 9148439009395258, guid: bb7ae52640c43244483488d94780966d, type: 3}
-  - {fileID: 9148439009395258, guid: 299dee4745a0ae943ae72c5f40c70574, type: 3}
   pickedItem: {fileID: 0}
   priceDisplay: {fileID: 2872577879970585885}
   itemPosition: {fileID: 3508560668681566586}

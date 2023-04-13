@@ -45,6 +45,7 @@ public class Door : MonoBehaviour {
                 nextRoom.SetEnemiesActive(collision.gameObject.transform);
                 nextRoom.OpenDoorsIfPossible();
                 roomController.minimap.ChangeRoom(nextRoom);
+                roomController.StartMusic(nextRoom.type);
             }
             switch (doorType) {
                 case DoorType.Left:

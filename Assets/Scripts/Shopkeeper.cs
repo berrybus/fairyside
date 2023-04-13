@@ -16,10 +16,10 @@ public class Shopkeeper : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        pickedItem = items[Random.Range(0, items.Length)];
-        ShopItem newItem = Instantiate(pickedItem, itemPosition.position, Quaternion.identity);
+        ShopItem newItem = Instantiate(items[Random.Range(0, items.Length)], itemPosition.position, Quaternion.identity);
         newItem.itemGetClip = itemGetClip;
         newItem.textPopupClip = textPopupClip;
+        pickedItem = newItem;
     }
 
     // Update is called once per frame
@@ -31,6 +31,9 @@ public class Shopkeeper : MonoBehaviour {
             } else {
                 priceDisplay.color = Color.white;
             }
+        } else {
+            priceDisplay.text = "0";
+            priceDisplay.color = red;
         }
 
     }

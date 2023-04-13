@@ -65,6 +65,7 @@ public class Note : MagneticItem {
             GameManager.instance.foundMonsterNotes[noteNumber] = true;
 
         }
+        GameManager.instance.CheckLibrarianAchievement();
         ItemDescription pickup = Instantiate(pickupText, transform.position, Quaternion.identity);
         pickup.overrideText = "Found note!";
         GameManager.instance.PlaySFX(paper);
